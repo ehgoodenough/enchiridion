@@ -9,13 +9,18 @@ let query = require("query-string").parse(location.search)
 // https://dev.twitch.tv/docs/extensions/reference#client-query-parameters
 let mount = "none"
 if(query.platform === "mobile") {
-    mount = query.platform // "mobile"
-} else if(query.mode !== "viewer") {
-    mount = query.mode // "dashboard" or "config"
-} else if(query.anchor !== undefined) {
-    mount = query.anchor // "panel" or "video_overlay" or "component"
+    mount = "mobile"
+} else if(query.mode === "dashboard") {
+    mount = "dashboard"
+} else if(query.mode === "config") {
+    mount = "config"
+} else if(query.anchor === "panel") {
+    mount = "panel"
+} else if(query.anchor === "video_overlay") {
+    mount = "overlay"
+} else if(query.anchor === "component") {
+    mount = "component"
 }
-mount = mount || "none"
 
 const LANGUAGE_TO_LOCALE = {
     "en": "en-US",

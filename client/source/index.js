@@ -1,7 +1,6 @@
 import Keyb from "keyb"
 import Preact from "preact"
 import Yaafloop from "yaafloop"
-import Statgrab from "statgrab"
 
 import Nimble from "library/Nimble"
 import GameAnalytics from "library/GameAnalytics"
@@ -9,11 +8,9 @@ import GameAnalytics from "library/GameAnalytics"
 import Mount from "views/Mount.view.js"
 import Model from "models/Model.js"
 
-if(Nimble.twitch.extension.state === "testing") {
+if(__STAGE__ === "DEVELOPMENT") {
     console.clear()
-    statgrab(function(stats) {
-        console.log(stats)
-    })
+    require("statgrab/do")
 }
 
 const model = new Model()
