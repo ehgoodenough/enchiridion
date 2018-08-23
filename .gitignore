@@ -1,0 +1,13 @@
+# Dependencies
+node_modules
+
+# Artifacts
+.serverless
+.webpack
+build.zip
+builds
+
+# Temporary
+.DS_Store
+# *.log
+._*

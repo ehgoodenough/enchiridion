@@ -1,0 +1,33 @@
+{
+  "name": "...",
+  "version": "1.0.0-alpha",
+  "description": "...",
+  "private": true,
+  "contributors": [
+    "Andrew McPherson <@ehgoodenough>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ehgoodenough"
+  },
+  "scripts": {
+    "build": "codeglue --stage=NONE",
+    "start": "codeglue --stage=NONE --mode=SERVER --port=8080 --ssl=true",
+    "zip": "bestzip build.zip builds/web/*"
+  },
+  "dependencies": {
+    "gameanalytics": "^2.1.5",
+    "keyb": "^1.1.0",
+    "preact": "^8.2.7",
+    "query-string": "^6.1.0",
+    "shortid": "^2.2.8",
+    "statgrab": "^1.2.0",
+    "yaafloop": "^1.1.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "bestzip": "^1.1.4",
+    "codeglue": "^1.5.1"
+  }
+}
