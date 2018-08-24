@@ -7,9 +7,9 @@ class Model {
     startNewGame() {
         this.game = new Game()
     }
-    update(delta) {
+    onTick(delta) {
         if(this.game instanceof Game) {
-            this.game.update(delta)
+            this.game.onTick(delta)
         }
     }
 }

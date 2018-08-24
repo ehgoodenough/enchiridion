@@ -12,6 +12,7 @@ export default class Entity {
         return {
             "top": this.props.entity.position.y + "em",
             "left": this.props.entity.position.x + "em",
+            "backgroundColor": this.props.entity.color,
         }
     }
 }

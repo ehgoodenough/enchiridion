@@ -9,9 +9,14 @@ export default class Game {
     render() {
         return (
             <div className="Game">
-                <Entity entity={model.game.hero}/>
+                {this.renderEntities()}
                 <Version/>
             </div>
         )
+    }
+    renderEntities() {
+        return window.model.game.entities.map((entity) => (
+            <Entity entity={entity} key={entity.key}/>
+        ))
     }
 }
