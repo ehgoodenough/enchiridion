@@ -13,7 +13,7 @@ if(__STAGE__ === "DEVELOPMENT") {
     require("statgrab/do")
 }
 
-const model = new Model()
+const model = window.model = new Model()
 const mount = Preact.render(<Mount/>, document.body)
 const loop = new Yaafloop((delta) => {
     model.update(delta)
