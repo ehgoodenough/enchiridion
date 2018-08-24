@@ -9,8 +9,9 @@ export default class Game {
     constructor(game) {
         this.key = ShortID.generate()
 
+        this.hero = new Hero({"game": this})
         this.entities = [
-            new Hero({"game": this}),
+            this.hero,
             new Monster({"game": this}),
         ]
     }

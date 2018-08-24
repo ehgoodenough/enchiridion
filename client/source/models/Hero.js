@@ -13,6 +13,7 @@ export default class Hero {
         this.prevposition = {"x": 0, "y": 0}
 
         this.color = colors.yellow
+        this.image = require("images/monsters/adventurer.png")
 
         this.title = "The Hero"
         this.description = "It you!!"

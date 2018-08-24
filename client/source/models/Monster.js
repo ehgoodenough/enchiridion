@@ -4,6 +4,9 @@ import shortid from "shortid"
 import frame from "data/frame.js"
 import colors from "data/colors.js"
 
+const SLIME_ALPHA_IMAGE = require("images/monsters/slime_alpha.png")
+const SLIME_OMEGA_IMAGE = require("images/monsters/slime_omega.png")
+
 export default class Monster {
     constructor(parameters) {
         this.game = parameters.game
@@ -16,13 +19,44 @@ export default class Monster {
         this.title = "Red Slime"
         this.description = "It looks gross."
     }
+    get image() {
+        if(this.isReady === true) {
+            return SLIME_OMEGA_IMAGE
+        } else {
+            return SLIME_ALPHA_IMAGE
+        }
+    }
     onReaction() {
-        const action = {
-            "move": {
-                "x": Math.random() < 0.5 ? -1 : +1,
-                "y": Math.random() < 0.5 ? -1 : +1,
+        const action = {"move": {"x": 0, "y": 0}}
+
+        if(this.isReady == false) {
+            this.isReady = true
+        } else if(this.isReady = true) {
+            this.isReady = false
+
+            // move towards the this.game.hero, prioritzing whichever vector has a longer magnitude.
+            if(Math.abs(this.position.y - ((this.game.hero.position.y + this.game.hero.prevposition.y) / 2))
+            >= Math.abs(this.position.x - ((this.game.hero.position.x + this.game.hero.prevposition.x) / 2))) {
+                if(this.position.y > this.game.hero.position.y) {
+                    action.move.y = -1
+                } else if(this.position.y < this.game.hero.position.y) {
+                    action.move.y = +1
+                }
+            } else {
+                if(this.position.x > this.game.hero.position.x) {
+                    action.move.x = -1
+                } else if(this.position.x < this.game.hero.position.x) {
+                    action.move.x = +1
+                }
             }
         }
+
+        ///////////
+        // MOVE //
+        /////////
+
+        action.move.x = action.move.x || 0
+        action.move.y = action.move.y || 0
 
         if(this.position.x + action.move.x < 0
         || this.position.y + action.move.y < 0
@@ -40,72 +74,12 @@ export default class Monster {
     }
 }
 
-// class Monster extends Entity {
-//     constructor() {
-//         // ...
-//         if(!protomonster.position) {
-//             if(Math.random() < 0.5) {
-//                 protomonster.position = {
-//                     x: Math.floor(Math.random() * SIZE),
-//                     y: Math.random() < 0.5 ? -1 : SIZE
-//                 }
-//             } else {
-//                 protomonster.position = {
-//                     x: Math.random() < 0.5 ? -1 : SIZE,
-//                     y: Math.floor(Math.random() * SIZE)
-//                 }
-//             }
-//         }
-//         this.isPrepared = Math.random() < 0.5
-//     }
-//     op() {
-//         if(this.isPrepared == false) {
-//             this.isPrepared = true
-//             this.symbol = "G"
-//         } else if(this.isPrepared = true) {
-//             this.isPrepared = false
-//             this.symbol = "g"
-//
-//             // move towards the hero, prioritzing
-//             // whichever vector has a longer magnitude.
-//             if(Math.abs(this.position.y - ((hero.position.y + hero.prevposition.y) / 2))
-//             >= Math.abs(this.position.x - ((hero.position.x + hero.prevposition.x) / 2))) {
-//                 if(this.position.y > hero.position.y) {this.move({y: -1})}
-//                 else if(this.position.y < hero.position.y) {this.move({y: +1})}
-//             } else {
-//                 if(this.position.x > hero.position.x) {this.move({x: -1})}
-//                 else if(this.position.x < hero.position.x) {this.move({x: +1})}
-//             }
-//         }
-//     }
-//     move(movement) {
-//         movement.x = movement.x || 0
-//         movement.y = movement.y || 0
-//
-//         game.forEach((entity) => {
-//             if(entity != this) {
-//                 if(this.position.x + movement.x == entity.position.x
-//                 && this.position.y + movement.y == entity.position.y) {
-//                     if(entity instanceof Hero) {
-//                         if(!!entity.isAttacked) {
-//                             entity.isAttacked()
-//                         }
-//                     }
-//                     movement.x = 0
-//                     movement.y = 0
-//                 }
-//             }
-//         })
-//
-//         this.position.x += movement.x
-//         this.position.y += movement.y
-//     }
 //     isAttacked() {
 //         this.health -= 1
 //         if(this.health <= 0) {
 //             if(Math.abs(this.position.x - altar.position.x) <= 1
 //             && Math.abs(this.position.y - altar.position.y) <= 1) {
-//                 hero.score += 2
+//                 this.game.hero.score += 2
 //                 altar.isActive = true
 //                 window.setTimeout(() => {
 //                     altar.isActive = false
@@ -113,7 +87,6 @@ export default class Monster {
 //             }
 //             game.splice(game.indexOf(this), 1)
 //             game.push(new Monster())
-//             hero.score += 1
+//             this.game.hero.score += 1
 //         }
 //     }
-// }
