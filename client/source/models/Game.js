@@ -2,16 +2,16 @@ import ShortID from "shortid"
 import Nimble from "library/Nimble"
 import GameAnalytics from "library/GameAnalytics"
 
-import Hero from "models/Hero.js"
+import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
 
 export default class Game {
     constructor(game) {
         this.key = ShortID.generate()
 
-        this.hero = new Hero({"game": this})
+        this.adventurer = new Adventurer({"game": this})
         this.entities = [
-            this.hero,
+            this.adventurer,
             new Monster({"game": this}),
         ]
     }

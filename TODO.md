@@ -1,6 +1,4 @@
-- Add some monsters. Give it basic AI.
 - Show some animation when a monster attacks.
-- Add some HUD UI to display your health.
 - Restart the game when you run out of health.
 
 .....

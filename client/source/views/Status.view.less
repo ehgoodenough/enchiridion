@@ -1,0 +1,62 @@
+@import "Base.view.less";
+
+.Status {
+
+    .hearts {
+        top: 0em;
+        right: 0em;
+        padding: 0.25em;
+        position: absolute;
+
+        .heart {
+            width: 0.75em;
+            height: 0.75em;
+            line-height: 1em;
+            margin-left: 0.1em;
+            display: inline-block;
+
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            &.full {
+                background-image: url("../images/ui/heart-full.png");
+            }
+
+            &.half {
+                background-image: url("../images/ui/heart-half.png");
+            }
+
+            &.none {
+                background-image: url("../images/ui/heart-none.png");
+            }
+        }
+    }
+
+    .score {
+        top: 0em;
+        left: 0em;
+        padding: 0.25em 0.5em;
+        position: absolute;
+
+        color: #DEB74A;
+        line-height: 1em;
+    }
+
+    .message {
+        left: 0em;
+        right: 0em;
+        bottom: 0em;
+        padding: 0.25em;
+        position: absolute;
+
+        span {
+            display: block;
+            font-size: 0.45em;
+            font-family: tiny;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: text-bottom;
+        }
+    }
+}

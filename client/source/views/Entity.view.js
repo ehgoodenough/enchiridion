@@ -9,17 +9,14 @@ export default class Entity {
         )
     }
     get className() {
-        return [
-            "Entity",
-            this.props.entity.isReady ? "isReady" : "",
-        ].join(" ")
+        return `Entity ${this.props.entity.animation}`
     }
     get style() {
         return {
             "top": this.props.entity.position.y + "em",
             "left": this.props.entity.position.x + "em",
-            // "backgroundColor": this.props.entity.color,
             "backgroundImage": `url(${this.props.entity.image})`,
+            "display": this.props.entity.isDead ? "none" : undefined
         }
     }
 }
