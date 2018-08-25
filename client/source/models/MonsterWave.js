@@ -24,7 +24,7 @@ export default class MonsterWave {
         // already been killed, so the wave can
         // become more difficult during the wave.
         this.capacity = wave.capacity || 4
-        this.killcount = wave.killcount || 8
+        this.killcount = wave.killcount || Infinity
     }
     onAction() {
         // If attached to a game...
