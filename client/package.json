@@ -16,7 +16,7 @@
     "zip": "bestzip build.zip builds/web/*"
   },
   "dependencies": {
-    "gameanalytics": "^2.1.5",
+    "gameanalytics": "^3.0.1",
     "keyb": "^1.1.0",
     "preact": "^8.2.7",
     "query-string": "^6.1.0",
