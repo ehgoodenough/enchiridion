@@ -22,6 +22,8 @@ export default class Monster {
         this.health = 1
 
         this.group = "monsters"
+
+        this.isReady = false
     }
     get image() {
         if(this.isReady === true) {

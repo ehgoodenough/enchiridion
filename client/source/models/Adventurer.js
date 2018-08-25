@@ -5,15 +5,15 @@ import colors from "data/colors.js"
 
 import Monster from "models/Monster.js"
 
+import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
+import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
+
 export default class Adventurer {
     constructor(parameters = {}) {
         this.key = shortid.generate()
 
-        this.position = {"x": 0, "y": 0}
-        this.prevposition = {"x": 0, "y": 0}
-
-        // this.color = colors.yellow
-        this.image = require("images/monsters/adventurer.png")
+        this.position = parameters.position || {"x": 0, "y": 0}
+        this.prevposition = {"x": this.position.x, "y": this.position.y}
 
         this.title = "The Adventurer"
         this.description = "It you!!"
@@ -109,6 +109,13 @@ export default class Adventurer {
             //     return entry.name + ": " + entry.score
             // }).join("\n"))
             // _game.start()
+        }
+    }
+    get image() {
+        if(this.isDead === true) {
+            return GRAVESTONE_IMAGE
+        } else {
+            return ADVENTURER_IMAGE
         }
     }
 }

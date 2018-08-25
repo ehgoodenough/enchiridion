@@ -14,8 +14,8 @@ export default class Camera {
     }
     get style() {
         return {
-            "left": (frame.width / 2) - (window.model.game.room.width / 2) + "em",
-            "top": (frame.height / 2) - (window.model.game.room.height / 2) + "em",
+            "left": (frame.width / 2) - (window.model.game.camera.position.x) + "em",
+            "top": (frame.height / 2) - (window.model.game.camera.position.y) + "em",
         }
     }
 }

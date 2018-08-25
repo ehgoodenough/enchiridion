@@ -9,7 +9,7 @@ export default class Room {
                 this.tiles[x + "x" + y] = {
                     "position": {"x": x, "y": y},
                     "key": x + "x" + y,
-                    "color": "#333",
+                    "color": "#222",
                 }
             }
         }

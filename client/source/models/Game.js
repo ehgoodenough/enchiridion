@@ -14,12 +14,14 @@ export default class Game {
         this.monsters = []
         this.entities = []
 
-        this.add(this.adventurer = new Adventurer())
+        this.add(this.adventurer = new Adventurer({
+            "position": {"x": 2, "y": 2}
+        }))
+
+        this.room = new Room({"width": 5, "height": 5})
+        this.camera = {"position": {"x": 2.5, "y": 2.5}}
 
         this.wave = new MonsterWave(this, {"capacity": 4})
-
-        this.room = new Room()
-        this.camera = {"position": {"x": 0, "y": 0}}
     }
     add(entity) {
         entity.game = this
