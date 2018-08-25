@@ -12,11 +12,21 @@ export default class Entity {
         return `Entity ${this.props.entity.animation}`
     }
     get style() {
-        return {
-            "top": this.props.entity.position.y + "em",
-            "left": this.props.entity.position.x + "em",
-            "backgroundImage": `url(${this.props.entity.image})`,
-            "display": this.props.entity.isDead ? "none" : undefined
+        let style = {}
+
+        if(this.props.entity.position) {
+            style.top = this.props.entity.position.y + "em"
+            style.left = this.props.entity.position.x + "em"
         }
+
+        if(this.props.entity.image) {
+            style.backgroundImage = `url(${this.props.entity.image})`
+        }
+
+        if(this.props.entity.color) {
+            style.backgroundColor = this.props.entity.color
+        }
+
+        return style
     }
 }

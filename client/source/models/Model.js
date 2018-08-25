@@ -1,6 +1,6 @@
 import Game from "models/Game.js"
 
-class Model {
+export default class Model {
     constructor(model) {
         this.startNewGame()
     }
@@ -13,5 +13,3 @@ class Model {
         }
     }
 }
-
-export default Model

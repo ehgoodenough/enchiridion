@@ -53,13 +53,13 @@ export default class MonsterWave {
         // collide with an already existing monster.
         if(Math.random() < 0.5) {
             return {
-                x: Math.random() < 0.5 ? -1 : frame.width,
-                y: Math.floor(Math.random() * frame.height),
+                x: Math.random() < 0.5 ? -1 : this.game.room.width,
+                y: Math.floor(Math.random() * this.game.room.height),
             }
         } else {
             return {
-                x: Math.floor(Math.random() * frame.width),
-                y: Math.random() < 0.5 ? -1 : frame.height,
+                x: Math.floor(Math.random() * this.game.room.width),
+                y: Math.random() < 0.5 ? -1 : this.game.room.height,
             }
         }
     }

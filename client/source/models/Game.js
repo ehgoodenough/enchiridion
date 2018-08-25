@@ -5,6 +5,7 @@ import GameAnalytics from "library/GameAnalytics"
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
 import MonsterWave from "models/MonsterWave.js"
+import Room from "models/Room.js"
 
 export default class Game {
     constructor(game) {
@@ -16,6 +17,9 @@ export default class Game {
         this.add(this.adventurer = new Adventurer())
 
         this.wave = new MonsterWave(this, {"capacity": 4})
+
+        this.room = new Room()
+        this.camera = {"position": {"x": 0, "y": 0}}
     }
     add(entity) {
         entity.game = this

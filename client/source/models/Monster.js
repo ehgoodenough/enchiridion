@@ -1,7 +1,6 @@
 import keyb from "keyb"
 import shortid from "shortid"
 
-import frame from "data/frame.js"
 import colors from "data/colors.js"
 
 import Adventurer from "models/Adventurer.js"
@@ -15,7 +14,7 @@ export default class Monster {
 
         this.position = parameters.position || {"x": 0, "y": 0}
 
-        this.color = colors.red
+        // this.color = colors.red
 
         this.title = "Red Slime"
         this.description = "It looks gross."
@@ -76,8 +75,8 @@ export default class Monster {
 
         if(this.position.x + action.move.x < 0
         || this.position.y + action.move.y < 0
-        || this.position.x + action.move.x >= frame.width
-        || this.position.y + action.move.y >= frame.height) {
+        || this.position.x + action.move.x >= this.game.room.width
+        || this.position.y + action.move.y >= this.game.room.height) {
             action.move.x = 0
             action.move.y = 0
         }

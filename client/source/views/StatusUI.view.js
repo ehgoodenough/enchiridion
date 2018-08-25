@@ -1,6 +1,6 @@
 import Preact from "preact"
 
-import "views/Status.view.less"
+import "views/StatusUI.view.less"
 
 export default class Status {
     render() {
