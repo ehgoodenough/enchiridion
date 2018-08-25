@@ -1,5 +1,10 @@
 - Show some animation when a monster attacks.
-- Restart the game when you run out of health.
+- Show a bloodscreen when you get hit.
+- Show some animation when you're on your last heart.
+- Show some animation when you die.
+- Show a prompt, message, leaderboard when you die.
+- Restart the game from the prompt.
+- Pretty up the room; remove the harsh edges.
 
 .....
 
