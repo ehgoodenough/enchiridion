@@ -1,4 +1,4 @@
-service: ...
+service: enchiridion
 
 provider:
   name: aws

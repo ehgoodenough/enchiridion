@@ -1,4 +1,4 @@
-# !!! (client-side) #
+# Enchiridion (client-side) #
 
 ### Getting Started ###
 

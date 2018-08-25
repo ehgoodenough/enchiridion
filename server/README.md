@@ -1,4 +1,4 @@
-# !!! (server-side) #
+# Enchiridion (server-side) #
 
 ### Getting Started ###
 
