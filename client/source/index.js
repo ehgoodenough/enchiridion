@@ -16,7 +16,7 @@ if(__STAGE__ === "DEVELOPMENT") {
 const model = window.model = new Model()
 const mount = Preact.render(<Mount/>, document.body)
 const loop = new Yaafloop((delta) => {
-    model.onTick(delta)
+    model.update(delta)
     Preact.render(<Mount/>, document.body, mount)
 })
 

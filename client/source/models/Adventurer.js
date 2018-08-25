@@ -7,8 +7,7 @@ import colors from "data/colors.js"
 import Monster from "models/Monster.js"
 
 export default class Adventurer {
-    constructor(parameters) {
-        this.game = parameters.game
+    constructor(parameters = {}) {
         this.key = shortid.generate()
 
         this.position = {"x": 0, "y": 0}
@@ -24,7 +23,7 @@ export default class Adventurer {
         this.health = 3
         this.score = 0
     }
-    onTick(delta) {
+    update(delta) {
         if(this.isDead) {
             return
         }

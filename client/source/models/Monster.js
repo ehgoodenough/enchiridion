@@ -10,10 +10,9 @@ const SLIME_ALPHA_IMAGE = require("images/monsters/slime_alpha.png")
 const SLIME_OMEGA_IMAGE = require("images/monsters/slime_omega.png")
 
 export default class Monster {
-    constructor(parameters) {
+    constructor(parameters = {}) {
         this.key = "monster-" + shortid.generate()
 
-        this.game = parameters.game
         this.position = parameters.position || {"x": 0, "y": 0}
 
         this.color = colors.red
@@ -22,6 +21,8 @@ export default class Monster {
         this.description = "It looks gross."
 
         this.health = 1
+
+        this.group = "monsters"
     }
     get image() {
         if(this.isReady === true) {
@@ -103,12 +104,8 @@ export default class Monster {
         if(this.health <= 0) {
             this.isDead = true
             this.game.adventurer.score += 1
-            // this.game.remove(this)
-            // if(!!this.game) {
-            //     if(!!this.game.wave) {
-            //         this.game.wave.bumpKillcount()
-            //     }
-            // }
+            this.game.wave.killcount -= 1
+            this.game.remove(this)
             // if(Math.abs(this.position.x - altar.position.x) <= 1
             // && Math.abs(this.position.y - altar.position.y) <= 1) {
             //     this.game.adventurer.score += 2

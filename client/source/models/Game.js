@@ -4,21 +4,44 @@ import GameAnalytics from "library/GameAnalytics"
 
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
+import MonsterWave from "models/MonsterWave.js"
 
 export default class Game {
     constructor(game) {
         this.key = ShortID.generate()
 
-        this.adventurer = new Adventurer({"game": this})
-        this.entities = [
-            this.adventurer,
-            new Monster({"game": this}),
-        ]
+        this.monsters = []
+        this.entities = []
+
+        this.add(this.adventurer = new Adventurer())
+
+        this.wave = new MonsterWave(this, {"capacity": 4})
     }
-    onTick(delta) {
+    add(entity) {
+        entity.game = this
+
+        this.entities = this.entities || []
+        this.entities.push(entity)
+
+        if(entity.group) {
+            this[entity.group] = this[entity.group] || []
+            this[entity.group].push(entity.group)
+        }
+    }
+    remove(entity) {
+        entity.game = this
+
+        this.entities.splice(this.entities.indexOf(entity), 1)
+
+        if(entity.group) {
+            this[entity.group] = this[entity.group] || []
+            this[entity.group].splice(this[entity.group].indexOf(entity), 1)
+        }
+    }
+    update(delta) {
         this.entities.forEach((entity) => {
-            if(entity.onTick instanceof Function) {
-                entity.onTick(delta)
+            if(entity.update instanceof Function) {
+                entity.update(delta)
             }
         })
     }
@@ -28,5 +51,6 @@ export default class Game {
                 entity.onReaction()
             }
         })
+        this.wave.onAction()
     }
 }

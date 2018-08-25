@@ -21,7 +21,7 @@ export default class Status {
     get hearts() {
         var hearts = new Array()
         for(var i = 0; i < window.model.game.adventurer.maxhealth; i++) {
-            if(i <= window.model.game.adventurer.health) {
+            if(i < window.model.game.adventurer.health) {
                 hearts.push(<span className="full heart" key={i}/>)
             } else {
                 hearts.push(<span className="none heart" key={i}/>)
