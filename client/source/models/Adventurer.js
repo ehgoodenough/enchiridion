@@ -18,8 +18,8 @@ export default class Adventurer {
         this.title = "The Adventurer"
         this.description = "It you!!"
 
-        this.maxhealth = 3
-        this.health = 3
+        this.maxhealth = 16
+        this.health = 16
         this.score = 0
     }
     update(delta) {
@@ -42,6 +42,9 @@ export default class Adventurer {
         if(keyb.isJustDown("D", delta.ms)
         || keyb.isJustDown("<right>", delta.ms)) {
             this.onAction({"move": {"x": +1}})
+        }
+        if(keyb.isJustDown("<space>", delta.ms)) {
+            this.onAction({"move": {}})
         }
     }
     onAction(action) {

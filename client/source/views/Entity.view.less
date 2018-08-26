@@ -21,6 +21,49 @@
         animation-duration: 4s;
         animation-iteration-count: infinite;
     }
+
+    &.strike {
+        animation-delay: 0.05s;
+        animation-duration: 0.25s;
+        animation-iteration-count: 1;
+
+        &.east {
+            animation-name: strike-east;
+        }
+        &.west {
+            animation-name: strike-west;
+        }
+        &.north {
+            animation-name: strike-north;
+        }
+        &.south {
+            animation-name: strike-south;
+        }
+    }
+}
+
+@keyframes strike-east {
+    0% {transform: translateX(-0.25em) rotate(-25deg)}
+    25% {transform: translateX(+0.5em) rotate(+25deg)}
+    100% {transform: translateX(0em)}
+}
+
+@keyframes strike-west {
+    0% {transform: translateX(+0.25em) rotate(+25deg)}
+    25% {transform: translateX(-0.5em) rotate(-25deg)}
+    100% {transform: translateX(0em)}
+}
+
+@keyframes strike-south {
+    0% {transform: translateY(-0.25em) rotate(+25deg)}
+    25% {transform: translateY(+0.5em) rotate(-25deg)}
+    100% {transform: translateY(0em)}
+}
+
+@keyframes strike-north {
+    0% {transform: translateY(+0.25em) rotate(-25deg)}
+    25% {transform: translateY(-0.5em) rotate(+25deg)}
+    100% {transform: translateY(0em)}
 }
 
 @keyframes shake {

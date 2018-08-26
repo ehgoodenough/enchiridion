@@ -5,8 +5,15 @@ import colors from "data/colors.js"
 
 import Adventurer from "models/Adventurer.js"
 
-const SLIME_ALPHA_IMAGE = require("images/monsters/slime_alpha.png")
-const SLIME_OMEGA_IMAGE = require("images/monsters/slime_omega.png")
+import SLIME_ALPHA_IMAGE from "images/monsters/slime_alpha.png"
+import SLIME_OMEGA_IMAGE from "images/monsters/slime_omega.png"
+
+const DIRECTIONS = {
+    "-1x0": "west",
+    "1x0": "east",
+    "0x-1": "north",
+    "0x1": "south"
+}
 
 export default class Monster {
     constructor(parameters = {}) {
@@ -33,11 +40,15 @@ export default class Monster {
         }
     }
     get animation() {
+        if(this.isAttacking) {
+            return "strike" + " " + this.direction
+        }
+
         if(this.isReady === true) {
             return "shake"
-        } else {
-            return "ooze"
         }
+
+        return "ooze"
     }
     onReaction() {
         if(this.isDead) {
@@ -45,6 +56,8 @@ export default class Monster {
         }
 
         const action = {"move": {"x": 0, "y": 0}}
+
+        this.isAttacking = false
 
         if(this.isReady == false) {
             this.isReady = true
@@ -75,6 +88,8 @@ export default class Monster {
         action.move.x = action.move.x || 0
         action.move.y = action.move.y || 0
 
+        this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
+
         if(this.position.x + action.move.x < 0
         || this.position.y + action.move.y < 0
         || this.position.x + action.move.x >= this.game.room.width
@@ -88,8 +103,8 @@ export default class Monster {
             && entity.isDead !== true
             && this.position.x + action.move.x === entity.position.x
             && this.position.y + action.move.y === entity.position.y) {
-                if(entity instanceof Adventurer
-                && entity.beAttacked instanceof Function) {
+                if(entity instanceof Adventurer) {
+                    this.isAttacking = true
                     entity.beAttacked()
                 }
                 action.move.x = 0
