@@ -1,5 +1,4 @@
 - Show a leaderboard when you die.
-- Restart the game from the prompt.
 - Pretty up the room; remove the harsh edges.
 
 - Tutorial

@@ -87,11 +87,11 @@
         }
     }
 
-    .death-message {
-        opacity: 0;
+    .you-died-banner {
+        opacity: 1;
 
         transition-duration: 0.1s;
-        transition-property: opacity;
+        transition-property: opacity, transform;
 
         // animation-delay: 1s;
         // animation-duration: 5s;
@@ -99,13 +99,14 @@
         // animation-fill-mode: forwards;
 
         top: 0em;
-        left: 0em;
-        right: 0em;
+        left: -2em;
+        right: -2em;
         bottom: 0em;
         margin: auto;
         height: 2em;
         z-index: 999;
         position: absolute;
+        transform: rotate(28deg) scaleY(0);
 
         color: @white;
         line-height: 2em;
@@ -115,8 +116,9 @@
 
         &.isDead {
             opacity: 1;
-            transition-delay: 1s;
-            transition-duration: 1.5s;
+            transition-delay: 1.5s;
+            transition-duration: 0.5s;
+            transform: rotate(28deg) scaleY(1);
         }
 
         &::after {
@@ -124,13 +126,11 @@
         }
     }
 
-    .death-message-2 {
+    .play-again-prompt {
         opacity: 0;
-
         left: 0em;
         right: 0em;
-        bottom: 1.5em;
-        z-index: 999;
+        bottom: -2em;
         position: absolute;
 
         color: @yellow;

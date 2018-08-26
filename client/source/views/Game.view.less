@@ -1,6 +1,8 @@
+@import "Base.view.less";
+
 @roundness: 0.5em;
 
-.Game {
+.Frame {
     position: absolute;
     background-color: #181818;
 
@@ -10,7 +12,7 @@
 }
 
 #mounted-as-none {
-    .Game {
+    .Frame {
         top: 0px;
         left: 0px;
         right: 0px;
@@ -34,7 +36,7 @@
 }
 
 #mounted-as-overlay {
-    .Game {
+    .Frame {
         top: 100px;
         right: 0px;
         bottom: 80px;
@@ -50,29 +52,29 @@
 
 #mounted-as-panel,
 #mounted-as-dashboard {
-    .Game {
+    .Frame {
         // TODO: Support the
         // 320x500 resolution.
     }
 }
 
 #mounted-as-component {
-    .Game {
+    .Frame {
         border-radius: @roundness;
         // TODO: Support minimizing
-        // and hiding the game.
+        // and hiding the Frame.
     }
 }
 
 #mounted-as-mobile {
-    .Game {
+    .Frame {
         // TODO: Be fully responsive
         // to any screen space.
     }
 }
 
 #mounted-as-config {
-    .Game {
+    .Frame {
         border-radius: @roundness;
 
         // TODO: Do not respond
@@ -80,4 +82,12 @@
         // space, but constrain
         // to a hardcoded limit.
     }
+}
+
+.Game.isOver {
+    filter: blur(0.05em);
+
+    transition-delay: 1s;
+    transition-duration: 2s;
+    transition-property: filter;
 }

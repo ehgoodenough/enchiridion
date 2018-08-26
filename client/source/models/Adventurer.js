@@ -26,7 +26,7 @@ export default class Adventurer {
         this.description = "It you!!"
 
         this.maxhealth = 3 // 16
-        this.health = 1 // this.maxhealth
+        this.health = this.maxhealth
         this.score = 0
         this.stack = 1
     }
