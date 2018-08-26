@@ -30,6 +30,10 @@ export default class Entity {
             style.backgroundColor = this.props.entity.color
         }
 
+        if(this.props.entity.opacity) {
+            style.opacity = this.props.entity.opacity
+        }
+
         return style
     }
 }

@@ -1,6 +1,7 @@
 import keyb from "keyb"
 import shortid from "shortid"
 
+import frame from "data/frame.js"
 import colors from "data/colors.js"
 
 import Adventurer from "models/Adventurer.js"
@@ -40,6 +41,13 @@ export default class Monster {
             return SLIME_ALPHA_IMAGE
         }
     }
+    get opacity() {
+        if(this.isOutOfRoom) {
+            return 0.5
+        } else {
+            return 1
+        }
+    }
     get animation() {
         if(this.isAttacking) {
             return "strike" + " " + this.direction
@@ -50,6 +58,12 @@ export default class Monster {
         }
 
         return "ooze"
+    }
+    get isOutOfRoom() {
+        return this.position.x < 0
+            || this.position.y < 0
+            || this.position.x >= this.game.room.width
+            || this.position.y >= this.game.room.height
     }
     onReaction() {
         if(this.isDead) {
@@ -80,6 +94,13 @@ export default class Monster {
                     action.move.x = +1
                 }
             }
+
+            if(this.isOutOfRoom) {
+                if(this.position.x < 0) action.move = {x: +1}
+                if(this.position.x >= this.game.room.width) action.move = {x: -1}
+                if(this.position.y < 0) action.move = {y: +1}
+                if(this.position.y >= this.game.room.height) action.move = {y: -1}
+            }
         }
 
         ///////////
@@ -101,7 +122,6 @@ export default class Monster {
 
         this.game.entities.forEach((entity) => {
             if(entity !== this
-            && entity.isDead !== true
             && this.position.x + action.move.x === entity.position.x
             && this.position.y + action.move.y === entity.position.y) {
                 if(entity instanceof Adventurer) {

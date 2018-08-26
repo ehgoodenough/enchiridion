@@ -1,8 +1,10 @@
-- Show a leaderboard when you die.
 - Pretty up the room; remove the harsh edges.
 
 - Tutorial
 - Demo Mode
+
+- Show a leaderboard when you die.
+- Bug: Should not spawn a monster on a monster.
 
 .....
 

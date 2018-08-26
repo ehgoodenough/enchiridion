@@ -51,7 +51,8 @@ export default class Adventurer {
         || keyb.isJustDown("<right>", delta.ms)) {
             this.onAction({"move": {"x": +1}})
         }
-        if(keyb.isJustDown("<space>", delta.ms)) {
+
+        if(keyb.isJustDown("T", delta.ms)) {
             this.onAction({"move": {}})
         }
     }
@@ -61,14 +62,6 @@ export default class Adventurer {
         action.move.y = action.move.y || 0
 
         this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
-
-        if(this.position.x + action.move.x < 0
-        || this.position.y + action.move.y < 0
-        || this.position.x + action.move.x >= this.game.room.width
-        || this.position.y + action.move.y >= this.game.room.height) {
-            action.move.x = 0
-            action.move.y = 0
-        }
 
         this.game.entities.forEach((entity) => {
             if(entity !== this
@@ -84,6 +77,14 @@ export default class Adventurer {
                 action.move.y = 0
             }
         })
+
+        if(this.position.x + action.move.x < 0
+        || this.position.y + action.move.y < 0
+        || this.position.x + action.move.x >= this.game.room.width
+        || this.position.y + action.move.y >= this.game.room.height) {
+            action.move.x = 0
+            action.move.y = 0
+        }
 
         // if(action.move.x === 0
         // && action.move.y === 0) {
