@@ -86,6 +86,88 @@
             animation-fill-mode: forwards;
         }
     }
+
+    .death-message {
+        opacity: 0;
+
+        transition-duration: 0.1s;
+        transition-property: opacity;
+
+        // animation-delay: 1s;
+        // animation-duration: 5s;
+        // animation-name: fade-in;
+        // animation-fill-mode: forwards;
+
+        top: 0em;
+        left: 0em;
+        right: 0em;
+        bottom: 0em;
+        margin: auto;
+        height: 2em;
+        z-index: 999;
+        position: absolute;
+
+        color: @white;
+        line-height: 2em;
+        text-align: center;
+
+        background-color: fadeout(@red, 50%);
+
+        &.isDead {
+            opacity: 1;
+            transition-delay: 1s;
+            transition-duration: 1.5s;
+        }
+
+        &::after {
+            content: "you died"
+        }
+    }
+
+    .death-message-2 {
+        opacity: 0;
+
+        left: 0em;
+        right: 0em;
+        bottom: 1.5em;
+        z-index: 999;
+        position: absolute;
+
+        color: @yellow;
+        font-size: 0.5em;
+        text-align: center;
+
+        &.isDead {
+            animation-delay: 3s;
+            animation-name: blink;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+        }
+
+        &::after {
+            content: "play again?"
+        }
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeinout {
+    0% {opacity: 0}
+    50% {opacity: 1}
+    100% {opacity: 0}
 }
 
 @keyframes flash {

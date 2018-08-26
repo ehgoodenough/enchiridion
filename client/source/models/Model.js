@@ -5,7 +5,9 @@ export default class Model {
         this.startNewGame()
     }
     startNewGame() {
-        this.game = new Game()
+        this.game = new Game({
+            "model": this
+        })
     }
     update(delta) {
         if(this.game instanceof Game) {

@@ -1,8 +1,9 @@
-- Show some animation when you're on your last heart.
-- Show some animation when you die.
-- Show a prompt, message, leaderboard when you die.
+- Show a leaderboard when you die.
 - Restart the game from the prompt.
 - Pretty up the room; remove the harsh edges.
+
+- Tutorial
+- Demo Mode
 
 .....
 
@@ -13,8 +14,3 @@
 - Add a stupid basic level editor?
 - Add a bunch more monsters!! Add a bunch more weapons!!
 - Hover over monsters to learn more about them.
-
-.....
-
-- Tutorial
-- Demo Mode

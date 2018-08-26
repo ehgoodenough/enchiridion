@@ -18,6 +18,8 @@ export default class Status {
                 <div className="flash">
                     {this.flash}
                 </div>
+                <div className={`death-message ${window.model.game.adventurer.isDead ? "isDead" : ""}`}/>
+                <div className={`death-message-2 ${window.model.game.adventurer.isDead ? "isDead" : ""}`}/>
             </div>
         )
     }
