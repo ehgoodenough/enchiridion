@@ -15,6 +15,9 @@ export default class Status {
                 <div className="message">
                     {window.model.game.message}
                 </div>
+                <div className="flash">
+                    {this.flash}
+                </div>
             </div>
         )
     }
@@ -22,11 +25,22 @@ export default class Status {
         var hearts = new Array()
         for(var i = 0; i < window.model.game.adventurer.maxhealth; i++) {
             if(i < window.model.game.adventurer.health) {
-                hearts.push(<span className="full heart" key={i}/>)
+                if(window.model.game.adventurer.health === 1) {
+                    hearts.push(<span className="final full heart" key={i}/>)
+                } else {
+                    hearts.push(<span className="full heart" key={i}/>)
+                }
             } else {
                 hearts.push(<span className="none heart" key={i}/>)
             }
         }
         return hearts
+    }
+    get flash() {
+        if(window.model.game.adventurer.isAttacked) {
+            return (
+                <div className="blood" key={window.model.game.adventurer.isAttacked}/>
+            )
+        }
     }
 }

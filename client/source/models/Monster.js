@@ -31,6 +31,7 @@ export default class Monster {
         this.group = "monsters"
 
         this.isReady = false
+        this.stack = 1
     }
     get image() {
         if(this.isReady === true) {

@@ -1,5 +1,3 @@
-- Show some animation when a monster attacks.
-- Show a bloodscreen when you get hit.
 - Show some animation when you're on your last heart.
 - Show some animation when you die.
 - Show a prompt, message, leaderboard when you die.

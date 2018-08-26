@@ -30,6 +30,12 @@
             &.none {
                 background-image: url("../images/ui/heart-none.png");
             }
+
+            &.final {
+                animation-name: tremble;
+                animation-duration: 0.5s;
+                animation-iteration-count: infinite;
+            }
         }
     }
 
@@ -60,4 +66,43 @@
             vertical-align: text-bottom;
         }
     }
+
+    .flash {
+        top: 0em;
+        left: 0em;
+        right: 0em;
+        bottom: 0em;
+        z-index: 999;
+        position: absolute;
+
+        .blood {
+            width: 100%;
+            height: 100%;
+
+            background-color: @red;
+
+            animation-name: flash;
+            animation-duration: 0.1s;
+            animation-fill-mode: forwards;
+        }
+    }
+}
+
+@keyframes flash {
+    0% {opacity: 0.5}
+    100% {opacity: 0}
+}
+
+@keyframes tremble {
+    0%  {transform: translate(0em, +0.025em)}
+    10% {transform: translate(+0.025em, -0.025em)}
+    20% {transform: translate(+0.025em, 0em)}
+    30% {transform: translate(-0.025em, -0.025em)}
+    40% {transform: translate(0em, -0.025em)}
+    50% {transform: translate(-0.025em, +0.025em)}
+    60% {transform: translate(0em, -0.025em)}
+    70% {transform: translate(-0.025em, 0em)}
+    80% {transform: translate(+0.025em, -0.025em)}
+    90% {transform: translate(-0.025em, +0.025em)}
+    100% {transform: translate(+0.025em, +0.025em)}
 }

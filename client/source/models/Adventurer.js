@@ -8,6 +8,13 @@ import Monster from "models/Monster.js"
 import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
 import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
 
+const DIRECTIONS = {
+    "-1x0": "west",
+    "1x0": "east",
+    "0x-1": "north",
+    "0x1": "south"
+}
+
 export default class Adventurer {
     constructor(parameters = {}) {
         this.key = shortid.generate()
@@ -18,9 +25,10 @@ export default class Adventurer {
         this.title = "The Adventurer"
         this.description = "It you!!"
 
-        this.maxhealth = 16
-        this.health = 16
+        this.maxhealth = 3 // 16
+        this.health = 1 // this.maxhealth
         this.score = 0
+        this.stack = 1
     }
     update(delta) {
         if(this.isDead) {
@@ -48,8 +56,11 @@ export default class Adventurer {
         }
     }
     onAction(action) {
+        this.isAttacking = false
         action.move.x = action.move.x || 0
         action.move.y = action.move.y || 0
+
+        this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
 
         if(this.position.x + action.move.x < 0
         || this.position.y + action.move.y < 0
@@ -66,6 +77,7 @@ export default class Adventurer {
             && this.position.y + action.move.y === entity.position.y) {
                 if(entity instanceof Monster
                 && entity.beAttacked instanceof Function) {
+                    this.isAttacking = true
                     entity.beAttacked()
                 }
                 action.move.x = 0
@@ -88,6 +100,7 @@ export default class Adventurer {
     }
     beAttacked() {
         this.health -= 1
+        this.isAttacked = shortid.generate()
         if(this.health <= 0) {
             this.isDead = true
             // if(this.score != 0) {

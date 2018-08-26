@@ -10,6 +10,7 @@ export default class Room {
                     "position": {"x": x, "y": y},
                     "key": x + "x" + y,
                     "color": "#222",
+                    "stack": 0
                 }
             }
         }
