@@ -13,6 +13,7 @@
   "scripts": {
     "build": "codeglue --stage=DEVELOPMENT",
     "start": "codeglue --stage=DEVELOPMENT --mode=SERVER --port=8080 --ssl=true",
+    "deploy:beta": "aws s3 sync ./builds/web s3://hedgehog-beta/fracture/ --acl public-read --profile ags-hedgehog-devs",
     "zip": "bestzip build.zip builds/web/*"
   },
   "dependencies": {
