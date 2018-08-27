@@ -1,11 +1,6 @@
 // Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
-@white: #FFF;
-@hedgehog-red: #F05F50;
-@hedgehog-green: #37A674;
-@twitch-purple: #6441A4;
-
-@golden-ratio: 1.618;
+@import "./BaseStyles.less";
 
 .NimbleLeaderboard {
     color: @white;
@@ -119,16 +114,13 @@
             }
 
             .prompt {
-                svg {
-                    fill: #FFF;
-                    vertical-align: bottom;
-                }
+                fill: #FFF;
+                vertical-align: bottom;
             }
+
             &:hover {
                 .prompt {
-                    svg {
-                        fill: #111;
-                    }
+                    fill: #111;
                 }
             }
         }

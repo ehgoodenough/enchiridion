@@ -1,6 +1,8 @@
 import keyb from "keyb"
 import shortid from "shortid"
 
+import Nimble from "library/Nimble"
+
 import colors from "data/colors.js"
 
 import Monster from "models/Monster.js"
@@ -104,28 +106,13 @@ export default class Adventurer {
         this.isAttacked = shortid.generate()
         if(this.health <= 0) {
             this.isDead = true
-            // if(this.score != 0) {
-            //     _game.name = window.prompt(
-            //         "You died! Submit your score:",
-            //         _game.name || "Bob"
-            //     ) || new String()
-            //     _game.name = _game.name.trim()
-            //     if(_game.name != new String()) {
-            //         try {
-            //             _game.scores.add({
-            //                 name: _game.name,
-            //                 score: this.score,
-            //                 date: new Date().toString()
-            //             })
-            //         } catch(error) {
-            //             console.log(error)
-            //         }
-            //     }
-            // }
-            // window.alert("Top scores:\n" + _game.scores.get().map((entry) => {
-            //     return entry.name + ": " + entry.score
-            // }).join("\n"))
-            // _game.start()
+            if(Nimble.sparks.isInitialized) {
+                Nimble.twitchsparks.submitLeaderboardEntry({
+                    "sessionId": Nimble.arcade.store.sessionId,
+                    "activity": ACTIVITY,
+                    "score": this.score,
+                })
+            }
         }
     }
     get image() {
