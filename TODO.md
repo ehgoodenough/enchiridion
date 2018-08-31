@@ -1,14 +1,10 @@
-- Pretty up the room; remove the harsh edges.
-- Show style-ized leaderboard when you die.
-- Works in pop-out
-- Minimizing for Overlay and Component Overlay
 - Title Screen w/ Demo Mode
 - Config Page w/ Streamer FTUE
 - Viewer FTUE = Tutorial
-- Bits?
-- Bug: Death looks wonky with square.
-- Blur on onfocus
-
+- Show style-ized leaderboard when you die.
+- Minimizing for Overlay and Component Overlay
+- Bug: The room has harsh edges.
+- Bug: The adventurer does not have animation.
 - Bug: Should not spawn a monster on a monster.
 - Bug: Do not let players kill a turn by running into a wall.
 

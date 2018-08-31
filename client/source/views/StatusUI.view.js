@@ -2,15 +2,15 @@ import Preact from "preact"
 
 import "views/StatusUI.view.less"
 
-export default class Status {
+export default class StatusUI {
     render() {
         return (
-            <div className="Status">
+            <div className="StatusUI">
                 <div className="hearts">
                     {this.hearts}
                 </div>
                 <div className="score">
-                    {window.model.game.adventurer.score}
+                    {this.score}
                 </div>
                 <div className="message">
                     {window.model.game.message}
@@ -18,8 +18,13 @@ export default class Status {
                 <div className="flash">
                     {this.flash}
                 </div>
-                <div className={`you-died-banner ${window.model.game.adventurer.isDead ? "isDead" : ""}`}>
-                    <div className={`play-again-prompt ${window.model.game.adventurer.isDead ? "isDead" : ""}`}/>
+                <div className="you-died-banner">
+                    <div className="play-again-prompt">
+                        <span>play again?</span>
+                    </div>
+                </div>
+                <div className="pause-prompt">
+                    <span>paused</span>
                 </div>
             </div>
         )
@@ -38,6 +43,12 @@ export default class Status {
             }
         }
         return hearts
+    }
+    get score() {
+        let score = window.model.game.adventurer.score
+        score = (score < 10 ? "0" : 0) + score
+        score = (score < 100 ? "0" : 0) + score
+        return score
     }
     get flash() {
         if(window.model.game.adventurer.isAttacked) {
