@@ -1,6 +1,6 @@
 @import "Base.view.less";
 
-@roundness: 0.5em;
+@frame-roundness: 0.25em;
 
 .Frame {
     top: 0em;
@@ -22,6 +22,15 @@
         font-size: ((9 / 9) * 100vw) / 9;
         // height: (9 / 9) * 100vw;
         // width: 100vw;
+    }
+
+    #input {
+        position: absolute;
+        width: 0em;
+        border: none;
+        outline: none;
+        opacity: 0;
+        // right: -1em;
     }
 }
 
@@ -51,15 +60,16 @@
 #mounted-as-overlay {
     .Frame {
         top: 100px;
+        left: auto;
         right: 0px;
         bottom: 80px;
         position: fixed;
         overflow: hidden;
-        width: calc(~"(100vh - 180px) * (16 / 9)");
-        font-size: calc(~"(100vh - 180px) * (16 / 9) / 16");
+        width: calc(~"(100vh - 180px) * (9 / 9)");
+        font-size: calc(~"(100vh - 180px) * (9 / 9) / 9");
 
-        border-top-left-radius: @roundness;
-        border-bottom-left-radius: @roundness;
+        border-top-left-radius: @frame-roundness;
+        border-bottom-left-radius: @frame-roundness;
     }
 }
 
@@ -73,7 +83,7 @@
 
 #mounted-as-component {
     .Frame {
-        border-radius: @roundness;
+        border-radius: @frame-roundness;
         // TODO: Support minimizing
         // and hiding the Frame.
     }
@@ -81,14 +91,13 @@
 
 #mounted-as-mobile {
     .Frame {
-        // TODO: Be fully responsive
-        // to any screen space.
+        // ...
     }
 }
 
 #mounted-as-config {
     .Frame {
-        border-radius: @roundness;
+        border-radius: @frame-roundness;
 
         // TODO: Do not respond
         // to the total screen
