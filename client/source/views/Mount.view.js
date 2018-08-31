@@ -9,7 +9,7 @@ export default class Mount {
     render() {
         return (
             <div className="Mount" id={this.id}>
-                <div className="View">
+                <div className="Frame">
                     {this.view}
                 </div>
             </div>

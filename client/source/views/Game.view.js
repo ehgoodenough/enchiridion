@@ -10,8 +10,8 @@ import "views/Game.view.less"
 export default class Game {
     render() {
         return (
-            <div className="Frame">
-                <div className={this.className}>
+            <div className={this.className}>
+                <div className="Scene">
                     <Camera>
                         {this.worldtiles}
                         {this.entities}
