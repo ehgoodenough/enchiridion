@@ -10,7 +10,8 @@ export default class Mount {
         return (
             <div className="Mount" id={this.id}>
                 <div className="Frame" onClick={this.onClick}>
-                    <input id="input" onKeyDown={this.onKeyDown}/>
+                    <input id="input" onKeyDown={this.onKeyDown}
+                        onFocus={this.onFocus} onBlur={this.onBlur}/>
                     {this.view}
                 </div>
             </div>
@@ -29,12 +30,17 @@ export default class Mount {
             <Game model={this.props.model}/>
         )
     }
-    onClick() {
-        console.log("!")
+    onClick(event) {
         document.getElementById("input").focus()
     }
     onKeyDown(event) {
-        console.log("!!")
         event.preventDefault()
+    }
+    onFocus(event) {
+        window.model.isFocused = true
+    }
+    onBlur(event) {
+        console.log("!!!")
+        window.model.isFocused = false
     }
 }

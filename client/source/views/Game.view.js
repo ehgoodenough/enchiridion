@@ -23,7 +23,11 @@ export default class Game {
         )
     }
     get className() {
-        return `Game ${window.model.game.adventurer.isDead ? "isOver" : ""}`
+        return [
+            "Game",
+            window.model.isFocused === false ? "isPaused" : "",
+            window.model.game.adventurer.isDead === true ? "isOver" : "",
+        ].join(" ")
     }
     get entities() {
         return window.model.game.entities.map((entity) => (
