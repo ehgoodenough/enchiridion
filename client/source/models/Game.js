@@ -36,7 +36,7 @@ export default class Game {
 
         if(entity.group) {
             this[entity.group] = this[entity.group] || []
-            this[entity.group].push(entity.group)
+            this[entity.group].push(entity)
         }
     }
     remove(entity) {
@@ -66,11 +66,7 @@ export default class Game {
             }
         }
 
-        this.entities.forEach((entity) => {
-            if(entity.update instanceof Function) {
-                entity.update(delta)
-            }
-        })
+        this.adventurer.update(delta)
     }
     onReaction() {
         this.entities.forEach((entity) => {

@@ -36,7 +36,7 @@ export default class MonsterWave {
                 while(this.game.monsters.length < this.capacity) {
                     // Then spawn a new monster in the game!
                     this.game.add(new Monster({
-                        "position": this.getRandomPosition(),
+                        "position": this.getRandomValidPosition(),
                     }))
                 }
             }
@@ -63,6 +63,16 @@ export default class MonsterWave {
             }
         }
     }
+    getRandomValidPosition() {
+        let position
+        do {
+            position = this.getRandomPosition()
+        } while(this.game.monsters.some((monster) => {
+            return monster.position.x === position.x
+                && monster.position.y === position.y
+        }))
+        return position
+    }
     // // Returns a random monster
     // // to be spawned. It randomizes
     // // from the static pool of monsters
@@ -73,11 +83,5 @@ export default class MonsterWave {
     //     // assigned to each monster in the wave.
     //     var index = Math.floor(Math.random() * this.monsters.length)
     //     return this.monsters[index]
-    // }
-    // bumpCount() {
-    //     this.killcount -= 1
-    //     if(this.killcount <= 0) {
-    //         console.log("you win!!")
-    //     }
     // }
 }

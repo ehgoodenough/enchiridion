@@ -40,7 +40,6 @@ export default class Mount {
         window.model.isFocused = true
     }
     onBlur(event) {
-        console.log("!!!")
         window.model.isFocused = false
     }
 }

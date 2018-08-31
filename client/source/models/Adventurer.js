@@ -86,6 +86,7 @@ export default class Adventurer {
         || this.position.y + action.move.y >= this.game.room.height) {
             action.move.x = 0
             action.move.y = 0
+            return
         }
 
         // if(action.move.x === 0

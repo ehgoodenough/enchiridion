@@ -1,12 +1,13 @@
 - Title Screen w/ Demo Mode
 - Config Page w/ Streamer FTUE
-- Viewer FTUE = Tutorial
+- Tutorial
 - Show style-ized leaderboard when you die.
 - Minimizing for Overlay and Component Overlay
 - Bug: The room has harsh edges.
 - Bug: The adventurer does not have animation.
-- Bug: Should not spawn a monster on a monster.
-- Bug: Do not let players kill a turn by running into a wall.
+- Analytics
+- Sound & Mute Button on Title Screen
+- Localization & Language Button on Title Screen
 
 .....
 
