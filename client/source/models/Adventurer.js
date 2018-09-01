@@ -16,7 +16,7 @@ const DEATH_MESSAGES = [
     "you died again",
     "you died",
     "you died",
-    "PJSalt",
+    "pjsalt",
     "you died",
     "you died?",
     "what happened?",
@@ -27,7 +27,6 @@ const DEATH_MESSAGES = [
     "dang it",
     "not like this",
     "you died",
-    "PJSalt",
     // "rest in peace",
     // "that's rough buddy",
     // "everyone is dead",
@@ -54,7 +53,7 @@ export default class Adventurer {
 
         this.maxhealth = 3 // 16
         this.health = this.maxhealth
-        this.score = 0
+
         this.stack = 1
     }
     update(delta) {
@@ -79,8 +78,10 @@ export default class Adventurer {
             this.onAction({"move": {"x": +1}})
         }
 
-        if(keyb.isJustDown("T", delta.ms)) {
-            this.onAction({"move": {}})
+        if(Nimble.twitch.extension.state !== "released") {
+            if(keyb.isJustDown("T", delta.ms)) {
+                this.onAction({"move": {}})
+            }
         }
     }
     onAction(action) {
@@ -134,15 +135,8 @@ export default class Adventurer {
             if(this.health <= 0) {
                 this.isDead = true
                 this.deathmessage = DEATH_MESSAGES[0]
-                DEATH_MESSAGES.unshift(DEATH_MESSAGES.pop())
+                DEATH_MESSAGES.push(DEATH_MESSAGES.shift())
                 this.game.onEnd()
-                if(Nimble.sparks.isInitialized === true) {
-                    Nimble.twitchsparks.submitLeaderboardEntry({
-                        "sessionId": Nimble.arcade.store.sessionId,
-                        "activity": ACTIVITY,
-                        "score": this.score,
-                    })
-                }
             }
         }
     }

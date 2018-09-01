@@ -2,7 +2,9 @@ import keyb from "keyb"
 import shortid from "shortid"
 
 import Nimble from "library/Nimble"
-import analytics from "library/analytics"
+import analytics from "library/analytics.js"
+
+import activity from "data/activity.js"
 
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
@@ -27,6 +29,7 @@ export default class Game {
         }))
 
         this.deadtimer = 0
+        this.score = 0
     }
     add(entity) {
         entity.game = this
@@ -77,7 +80,16 @@ export default class Game {
         this.wave.onAction()
     }
     onEnd() {
-        this.hasEnded = true
-        analytics.reportEndGame()
+        if(this.hasEndeded !== true) {
+            this.hasEnded = true
+            analytics.reportEndGame()
+            if(Nimble.sparks.isInitialized === true) {
+                Nimble.twitchsparks.submitLeaderboardEntry({
+                    "sessionId": Nimble.arcade.store.sessionId,
+                    "activity": activity,
+                    "score": this.score,
+                })
+            }
+        }
     }
 }

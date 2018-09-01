@@ -21,14 +21,14 @@ export default class Mount {
         return `mounted-as-${Nimble.twitch.extension.mount}`
     }
     get view() {
-        if(Nimble.twitch.extension.mount === "config") {
-            return (
-                <Config model={this.props.model}/>
-            )
-        }
         return (
             <Game model={this.props.model}/>
         )
+        // if(Nimble.twitch.extension.mount === "config") {
+        //     return (
+        //         <Config model={this.props.model}/>
+        //     )
+        // }
     }
     onClick(event) {
         document.getElementById("input").focus()

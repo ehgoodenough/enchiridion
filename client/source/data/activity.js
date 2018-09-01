@@ -1,1 +1,1 @@
-module.exports = "FRACT"
+module.exports = "ENCHIRIDION"

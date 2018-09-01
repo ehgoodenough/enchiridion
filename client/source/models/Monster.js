@@ -142,12 +142,12 @@ export default class Monster {
         this.health -= 1
         if(this.health <= 0) {
             this.isDead = true
-            this.game.adventurer.score += 1
+            this.game.score += 1
             this.game.wave.killcount -= 1
             this.game.remove(this)
             // if(Math.abs(this.position.x - altar.position.x) <= 1
             // && Math.abs(this.position.y - altar.position.y) <= 1) {
-            //     this.game.adventurer.score += 2
+            //     this.game.score += 2
             //     altar.isBloody = this.id
             // }
         }

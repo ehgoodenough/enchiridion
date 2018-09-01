@@ -1,17 +1,15 @@
 v1.0.0
-- Title Screen
-- Light Weight Tutorial
 - Minimizing for Overlays
-- Analytics
 
 v1.1.0
-- Bug: The room has harsh edges.
 - Bug: The adventurer does not have animation.
+- Title Screen
 - Demo Mode on Title Screen
 - Sound & Mute Button on Title Screen
 - Localization & Language Button on Title Screen
 - Config Page w/ Streamer FTUE
 - Leaderboards
+- Light Weight Tutorial
 
 .....
 

@@ -3,7 +3,7 @@ import Preact from "preact"
 import Yaafloop from "yaafloop"
 
 import Nimble from "library/Nimble"
-import analytics from "library/analytics"
+import analytics from "library/analytics.js"
 
 import Mount from "views/Mount.view.js"
 import Model from "models/Model.js"
