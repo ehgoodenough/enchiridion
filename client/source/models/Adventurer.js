@@ -135,6 +135,7 @@ export default class Adventurer {
                 this.isDead = true
                 this.deathmessage = DEATH_MESSAGES[0]
                 DEATH_MESSAGES.unshift(DEATH_MESSAGES.pop())
+                this.game.onEnd()
                 if(Nimble.sparks.isInitialized === true) {
                     Nimble.twitchsparks.submitLeaderboardEntry({
                         "sessionId": Nimble.arcade.store.sessionId,

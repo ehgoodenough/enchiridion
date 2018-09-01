@@ -3,7 +3,7 @@ import Preact from "preact"
 import Yaafloop from "yaafloop"
 
 import Nimble from "library/Nimble"
-import GameAnalytics from "library/GameAnalytics"
+import analytics from "library/analytics"
 
 import Mount from "views/Mount.view.js"
 import Model from "models/Model.js"
@@ -26,6 +26,6 @@ document.body.addEventListener("dblclick", function(event) {
 
 if(Nimble.twitch.extension.state === "released") {
     window.addEventListener("error", (error) => {
-        // report error
+        analytics.reportError(error)
     })
 }

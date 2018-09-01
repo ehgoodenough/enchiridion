@@ -2,7 +2,7 @@ import keyb from "keyb"
 import shortid from "shortid"
 
 import Nimble from "library/Nimble"
-import GameAnalytics from "library/GameAnalytics"
+import analytics from "library/analytics"
 
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
@@ -14,17 +14,17 @@ export default class Game {
         this.model = game.model
         this.key = shortid.generate()
 
+        analytics.reportStartGame()
+
         this.monsters = []
         this.entities = []
 
+        this.wave = new MonsterWave(this, {"capacity": 4})
+        this.room = new Room({"width": 5, "height": 5})
+        this.camera = {"position": {"x": 2.5, "y": 2.5}}
         this.add(this.adventurer = new Adventurer({
             "position": {"x": 2, "y": 2}
         }))
-
-        this.room = new Room({"width": 5, "height": 5})
-        this.camera = {"position": {"x": 2.5, "y": 2.5}}
-
-        this.wave = new MonsterWave(this, {"capacity": 4})
 
         this.deadtimer = 0
     }
@@ -75,5 +75,9 @@ export default class Game {
             }
         })
         this.wave.onAction()
+    }
+    onEnd() {
+        this.hasEnded = true
+        analytics.reportEndGame()
     }
 }
