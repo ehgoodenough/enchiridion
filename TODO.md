@@ -1,8 +1,5 @@
-v1.0.0
-- Minimizing for Overlays
-
 v1.1.0
-- Bug: The adventurer does not have animation.
+- Adventurer Animations
 - Title Screen
 - Demo Mode on Title Screen
 - Sound & Mute Button on Title Screen
@@ -10,6 +7,8 @@ v1.1.0
 - Config Page w/ Streamer FTUE
 - Leaderboards
 - Light Weight Tutorial
+- Minimizing for Overlays
+- Mobile Support
 
 .....
 
