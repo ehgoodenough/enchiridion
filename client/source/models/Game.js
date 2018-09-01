@@ -66,7 +66,11 @@ export default class Game {
             }
         }
 
-        this.adventurer.update(delta)
+        this.entities.forEach((entity) => {
+            if(entity.update instanceof Function) {
+                entity.update(delta)
+            }
+        })
     }
     onReaction() {
         this.entities.forEach((entity) => {

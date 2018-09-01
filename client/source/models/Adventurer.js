@@ -3,13 +3,11 @@ import shortid from "shortid"
 
 import Nimble from "library/Nimble"
 
-import colors from "data/colors.js"
-
 import Monster from "models/Monster.js"
+import Sprite from "models/Sprite.js"
 
-import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
-import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
 import ADVENTURER_SHEET from "images/adventurer.sheet.png"
+import colors from "data/colors.js"
 
 const DEATH_MESSAGES = [
     "you died",
@@ -39,197 +37,6 @@ const DIRECTIONS = {
     "0x1": "south"
 }
 
-const IDLE_ANIMATION = {
-    "y": 0,
-    "x": [
-        {"time": 640*1.5, "frame": 0},
-        {"time": 80, "frame": 1},
-        {"time": 640, "frame": 2},
-        {"time": 80, "frame": 1}
-    ],
-}
-const IDLE_NORTH_ANIMATION = {"x": 3, "y": 10}
-const IDLE_SOUTH_ANIMATION = {"x": 3, "y": 8}
-const IDLE_EAST_ANIMATION = {"x": 3, "y": 9}
-const IDLE_WEST_ANIMATION = {"x": 3, "y": 9, "isFlipped": true}
-const RALLY_ANIMATION = {
-    "y": 1,
-    "x": [
-        {"time": 350, "frame": 0},
-        {"time": 50, "frame": 1},
-        {"time": 700, "frame": 2},
-        {"time": 50, "frame": 1}
-    ],
-}
-const MOVE_TIME = 50
-const ATTACK_TIME = 50
-const MOVE_SOUTH_ANIMATION = {
-    "y": 2,
-    "x": [
-        {"time": MOVE_TIME, "frame": 0},
-        {"time": MOVE_TIME, "frame": 1},
-        {"time": MOVE_TIME, "frame": 2},
-        {"time": MOVE_TIME, "frame": 3}
-    ],
-    "next": IDLE_ANIMATION,
-    "next": IDLE_SOUTH_ANIMATION,
-}
-const MOVE_EAST_ANIMATION = {
-    "y": 3,
-    "x": [
-        {"time": MOVE_TIME, "frame": 0},
-        {"time": MOVE_TIME, "frame": 1},
-        {"time": MOVE_TIME, "frame": 2},
-        {"time": MOVE_TIME, "frame": 3}
-    ],
-    "next": IDLE_ANIMATION,
-    "next": IDLE_EAST_ANIMATION,
-}
-const MOVE_WEST_ANIMATION = {
-    "y": 3,
-    "x": [
-        {"time": MOVE_TIME, "frame": 0},
-        {"time": MOVE_TIME, "frame": 1},
-        {"time": MOVE_TIME, "frame": 2},
-        {"time": MOVE_TIME, "frame": 3},
-    ],
-    "isFlipped": true,
-    "next": IDLE_ANIMATION,
-    "next": IDLE_WEST_ANIMATION,
-}
-const MOVE_NORTH_ANIMATION = {
-    "y": 4,
-    "x": [
-        {"time": MOVE_TIME, "frame": 0},
-        {"time": MOVE_TIME, "frame": 1},
-        {"time": MOVE_TIME, "frame": 2},
-        {"time": MOVE_TIME, "frame": 3}
-    ],
-    "next": IDLE_ANIMATION,
-    "next": IDLE_NORTH_ANIMATION,
-}
-const ATTACK_SOUTH_ANIMATION = {
-    "y": 5,
-    "x": [
-        {"time": ATTACK_TIME, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME * 2, "frame": 3}
-    ],
-    "next": IDLE_SOUTH_ANIMATION,
-}
-const ATTACK_NORTH_ANIMATION = {
-    "y": 7,
-    "x": [
-        {"time": ATTACK_TIME, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME * 2, "frame": 3}
-    ],
-    "next": IDLE_NORTH_ANIMATION,
-}
-const ATTACK_EAST_ANIMATION = {
-    "y": 6,
-    "x": [
-        {"time": ATTACK_TIME, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME * 2, "frame": 3}
-    ],
-    "next": IDLE_EAST_ANIMATION,
-}
-const ATTACK_WEST_ANIMATION = {
-    "y": 6,
-    "x": [
-        {"time": ATTACK_TIME, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME * 2, "frame": 3}
-    ],
-    "isFlipped": true,
-    "next": IDLE_WEST_ANIMATION,
-}
-const ATTACKED_SOUTH_ANIMATION = {
-    "y": 8,
-    "x": [
-        {"time": ATTACK_TIME * 1.25, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME, "frame": 0}
-    ],
-    "isFlipped": true,
-    "next": IDLE_SOUTH_ANIMATION,
-}
-const ATTACKED_WEST_ANIMATION = {
-    "y": 9,
-    "x": [
-        {"time": ATTACK_TIME * 1.25, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME, "frame": 0}
-    ],
-    "isFlipped": true,
-    "next": IDLE_WEST_ANIMATION,
-}
-const ATTACKED_EAST_ANIMATION = {
-    "y": 9,
-    "x": [
-        {"time": ATTACK_TIME * 1.25, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME, "frame": 0}
-    ],
-    "next": IDLE_EAST_ANIMATION,
-}
-const ATTACKED_NORTH_ANIMATION = {
-    "y": 10,
-    "x": [
-        {"time": ATTACK_TIME * 1.25, "frame": 0},
-        {"time": ATTACK_TIME, "frame": 1},
-        {"time": ATTACK_TIME, "frame": 2},
-        {"time": ATTACK_TIME, "frame": 0}
-    ],
-    "next": IDLE_NORTH_ANIMATION,
-}
-
-class Sprite {
-    constructor(sprite) {
-        this.image = sprite.image
-        this.time = 0
-
-        this.animation = RALLY_ANIMATION
-    }
-    toString() {
-        return this.image
-    }
-    get x() {
-        if(this.animation.x instanceof Array) {
-            let animationtime = 0
-            for(var i in this.animation.x) {
-                animationtime += this.animation.x[i].time
-                if(this.time < animationtime) {
-                    return this.animation.x[i].frame
-                }
-            }
-            this.time %= animationtime
-            if(this.animation.next !== undefined) {
-                this.animation = this.animation.next
-            }
-        } else {
-            return this.animation.x || 0
-        }
-    }
-    get y() {
-        return this.animation.y
-    }
-    get isFlipped() {
-        return this.animation.isFlipped
-    }
-    update(delta) {
-        this.time += delta.ms
-    }
-}
-
 export default class Adventurer {
     constructor(parameters = {}) {
         this.key = shortid.generate()
@@ -247,6 +54,7 @@ export default class Adventurer {
 
         this.image = new Sprite({
             "image": ADVENTURER_SHEET,
+            "animation": Sprite.RALLY_ANIMATION
         })
     }
     update(delta) {
@@ -320,25 +128,25 @@ export default class Adventurer {
         || action.move.y !== 0) {
             this.image.time = 0
             if(this.direction === "east") {
-                this.image.animation = MOVE_EAST_ANIMATION
+                this.image.animation = Sprite.MOVE_EAST_ANIMATION
             } else if(this.direction === "west") {
-                this.image.animation = MOVE_WEST_ANIMATION
+                this.image.animation = Sprite.MOVE_WEST_ANIMATION
             } else if(this.direction === "north") {
-                this.image.animation = MOVE_NORTH_ANIMATION
+                this.image.animation = Sprite.MOVE_NORTH_ANIMATION
             } else if(this.direction === "south") {
-                this.image.animation = MOVE_SOUTH_ANIMATION
+                this.image.animation = Sprite.MOVE_SOUTH_ANIMATION
             }
         }
         if(action.attack === true) {
             this.image.time = 0
             if(this.direction === "east") {
-                this.image.animation = ATTACK_EAST_ANIMATION
+                this.image.animation = Sprite.ATTACK_EAST_ANIMATION
             } else if(this.direction === "west") {
-                this.image.animation = ATTACK_WEST_ANIMATION
+                this.image.animation = Sprite.ATTACK_WEST_ANIMATION
             } else if(this.direction === "north") {
-                this.image.animation = ATTACK_NORTH_ANIMATION
+                this.image.animation = Sprite.ATTACK_NORTH_ANIMATION
             } else if(this.direction === "south") {
-                this.image.animation = ATTACK_SOUTH_ANIMATION
+                this.image.animation = Sprite.ATTACK_SOUTH_ANIMATION
             }
         }
 
@@ -358,16 +166,16 @@ export default class Adventurer {
 
             this.image.time = 0
             if(monster.position.y > this.position.y) {
-                this.image.animation = ATTACKED_SOUTH_ANIMATION
+                this.image.animation = Sprite.ATTACKED_SOUTH_ANIMATION
                 this.direction = "south"
             } else if(monster.position.x > this.position.x) {
-                this.image.animation = ATTACKED_EAST_ANIMATION
+                this.image.animation = Sprite.ATTACKED_EAST_ANIMATION
                 this.direction = "east"
             } else if(monster.position.x < this.position.x) {
-                this.image.animation = ATTACKED_WEST_ANIMATION
+                this.image.animation = Sprite.ATTACKED_WEST_ANIMATION
                 this.direction = "west"
             } else if(monster.position.y < this.position.y) {
-                this.image.animation = ATTACKED_NORTH_ANIMATION
+                this.image.animation = Sprite.ATTACKED_NORTH_ANIMATION
                 this.direction = "north"
             }
 
