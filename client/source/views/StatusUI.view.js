@@ -18,8 +18,8 @@ export default class StatusUI {
                 <div className="flash">
                     {this.flash}
                 </div>
-                <div className="you-died-banner">
-                    <span>you died</span>
+                <div className="death-banner">
+                    <span>{window.model.game.adventurer.deathmessage}</span>
                 </div>
                 <div className="pause-prompt">
                     <span>paused</span>

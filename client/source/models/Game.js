@@ -52,7 +52,7 @@ export default class Game {
     update(delta) {
         if(this.adventurer.isDead) {
             this.deadtimer += delta.s
-            if(this.deadtimer > 3.5) {
+            if(this.deadtimer > 1.5) {
                 if(keyb.isJustDown("W", delta.ms)
                 || keyb.isJustDown("<up>", delta.ms)
                 || keyb.isJustDown("S", delta.ms)

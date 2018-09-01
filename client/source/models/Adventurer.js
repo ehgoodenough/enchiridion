@@ -10,6 +10,31 @@ import Monster from "models/Monster.js"
 import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
 import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
 
+const DEATH_MESSAGES = [
+    "you died",
+    "you died",
+    "you died again",
+    "you died",
+    "you died",
+    "PJSalt",
+    "you died",
+    "you died?",
+    "what happened?",
+    "you died",
+    "press f",
+    "you died",
+    "ouch",
+    "dang it",
+    "not like this",
+    "you died",
+    "PJSalt",
+    // "rest in peace",
+    // "that's rough buddy",
+    // "everyone is dead",
+    // "you have died",
+    // "game over",
+]
+
 const DIRECTIONS = {
     "-1x0": "west",
     "1x0": "east",
@@ -103,16 +128,20 @@ export default class Adventurer {
         this.game.onReaction()
     }
     beAttacked() {
-        this.health -= 1
-        this.isAttacked = shortid.generate()
-        if(this.health <= 0) {
-            this.isDead = true
-            if(Nimble.sparks.isInitialized) {
-                Nimble.twitchsparks.submitLeaderboardEntry({
-                    "sessionId": Nimble.arcade.store.sessionId,
-                    "activity": ACTIVITY,
-                    "score": this.score,
-                })
+        if(this.isDead !== true) {
+            this.health -= 1
+            this.isAttacked = shortid.generate()
+            if(this.health <= 0) {
+                this.isDead = true
+                this.deathmessage = DEATH_MESSAGES[0]
+                DEATH_MESSAGES.unshift(DEATH_MESSAGES.pop())
+                if(Nimble.sparks.isInitialized === true) {
+                    Nimble.twitchsparks.submitLeaderboardEntry({
+                        "sessionId": Nimble.arcade.store.sessionId,
+                        "activity": ACTIVITY,
+                        "score": this.score,
+                    })
+                }
             }
         }
     }
