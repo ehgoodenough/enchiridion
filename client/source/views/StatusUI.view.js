@@ -43,7 +43,7 @@ export default class StatusUI {
         return hearts
     }
     get score() {
-        let score = window.model.game.adventurer.score
+        let score = window.model.game.score
         return (
             <span>
                 {score < 100 ? <i>0</i> : undefined}
