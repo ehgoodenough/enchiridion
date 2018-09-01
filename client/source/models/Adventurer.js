@@ -39,6 +39,114 @@ const DIRECTIONS = {
     "0x1": "south"
 }
 
+const IDLE_ANIMATION = {
+    "y": 0,
+    "x": [
+        {"time": 640*1.5, "frame": 0},
+        {"time": 80, "frame": 1},
+        {"time": 640, "frame": 2},
+        {"time": 80, "frame": 1}
+    ],
+}
+const IDLE_NORTH_ANIMATION = {"x": 3, "y": 10}
+const IDLE_SOUTH_ANIMATION = {"x": 3, "y": 8}
+const IDLE_EAST_ANIMATION = {"x": 3, "y": 9}
+const IDLE_WEST_ANIMATION = {"x": 3, "y": 9, "isFlipped": true}
+const RALLY_ANIMATION = {
+    "y": 1,
+    "x": [
+        {"time": 640, "frame": 0},
+        {"time": 80, "frame": 1},
+        {"time": 640, "frame": 2},
+        {"time": 80, "frame": 1}
+    ],
+}
+const MOVE_TIME = 60
+const MOVE_SOUTH_ANIMATION = {
+    "y": 2,
+    "x": [
+        {"time": MOVE_TIME, "frame": 0},
+        {"time": MOVE_TIME, "frame": 1},
+        {"time": MOVE_TIME, "frame": 2},
+        {"time": MOVE_TIME, "frame": 3}
+    ],
+    "next": IDLE_ANIMATION,
+    "next": IDLE_SOUTH_ANIMATION,
+}
+const MOVE_EAST_ANIMATION = {
+    "y": 3,
+    "x": [
+        {"time": MOVE_TIME, "frame": 0},
+        {"time": MOVE_TIME, "frame": 1},
+        {"time": MOVE_TIME, "frame": 2},
+        {"time": MOVE_TIME, "frame": 3}
+    ],
+    "next": IDLE_ANIMATION,
+    "next": IDLE_EAST_ANIMATION,
+}
+const MOVE_WEST_ANIMATION = {
+    "y": 3,
+    "x": [
+        {"time": MOVE_TIME, "frame": 0},
+        {"time": MOVE_TIME, "frame": 1},
+        {"time": MOVE_TIME, "frame": 2},
+        {"time": MOVE_TIME, "frame": 3},
+    ],
+    "isFlipped": true,
+    "next": IDLE_ANIMATION,
+    "next": IDLE_WEST_ANIMATION,
+}
+const MOVE_NORTH_ANIMATION = {
+    "y": 4,
+    "x": [
+        {"time": MOVE_TIME, "frame": 0},
+        {"time": MOVE_TIME, "frame": 1},
+        {"time": MOVE_TIME, "frame": 2},
+        {"time": MOVE_TIME, "frame": 3}
+    ],
+    "next": IDLE_ANIMATION,
+    "next": IDLE_NORTH_ANIMATION,
+}
+
+class Sprite {
+    constructor(sprite) {
+        this.image = sprite.image
+        this.time = 0
+
+        this.animation = IDLE_ANIMATION
+    }
+    toString() {
+        return this.image
+    }
+    get x() {
+        if(this.animation.x instanceof Array) {
+            let animationtime = 0
+            for(var i in this.animation.x) {
+                animationtime += this.animation.x[i].time
+                if(this.time < animationtime) {
+                    return this.animation.x[i].frame
+                }
+            }
+            this.time %= animationtime
+            if(this.animation.next !== undefined) {
+                this.animation = this.animation.next
+                console.log("!")
+            }
+        } else {
+            return this.animation.x || 0
+        }
+    }
+    get y() {
+        return this.animation.y
+    }
+    get isFlipped() {
+        return this.animation.isFlipped
+    }
+    update(delta) {
+        this.time += delta.ms
+    }
+}
+
 export default class Adventurer {
     constructor(parameters = {}) {
         this.key = shortid.generate()
@@ -53,10 +161,18 @@ export default class Adventurer {
         this.health = this.maxhealth
         this.score = 0
         this.stack = 1
+
+        this.image = new Sprite({
+            "image": ADVENTURER_SHEET,
+        })
     }
     update(delta) {
         if(this.isDead) {
             return
+        }
+
+        if(this.image.update instanceof Function) {
+            this.image.update(delta)
         }
 
         if(keyb.isJustDown("W", delta.ms)
@@ -99,6 +215,7 @@ export default class Adventurer {
                 }
                 action.move.x = 0
                 action.move.y = 0
+                action.attack = true
             }
         })
 
@@ -115,6 +232,20 @@ export default class Adventurer {
         // && action.move.y === 0) {
         //     return
         // }
+
+        if(action.move.x !== 0
+        || action.move.y !== 0) {
+            this.image.time = 0
+            if(this.direction === "east") {
+                this.image.animation = MOVE_EAST_ANIMATION
+            } else if(this.direction === "west") {
+                this.image.animation = MOVE_WEST_ANIMATION
+            } else if(this.direction === "north") {
+                this.image.animation = MOVE_NORTH_ANIMATION
+            } else if(this.direction === "south") {
+                this.image.animation = MOVE_SOUTH_ANIMATION
+            }
+        }
 
         this.prevposition.x = this.position.x
         this.prevposition.y = this.position.y
@@ -143,12 +274,11 @@ export default class Adventurer {
             }
         }
     }
-    get image() {
-        return ADVENTURER_SHEET
-        // if(this.isDead === true) {
-        //     return GRAVESTONE_IMAGE
-        // } else {
-        //     return ADVENTURER_IMAGE
-        // }
-    }
+    // get image() {
+    //     if(this.isDead === true) {
+    //         return GRAVESTONE_IMAGE
+    //     } else {
+    //         return ADVENTURER_IMAGE
+    //     }
+    // }
 }

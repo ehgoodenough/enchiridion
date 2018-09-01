@@ -6,10 +6,7 @@ export default class Entity {
     render() {
         return (
             <div className={this.className} style={this.style}>
-                <div className="image" style={{
-                    backgroundImage: `url(${this.props.entity.image})`,
-                    // backgroundPosition: "-1em -0em",
-                }}/>
+                <div className="image" style={this.imagestyle}/>
             </div>
         )
     }
@@ -33,6 +30,21 @@ export default class Entity {
 
         if(this.props.entity.opacity) {
             style.opacity = this.props.entity.opacity
+        }
+
+        return style
+    }
+    get imagestyle() {
+        let style = {}
+
+        style.backgroundImage = `url(${this.props.entity.image})`
+        style.backgroundPosition = [
+            -1 * this.props.entity.image.x * 3 + "em",
+            -1 * this.props.entity.image.y * 3 + "em",
+        ].join(" ")
+
+        if(this.props.entity.image.isFlipped) {
+            style.transform = "scaleX(-1)"
         }
 
         return style

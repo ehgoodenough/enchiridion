@@ -3,24 +3,20 @@
     height: 1em;
     position: absolute;
 
-    transition-duration: 0.1s;
+    transition-duration: 60ms * 4;
     transition-property: top, left, opacity;
-
-    // background-color: yellow;
 
     .image {
         @size: 3em;
 
         width: @size;
         height: @size;
-        margin-top: (@size - 1) / -2 - 0.15;
-        margin-left: (@size - 1) / -2 + 0.05;
+        margin-top: (@size - 1) / -2 - (1/16)*2;
+        margin-left: (@size - 1) / -2 + (1/16);
 
         background-repeat: no-repeat;
-        background-position: -2em * @size -0em;
-        background-size: 4em * @size  11em * @size;
-
-        // background-color: rgba(0, 0, 0, 0.1);
+        background-position: (-1em * @size) (-1em * @size);
+        background-size: (4em * @size) (11em * @size);
     }
 
     &.shake {
