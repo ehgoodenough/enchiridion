@@ -19,9 +19,7 @@ export default class StatusUI {
                     {this.flash}
                 </div>
                 <div className="you-died-banner">
-                    <div className="play-again-prompt">
-                        <span>play again?</span>
-                    </div>
+                    <span>you died</span>
                 </div>
                 <div className="pause-prompt">
                     <span>paused</span>
@@ -46,9 +44,13 @@ export default class StatusUI {
     }
     get score() {
         let score = window.model.game.adventurer.score
-        score = (score < 10 ? "0" : 0) + score
-        score = (score < 100 ? "0" : 0) + score
-        return score
+        return (
+            <span>
+                {score < 100 ? <i>0</i> : undefined}
+                {score < 10 ? <i>0</i> : undefined}
+                {score === 0 ? <i>{score}</i> : score}
+            </span>
+        )
     }
     get flash() {
         if(window.model.game.adventurer.isAttacked) {

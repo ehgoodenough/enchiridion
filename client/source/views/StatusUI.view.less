@@ -48,6 +48,11 @@
 
         color: #DEB74A;
         line-height: 1em;
+
+        i {
+            font: inherit;
+            opacity: 0.5;
+        }
     }
 
     .message {
@@ -106,23 +111,19 @@
         text-align: center;
 
         background-color: fadeout(@red, 50%);
-
-        &::after {
-            content: "you died"
-        }
-
-        .play-again-prompt {
-            opacity: 0;
-            left: 0em;
-            right: 0em;
-            bottom: -2em;
-            position: absolute;
-
-            color: @yellow;
-            font-size: 0.5em;
-            text-align: center;
-        }
     }
+
+    // .play-again-prompt {
+    //     opacity: 0;
+    //     left: 0em;
+    //     right: 0em;
+    //     bottom: -2em;
+    //     position: absolute;
+    //
+    //     color: @yellow;
+    //     font-size: 0.5em;
+    //     text-align: center;
+    // }
 
     .pause-prompt {
         top: 0em;

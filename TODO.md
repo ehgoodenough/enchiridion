@@ -1,13 +1,17 @@
-- Title Screen w/ Demo Mode
-- Config Page w/ Streamer FTUE
-- Tutorial
-- Show style-ized leaderboard when you die.
-- Minimizing for Overlay and Component Overlay
+v1.0.0
+- Title Screen
+- Light Weight Tutorial
+- Minimizing for Overlays
+- Analytics
+
+v1.1.0
 - Bug: The room has harsh edges.
 - Bug: The adventurer does not have animation.
-- Analytics
+- Demo Mode on Title Screen
 - Sound & Mute Button on Title Screen
 - Localization & Language Button on Title Screen
+- Config Page w/ Streamer FTUE
+- Leaderboards
 
 .....
 
