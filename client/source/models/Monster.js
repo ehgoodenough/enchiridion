@@ -112,12 +112,14 @@ export default class Monster {
 
         this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
 
-        if(this.position.x + action.move.x < 0
-        || this.position.y + action.move.y < 0
-        || this.position.x + action.move.x >= this.game.room.width
-        || this.position.y + action.move.y >= this.game.room.height) {
-            action.move.x = 0
-            action.move.y = 0
+        if(this.isOutOfRoom !== true) {
+            if(this.position.x + action.move.x < 0
+            || this.position.y + action.move.y < 0
+            || this.position.x + action.move.x >= this.game.room.width
+            || this.position.y + action.move.y >= this.game.room.height) {
+                action.move.x = 0
+                action.move.y = 0
+            }
         }
 
         this.game.entities.forEach((entity) => {
