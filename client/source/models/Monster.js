@@ -130,7 +130,7 @@ export default class Monster {
             && this.position.y + action.move.y === entity.position.y) {
                 if(entity instanceof Adventurer) {
                     this.isAttacking = true
-                    entity.beAttacked()
+                    entity.beAttacked(this)
                 }
                 action.move.x = 0
                 action.move.y = 0

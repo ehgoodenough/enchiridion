@@ -55,13 +55,14 @@ const IDLE_WEST_ANIMATION = {"x": 3, "y": 9, "isFlipped": true}
 const RALLY_ANIMATION = {
     "y": 1,
     "x": [
-        {"time": 640, "frame": 0},
-        {"time": 80, "frame": 1},
-        {"time": 640, "frame": 2},
-        {"time": 80, "frame": 1}
+        {"time": 350, "frame": 0},
+        {"time": 50, "frame": 1},
+        {"time": 700, "frame": 2},
+        {"time": 50, "frame": 1}
     ],
 }
-const MOVE_TIME = 60
+const MOVE_TIME = 50
+const ATTACK_TIME = 50
 const MOVE_SOUTH_ANIMATION = {
     "y": 2,
     "x": [
@@ -107,13 +108,96 @@ const MOVE_NORTH_ANIMATION = {
     "next": IDLE_ANIMATION,
     "next": IDLE_NORTH_ANIMATION,
 }
+const ATTACK_SOUTH_ANIMATION = {
+    "y": 5,
+    "x": [
+        {"time": ATTACK_TIME, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME * 2, "frame": 3}
+    ],
+    "next": IDLE_SOUTH_ANIMATION,
+}
+const ATTACK_NORTH_ANIMATION = {
+    "y": 7,
+    "x": [
+        {"time": ATTACK_TIME, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME * 2, "frame": 3}
+    ],
+    "next": IDLE_NORTH_ANIMATION,
+}
+const ATTACK_EAST_ANIMATION = {
+    "y": 6,
+    "x": [
+        {"time": ATTACK_TIME, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME * 2, "frame": 3}
+    ],
+    "next": IDLE_EAST_ANIMATION,
+}
+const ATTACK_WEST_ANIMATION = {
+    "y": 6,
+    "x": [
+        {"time": ATTACK_TIME, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME * 2, "frame": 3}
+    ],
+    "isFlipped": true,
+    "next": IDLE_WEST_ANIMATION,
+}
+const ATTACKED_SOUTH_ANIMATION = {
+    "y": 8,
+    "x": [
+        {"time": ATTACK_TIME * 1.25, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME, "frame": 0}
+    ],
+    "isFlipped": true,
+    "next": IDLE_SOUTH_ANIMATION,
+}
+const ATTACKED_WEST_ANIMATION = {
+    "y": 9,
+    "x": [
+        {"time": ATTACK_TIME * 1.25, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME, "frame": 0}
+    ],
+    "isFlipped": true,
+    "next": IDLE_WEST_ANIMATION,
+}
+const ATTACKED_EAST_ANIMATION = {
+    "y": 9,
+    "x": [
+        {"time": ATTACK_TIME * 1.25, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME, "frame": 0}
+    ],
+    "next": IDLE_EAST_ANIMATION,
+}
+const ATTACKED_NORTH_ANIMATION = {
+    "y": 10,
+    "x": [
+        {"time": ATTACK_TIME * 1.25, "frame": 0},
+        {"time": ATTACK_TIME, "frame": 1},
+        {"time": ATTACK_TIME, "frame": 2},
+        {"time": ATTACK_TIME, "frame": 0}
+    ],
+    "next": IDLE_NORTH_ANIMATION,
+}
 
 class Sprite {
     constructor(sprite) {
         this.image = sprite.image
         this.time = 0
 
-        this.animation = IDLE_ANIMATION
+        this.animation = RALLY_ANIMATION
     }
     toString() {
         return this.image
@@ -130,7 +214,6 @@ class Sprite {
             this.time %= animationtime
             if(this.animation.next !== undefined) {
                 this.animation = this.animation.next
-                console.log("!")
             }
         } else {
             return this.animation.x || 0
@@ -201,7 +284,7 @@ export default class Adventurer {
         action.move.x = action.move.x || 0
         action.move.y = action.move.y || 0
 
-        this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
+        this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || this.direction || "none"
 
         this.game.entities.forEach((entity) => {
             if(entity !== this
@@ -246,6 +329,18 @@ export default class Adventurer {
                 this.image.animation = MOVE_SOUTH_ANIMATION
             }
         }
+        if(action.attack === true) {
+            this.image.time = 0
+            if(this.direction === "east") {
+                this.image.animation = ATTACK_EAST_ANIMATION
+            } else if(this.direction === "west") {
+                this.image.animation = ATTACK_WEST_ANIMATION
+            } else if(this.direction === "north") {
+                this.image.animation = ATTACK_NORTH_ANIMATION
+            } else if(this.direction === "south") {
+                this.image.animation = ATTACK_SOUTH_ANIMATION
+            }
+        }
 
         this.prevposition.x = this.position.x
         this.prevposition.y = this.position.y
@@ -255,10 +350,27 @@ export default class Adventurer {
 
         this.game.onReaction()
     }
-    beAttacked() {
+    beAttacked(monster) {
         if(this.isDead !== true) {
             this.health -= 1
             this.isAttacked = shortid.generate()
+
+
+            this.image.time = 0
+            if(monster.position.y > this.position.y) {
+                this.image.animation = ATTACKED_SOUTH_ANIMATION
+                this.direction = "south"
+            } else if(monster.position.x > this.position.x) {
+                this.image.animation = ATTACKED_EAST_ANIMATION
+                this.direction = "east"
+            } else if(monster.position.x < this.position.x) {
+                this.image.animation = ATTACKED_WEST_ANIMATION
+                this.direction = "west"
+            } else if(monster.position.y < this.position.y) {
+                this.image.animation = ATTACKED_NORTH_ANIMATION
+                this.direction = "north"
+            }
+
             if(this.health <= 0) {
                 this.isDead = true
                 this.deathmessage = DEATH_MESSAGES[0]
