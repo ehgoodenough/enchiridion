@@ -1,34 +1,22 @@
 .LeaderboardModal {
-    z-index: 999;
+    top: 0.5em;
+    left: 0.5em;
+    right: 0.5em;
+    bottom: 0.5em;
+    margin: auto;
+    height: 9em;
+    max-width: 8em;
+    z-index: 999999;
     position: absolute;
-    
+
     font-size: 1em;
     text-align: center;
 
-    bottom: 0.5em;
     transition-delay: 2.5s;
     transition-duration: 0.5s;
     transition-property: bottom;
 
     &.isHidden {
         bottom: -10em;
-    }
-}
-
-#mounted-as-none,
-#mounted-as-video_overlay {
-    .LeaderboardModal {
-        left: 1em;
-        width: 8em;
-    }
-}
-
-#mounted-as-dashboard,
-#mounted-as-config,
-#mounted-as-mobile,
-#mounted-as-panel {
-    .LeaderboardModal {
-        left: 0.5em;
-        right: 0.5em;
     }
 }
