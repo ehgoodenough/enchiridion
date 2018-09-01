@@ -9,6 +9,7 @@ import Monster from "models/Monster.js"
 
 import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
 import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
+import ADVENTURER_SHEET from "images/adventurer.sheet.png"
 
 const DEATH_MESSAGES = [
     "you died",
@@ -18,16 +19,12 @@ const DEATH_MESSAGES = [
     "you died",
     "PJSalt",
     "you died",
-    "you died?",
-    "what happened?",
-    "you died",
     "press f",
     "you died",
     "ouch",
     "dang it",
     "not like this",
     "you died",
-    "PJSalt",
     // "rest in peace",
     // "that's rough buddy",
     // "everyone is dead",
@@ -147,10 +144,11 @@ export default class Adventurer {
         }
     }
     get image() {
-        if(this.isDead === true) {
-            return GRAVESTONE_IMAGE
-        } else {
-            return ADVENTURER_IMAGE
-        }
+        return ADVENTURER_SHEET
+        // if(this.isDead === true) {
+        //     return GRAVESTONE_IMAGE
+        // } else {
+        //     return ADVENTURER_IMAGE
+        // }
     }
 }

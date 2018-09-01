@@ -4,11 +4,24 @@
     position: absolute;
 
     transition-duration: 0.1s;
-    transition-property: top left opacity;
+    transition-property: top, left, opacity;
 
-    background-size: 1em;
-    background-position: center;
-    background-repeat: no-repeat;
+    // background-color: yellow;
+
+    .image {
+        @size: 3em;
+
+        width: @size;
+        height: @size;
+        margin-top: (@size - 1) / -2 - 0.15;
+        margin-left: (@size - 1) / -2 + 0.05;
+
+        background-repeat: no-repeat;
+        background-position: -2em * @size -0em;
+        background-size: 4em * @size  11em * @size;
+
+        // background-color: rgba(0, 0, 0, 0.1);
+    }
 
     &.shake {
         animation-name: shake;

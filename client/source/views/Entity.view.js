@@ -5,7 +5,12 @@ import "views/Entity.view.less"
 export default class Entity {
     render() {
         return (
-            <div className={this.className} style={this.style}/>
+            <div className={this.className} style={this.style}>
+                <div className="image" style={{
+                    backgroundImage: `url(${this.props.entity.image})`,
+                    // backgroundPosition: "-1em -0em",
+                }}/>
+            </div>
         )
     }
     get className() {
@@ -20,10 +25,6 @@ export default class Entity {
         }
         if(this.props.entity.stack) {
             style.zIndex = (this.props.entity.stack * 100) + this.props.entity.position.y
-        }
-
-        if(this.props.entity.image) {
-            style.backgroundImage = `url(${this.props.entity.image})`
         }
 
         if(this.props.entity.color) {

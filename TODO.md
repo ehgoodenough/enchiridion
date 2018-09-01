@@ -1,8 +1,6 @@
 v1.0.0
 - Title Screen
-- Light Weight Tutorial
 - Minimizing for Overlays
-- Analytics
 
 v1.1.0
 - Bug: The room has harsh edges.

@@ -8,6 +8,7 @@ import Adventurer from "models/Adventurer.js"
 
 import SLIME_ALPHA_IMAGE from "images/monsters/slime_alpha.png"
 import SLIME_OMEGA_IMAGE from "images/monsters/slime_omega.png"
+import SLIME_SHEET from "images/slime.sheet.png"
 
 const DIRECTIONS = {
     "-1x0": "west",
@@ -35,11 +36,12 @@ export default class Monster {
         this.stack = 1
     }
     get image() {
-        if(this.isReady === true) {
-            return SLIME_OMEGA_IMAGE
-        } else {
-            return SLIME_ALPHA_IMAGE
-        }
+        return SLIME_SHEET
+        // if(this.isReady === true) {
+        //     return SLIME_OMEGA_IMAGE
+        // } else {
+        //     return SLIME_ALPHA_IMAGE
+        // }
     }
     get opacity() {
         if(this.isOutOfRoom) {
