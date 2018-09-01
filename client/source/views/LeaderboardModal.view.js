@@ -13,7 +13,7 @@ export default class LeaderboardModal {
             return (
                 <div className="LeaderboardModal">
                     <header>High Scores</header>
-                    <Nimble.views.BrowsableLeaderboard activity={activity} size="small"/>
+                    <Nimble.views.BrowsableLeaderboard activity={activity} size="big"/>
                 </div>
             )
         } else {

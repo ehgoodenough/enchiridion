@@ -2,6 +2,7 @@ const Nimble = require(".")
 const GameSparks = require("./gamesparks.js")
 
 const GAMESPARKS_API_KEY = "A354942pqu2s"
+const GAMESPARKS_SECRET = "CSiwmNt2Dd7Vs9Y7Pgfl35onslKTU0A5"
 const GAMESPARKS_CREDENTIALS_URI = require("./endpoints.js").GAMESPARKS_CREDENTIALS_URI
 
 const Sparks = module.exports = {
@@ -27,6 +28,7 @@ Sparks.initiate = function() {
         let init = (__STAGE__ === "DEVELOPMENT" ? "initPreview" : "initLive")
         GameSparks[init]({
             "key": GAMESPARKS_API_KEY,
+            "secret": GAMESPARKS_SECRET,
             "onNonce": (nonce) => Sparks.retrieveEncryptedNonce(nonce),
             "onInit": (response) => resolve(response),
             "onError": (response) => reject(response),
