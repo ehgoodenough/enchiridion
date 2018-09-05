@@ -11,10 +11,10 @@
     "url": "https://github.com/ehgoodenough/enchiridion"
   },
   "scripts": {
-    "build": "codeglue --stage=DEVELOPMENT",
-    "start": "codeglue --stage=DEVELOPMENT --mode=SERVER --port=8080 --ssl=true",
+    "build": "codeglue --stage=NONE",
+    "start": "codeglue --stage=NONE --mode=SERVER --port=8080 --ssl=true",
     "deploy": "aws s3 sync ./builds/web s3://ehgoodenough/enchiridion/ --acl public-read",
-    "zip": "bestzip build.zip builds/web/*"
+    "zip": "bestzip build.zip ./builds/web"
   },
   "dependencies": {
     "gameanalytics": "^3.0.1",
@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "bestzip": "^2.0.0",
-    "codeglue": "^1.5.1"
+    "codeglue": "^1.5.2"
   }
 }
