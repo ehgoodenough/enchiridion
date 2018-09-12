@@ -1,4 +1,7 @@
 v1.1.0
+- Better background w/ gradient
+- Better room w/ pixel edges
+- More Monsters
 - Adventurer Animations
 - Title Screen
 - Demo Mode on Title Screen
@@ -6,9 +9,13 @@ v1.1.0
 - Localization & Language Button on Title Screen
 - Config Page w/ Streamer FTUE
 - Leaderboards
-- Light Weight Tutorial
-- Minimizing for Overlays
+- Better discovery image!!!
+
+.....
+
 - Mobile Support
+- Minimizing for Overlays
+- Light Weight Tutorial
 
 .....
 
