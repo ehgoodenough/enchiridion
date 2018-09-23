@@ -1,13 +1,14 @@
 v1.1.0
-- Title Screen
-- Demo Mode on Title Screen
 - Leaderboards
 - Reset Leaderboards on Config Page
+
+......
+
+- More Monsters
+- Adventurer Animations
 - Better discovery image!!!
 - Better background w/ gradient
 - Better room w/ pixel edges
-- More Monsters
-- Adventurer Animations
 
 .....
 

@@ -1,7 +1,7 @@
 import Preact from "preact"
 
 import Entity from "views/Entity.view.js"
-import StatusUI from "views/StatusUI.view.js"
+import UI from "views/UI.view.js"
 import Camera from "views/Camera.view.js"
 import LeaderboardModal from "views/LeaderboardModal.view.js"
 
@@ -17,7 +17,7 @@ export default class Game {
                         {this.entities}
                     </Camera>
                 </div>
-                <StatusUI/>
+                <UI/>
                 {/*<LeaderboardModal/>*/}
             </div>
         )

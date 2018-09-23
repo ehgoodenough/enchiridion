@@ -1,11 +1,11 @@
 import Preact from "preact"
 
-import "views/StatusUI.view.less"
+import "views/UI.view.less"
 
-export default class StatusUI {
+export default class UI {
     render() {
         return (
-            <div className="StatusUI">
+            <div className="UI">
                 <div className="hearts">
                     {this.hearts}
                 </div>
@@ -14,6 +14,9 @@ export default class StatusUI {
                 </div>
                 <div className="flash">
                     {this.flash}
+                </div>
+                <div className="title-banner">
+                    <span>Enchiridion</span>
                 </div>
                 <div className="game-over-banner">
                     <span>{window.model.game.adventurer.deathtext}</span>

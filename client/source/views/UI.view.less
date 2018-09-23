@@ -1,6 +1,6 @@
 @import "Base.view.less";
 
-.StatusUI {
+.UI {
     .hearts {
         top: 0em;
         right: 0em;
@@ -55,23 +55,6 @@
         }
     }
 
-    // .message {
-    //     left: 0em;
-    //     right: 0em;
-    //     bottom: 0em;
-    //     z-index: 999;
-    //     padding: 0.25em;
-    //     position: absolute;
-    //
-    //     span {
-    //         display: block;
-    //         font-size: 0.45em;
-    //         text-align: center;
-    //         white-space: nowrap;
-    //         vertical-align: text-bottom;
-    //     }
-    // }
-
     .flash {
         top: 0em;
         left: 0em;
@@ -91,6 +74,23 @@
             animation-fill-mode: forwards;
         }
     }
+
+    // .message {
+    //     left: 0em;
+    //     right: 0em;
+    //     bottom: 0em;
+    //     z-index: 999;
+    //     padding: 0.25em;
+    //     position: absolute;
+    //
+    //     span {
+    //         display: block;
+    //         font-size: 0.45em;
+    //         text-align: center;
+    //         white-space: nowrap;
+    //         vertical-align: text-bottom;
+    //     }
+    // }
 
     .title-banner {
         transition-duration: 0.1s;
@@ -173,7 +173,7 @@
 }
 
 .Game.isPaused:not(.isDone) {
-    .StatusUI {
+    .UI {
         .pause-banner {
             transition-delay: 1.5s;
             transition-duration: 0.5s;
@@ -184,7 +184,7 @@
 }
 
 .Game.isDone {
-    .StatusUI {
+    .UI {
         .game-over-banner {
             opacity: 1;
             transition-delay: 1.5s;
@@ -195,13 +195,17 @@
 }
 
 .Game.isDemo {
-    .StatusUI {
+    .UI {
         .hearts,
         .score,
         .flash,
         .pause-banner,
         .game-over-banner {
             visibility: hidden;
+        }
+
+        .title-banner {
+            transform: rotate(45deg) scaleY(1);
         }
     }
 }
