@@ -14,6 +14,7 @@ import Room from "models/Room.js"
 export default class Game {
     constructor(game) {
         this.model = game.model
+        this.isDemo = game.isDemo
         this.key = shortid.generate()
 
         analytics.reportStartGame()
@@ -53,22 +54,6 @@ export default class Game {
         }
     }
     update(delta) {
-        if(this.adventurer.isDead) {
-            this.deadtimer += delta.s
-            if(this.deadtimer > 1.5) {
-                if(keyb.isJustDown("W", delta.ms)
-                || keyb.isJustDown("<up>", delta.ms)
-                || keyb.isJustDown("S", delta.ms)
-                || keyb.isJustDown("<down>", delta.ms)
-                || keyb.isJustDown("<left>", delta.ms)
-                || keyb.isJustDown("D", delta.ms)
-                || keyb.isJustDown("<right>", delta.ms)
-                || keyb.isJustDown("<space>", delta.ms)) {
-                    this.model.startNewGame()
-                }
-            }
-        }
-
         this.adventurer.update(delta)
     }
     onReaction() {
@@ -91,5 +76,8 @@ export default class Game {
                 })
             }
         }
+    }
+    get isDone() {
+        return this.adventurer.isDead === true
     }
 }

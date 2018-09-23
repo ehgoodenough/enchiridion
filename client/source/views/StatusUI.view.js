@@ -12,16 +12,13 @@ export default class StatusUI {
                 <div className="score">
                     {this.score}
                 </div>
-                <div className="message">
-                    {window.model.game.message}
-                </div>
                 <div className="flash">
                     {this.flash}
                 </div>
-                <div className="death-banner">
-                    <span>{window.model.game.adventurer.deathmessage}</span>
+                <div className="game-over-banner">
+                    <span>{window.model.game.adventurer.deathtext}</span>
                 </div>
-                <div className="pause-prompt">
+                <div className="pause-banner">
                     <span>paused</span>
                 </div>
             </div>

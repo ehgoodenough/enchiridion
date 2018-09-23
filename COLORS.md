@@ -1,0 +1,9 @@
+https://coolors.co/a52f22-deb74a-fbfef9-191923-0e79b2
+https://coolors.co/a52f22-deb74a-2e1f27-dd7230-f4c95d
+https://coolors.co/a52f22-deb74a-4f3130-d8bd8a-d8d78f
+https://coolors.co/a52f22-deb74a-577590-f3ca40-f2a541
+https://coolors.co/a52f22-deb74a-bebbbb-444054-2f243a
+https://coolors.co/a52f22-deb74a-321325-5f0f40-cb793a
+https://coolors.co/a52f22-deb74a-48639c-4c4c9d-712f79
+http://www.colourpod.com/post/177770528404/twilight-rose-submitted-by
+http://www.colourpod.com/post/177625845560/pig-barf-submitted-by-skullysnot-c84337-31272b

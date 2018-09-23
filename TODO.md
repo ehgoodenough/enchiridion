@@ -1,21 +1,23 @@
 v1.1.0
+- Title Screen
+- Demo Mode on Title Screen
+- Leaderboards
+- Reset Leaderboards on Config Page
+- Better discovery image!!!
 - Better background w/ gradient
 - Better room w/ pixel edges
 - More Monsters
 - Adventurer Animations
-- Title Screen
-- Demo Mode on Title Screen
-- Sound & Mute Button on Title Screen
-- Localization & Language Button on Title Screen
-- Config Page w/ Streamer FTUE
-- Leaderboards
-- Better discovery image!!!
 
 .....
 
 - Mobile Support
 - Minimizing for Overlays
 - Light Weight Tutorial
+- Localization
+- Language Option Button on Title Screen
+- Sounds
+- Sound & Mute Button on Title Screen
 
 .....
 

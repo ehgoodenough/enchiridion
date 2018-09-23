@@ -55,22 +55,22 @@
         }
     }
 
-    .message {
-        left: 0em;
-        right: 0em;
-        bottom: 0em;
-        z-index: 999;
-        padding: 0.25em;
-        position: absolute;
-
-        span {
-            display: block;
-            font-size: 0.45em;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: text-bottom;
-        }
-    }
+    // .message {
+    //     left: 0em;
+    //     right: 0em;
+    //     bottom: 0em;
+    //     z-index: 999;
+    //     padding: 0.25em;
+    //     position: absolute;
+    //
+    //     span {
+    //         display: block;
+    //         font-size: 0.45em;
+    //         text-align: center;
+    //         white-space: nowrap;
+    //         vertical-align: text-bottom;
+    //     }
+    // }
 
     .flash {
         top: 0em;
@@ -92,7 +92,29 @@
         }
     }
 
-    .death-banner {
+    .title-banner {
+        transition-duration: 0.1s;
+        transition-property: transform;
+
+        top: 0em;
+        left: -2em;
+        right: -2em;
+        bottom: 0em;
+        margin: auto;
+        height: 2em;
+        z-index: 999;
+        position: absolute;
+        transform: rotate(0deg) scaleY(0);
+
+        color: @white;
+        line-height: 2em;
+        text-align: center;
+        border-radius: 1em;
+
+        background-color: fadeout(@red, 50%);
+    }
+
+    .game-over-banner {
         transition-duration: 0.1s;
         transition-property: transform;
 
@@ -132,7 +154,7 @@
     //     animation-iteration-count: infinite;
     // }
 
-    .pause-prompt {
+    .pause-banner {
         top: 0em;
         left: 0em;
         right: 0em;
@@ -150,9 +172,9 @@
     }
 }
 
-.Game.isPaused:not(.isOver) {
+.Game.isPaused:not(.isDone) {
     .StatusUI {
-        .pause-prompt {
+        .pause-banner {
             transition-delay: 1.5s;
             transition-duration: 0.5s;
             transition-property: transform;
@@ -161,13 +183,25 @@
     }
 }
 
-.Game.isOver {
+.Game.isDone {
     .StatusUI {
-        .death-banner {
+        .game-over-banner {
             opacity: 1;
             transition-delay: 1.5s;
             transition-duration: 0.5s;
             transform: rotate(45deg) scaleY(1);
+        }
+    }
+}
+
+.Game.isDemo {
+    .StatusUI {
+        .hearts,
+        .score,
+        .flash,
+        .pause-banner,
+        .game-over-banner {
+            visibility: hidden;
         }
     }
 }

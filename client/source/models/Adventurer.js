@@ -4,35 +4,12 @@ import shortid from "shortid"
 import Nimble from "library/Nimble"
 
 import colors from "data/colors.js"
+import deathtext from "data/deathtext.js"
 
 import Monster from "models/Monster.js"
 
 import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
 import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
-
-const DEATH_MESSAGES = [
-    "you died",
-    "you died",
-    "you died again",
-    "you died",
-    "you died",
-    "pjsalt",
-    "you died",
-    "you died?",
-    "what happened?",
-    "you died",
-    "press f",
-    "you died",
-    "ouch",
-    "dang it",
-    "not like this",
-    "you died",
-    // "rest in peace",
-    // "that's rough buddy",
-    // "everyone is dead",
-    // "you have died",
-    // "game over",
-]
 
 const DIRECTIONS = {
     "-1x0": "west",
@@ -40,6 +17,14 @@ const DIRECTIONS = {
     "0x-1": "north",
     "0x1": "south"
 }
+
+const DEMO_CLOCK = 0.25 // in seconds
+const DEMO_MOVEMENTS = [
+    {"movement": {"x": -1}},
+    {"movement": {"x": +1}},
+    {"movement": {"y": -1}},
+    {"movement": {"y": +1}},
+]
 
 export default class Adventurer {
     constructor(parameters = {}) {
@@ -51,13 +36,26 @@ export default class Adventurer {
         this.title = "The Adventurer"
         this.description = "It you!!"
 
-        this.maxhealth = 3 // 16
+        this.maxhealth = 3
         this.health = this.maxhealth
 
         this.stack = 1
     }
     update(delta) {
         if(this.isDead) {
+            return
+        }
+
+        if(this.game.isDemo) {
+            this.clock = (this.clock || 0) + delta.s
+            if(this.clock > DEMO_CLOCK) {
+                this.clock -= DEMO_CLOCK
+                let move = Math.random()
+                this.onAction({"move": {
+                    "x": move < 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.x !== 0 ? -1 : +1) : (this.position.x !== this.game.room.width - 1 ? +1 : -1)),
+                    "y": move >= 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.y !== 0 ? -1 : +1) : (this.position.y !== this.game.room.height - 1 ? +1 : -1)),
+                }})
+            }
             return
         }
 
@@ -129,13 +127,16 @@ export default class Adventurer {
         this.game.onReaction()
     }
     beAttacked() {
+        if(this.game.isDemo) {
+            return
+        }
         if(this.isDead !== true) {
             this.health -= 1
             this.isAttacked = shortid.generate()
             if(this.health <= 0) {
                 this.isDead = true
-                this.deathmessage = DEATH_MESSAGES[0]
-                DEATH_MESSAGES.push(DEATH_MESSAGES.shift())
+                this.deathtext = deathtext[0]
+                deathtext.push(deathtext.shift())
                 this.game.onEnd()
             }
         }

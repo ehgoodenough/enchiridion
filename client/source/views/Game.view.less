@@ -17,7 +17,13 @@
         font-size: 1.25em;
     }
 
-    &.isOver {
+    &.isDemo {
+        .Scene {
+            filter: blur(0.05em);
+        }
+    }
+
+    &.isDone {
         .Scene {
             filter: blur(0.05em);
 
@@ -27,7 +33,7 @@
         }
     }
 
-    &.isPaused:not(.isOver) {
+    &.isPaused:not(.isDone):not(.isDemo) {
         .Scene {
             filter: blur(0.125em);
 
