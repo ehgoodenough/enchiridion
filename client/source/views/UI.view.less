@@ -136,23 +136,21 @@
         background-color: fadeout(@red, 50%);
     }
 
-    // .play-again-prompt {
-    //     opacity: 0;
-    //     left: 0em;
-    //     right: 0em;
-    //     bottom: -2em;
-    //     position: absolute;
-    //
-    //     color: @yellow;
-    //     font-size: 0.5em;
-    //     text-align: center;
-    // }
-    // .play-again-prompt {
-    //     animation-delay: 3.5s;
-    //     animation-name: blink;
-    //     animation-duration: 3s;
-    //     animation-iteration-count: infinite;
-    // }
+    .play-prompt {
+        opacity: 0;
+        left: 0em;
+        right: 0em;
+        bottom: -2em;
+        position: absolute;
+    
+        color: @yellow;
+        font-size: 0.5em;
+        text-align: center;
+        
+        animation-name: blink;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+    }
 
     .pause-banner {
         top: 0em;

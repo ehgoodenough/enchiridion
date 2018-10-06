@@ -16,7 +16,10 @@ export default class UI {
                     {this.flash}
                 </div>
                 <div className="title-banner">
-                    <span>Click to play!</span>
+                    <span>Enchiridion</span>
+                    <span className="play-prompt">
+                        Click to play!
+                    </span>
                 </div>
                 <div className="game-over-banner">
                     <span>{window.model.game.adventurer.deathtext}</span>
