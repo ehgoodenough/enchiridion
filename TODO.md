@@ -1,4 +1,3 @@
-- Better background w/ gradient
 - Better room w/ pixel edges
 - More Monsters!!!
 

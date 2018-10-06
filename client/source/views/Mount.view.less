@@ -2,6 +2,12 @@
 
 @frame-roundness: 0.25em;
 
+@keyframes flow {
+    0% {background-position: 0% 50%}
+	50% {background-position: 100% 50%}
+	100% {background-position: 0% 50%}
+}
+
 .Frame {
     top: 0em;
     left: 0em;
@@ -10,8 +16,16 @@
     margin: auto;
     position: fixed;
     overflow: hidden;
-    background-color: #181818;
-    background: linear-gradient(135deg, #191923 0%, #19231A 100%);
+    
+    color: @yellow;
+    color: @white;
+    
+    // background: linear-gradient(135deg, #1A1923 0%, #232219 100%); // blue to yellow
+    // background: linear-gradient(135deg, #321325 0%, #5F0F40 100%); // purple to magenta
+    // background: linear-gradient(-135deg, #2F243A 0%, #444054 100%); // purple-ish gray
+    animation: flow 15s ease infinite;
+    background-image: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+	background-size: 400% 400%;
 
     @media(min-aspect-ratio: ~"10/10") {
         font-size: ((10 / 10)* 100vh) / 10;
