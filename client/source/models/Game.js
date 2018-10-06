@@ -69,8 +69,7 @@ export default class Game {
             this.hasEnded = true
             analytics.reportEndGame()
             if(Nimble.sparks.isInitialized === true) {
-                Nimble.twitchsparks.submitLeaderboardEntry({
-                    "sessionId": Nimble.arcade.store.sessionId,
+                Nimble.sparks.submitLeaderboardEntry({
                     "activity": activity,
                     "score": this.score,
                 })

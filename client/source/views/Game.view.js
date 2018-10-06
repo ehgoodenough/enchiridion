@@ -18,7 +18,7 @@ export default class Game {
                     </Camera>
                 </div>
                 <UI/>
-                {/*<LeaderboardModal/>*/}
+                <LeaderboardModal/>
             </div>
         )
     }

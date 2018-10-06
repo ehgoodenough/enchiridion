@@ -1,5 +1,6 @@
 const Nimble = require(".")
 const GameSparks = require("./gamesparks.js")
+const Crypto = require("crypto-js")
 
 const GAMESPARKS_API_KEY = "A354942pqu2s"
 const GAMESPARKS_SECRET = "CSiwmNt2Dd7Vs9Y7Pgfl35onslKTU0A5"
@@ -25,11 +26,10 @@ Sparks.initialize = function() {
 
 Sparks.initiate = function() {
     return new Promise((resolve, reject) => {
-        let init = (__STAGE__ === "DEVELOPMENT" ? "initPreview" : "initLive")
-        GameSparks[init]({
+        GameSparks[Nimble.twitch.extension.state === "released" ? "initLive" : "initPreview"]({
             "key": GAMESPARKS_API_KEY,
             "secret": GAMESPARKS_SECRET,
-            "onNonce": (nonce) => Sparks.retrieveEncryptedNonce(nonce),
+            "onNonce": (nonce) => Sparks.onNonce(nonce),
             "onInit": (response) => resolve(response),
             "onError": (response) => reject(response),
             "onMessage": (message) => Sparks.onMessageCallback(message),
@@ -37,23 +37,8 @@ Sparks.initiate = function() {
     })
 }
 
-Sparks.retrieveEncryptedNonce = function(nonce) {
-    if(this.nonce !== undefined) {
-        return Promise.resolve(this.nonce)
-    } else {
-        return window.fetch(GAMESPARKS_CREDENTIALS_URI({"nonce": nonce}), {
-            "headers": {
-                "Authorization": Nimble.twitch.token,
-                "Content-Type": "application/json"
-            }
-        }).then((response) => {
-            return response.json().then((response) => {
-                this.password = response.userPassword || response.password
-                this.nonce = response.hmac || response.nonce
-                return this.nonce
-            })
-        })
-    }
+Sparks.onNonce = function(nonce) {
+    return Promise.resolve(Crypto.enc.Base64.stringify(Crypto.HmacSHA256(nonce, GAMESPARKS_SECRET)))
 }
 
 // Logs in the given user, and if this
@@ -63,8 +48,9 @@ Sparks.retrieveEncryptedNonce = function(nonce) {
 // Returns a promise.
 Sparks.authenticate = function() {
     return new Promise((resolve, reject) => {
-        this.username = Nimble.twitch.viewer.opaqueUserId
         this.name = Nimble.twitch.viewer.name || "@" + Nimble.twitch.viewer.opaqueUserId
+        this.username = Nimble.twitch.viewer.opaqueUserId
+        this.password = Nimble.twitch.viewer.opaqueUserId
         GameSparks.authenticationRequest(this.password, this.username, (response) => {
             if(response.error !== undefined) {
                 // Login failed because the user isn't registered? Register them.
@@ -113,7 +99,7 @@ Sparks.submitLeaderboardEntry = function(entry) {
         GameSparks.logLeaderboardEventRequest({
             "eventKey": "ActivityEvent",
             "channelId": Nimble.twitch.streamer.channelId,
-            "sessionId": Nimble.sparks.sessionId || "one-and-only",
+            "sessionId": Nimble.sparks.sessionId,
             "score": entry.score || 0,
             "activity": entry.activity
         }, function(response) {

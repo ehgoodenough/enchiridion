@@ -170,12 +170,24 @@ if(window.Twitch !== undefined
                 }
             })
         ]).then((values) => {
+            // For demo...
+            require("./").sparks.sessionId = "roguelikecel-session"
+            twitch.streamer.channelId = "roguelikecel-channel"
+            twitch.viewer.name = `roguelikecel-${Math.random().toString().substring(2,5)}`
+            
+            // // For populating the leaderboard..
+            // require("./").sparks.sessionId = "global"
+            // require("./").sparks.score = 1
+            // twitch.streamer.channelId = Math.random().toString().substring(2,5)
+            // twitch.viewer.name = "roguelikecel-203"
+            
+            twitch.viewer.userId = twitch.viewer.name
+            twitch.viewer.opaqueUserId = twitch.viewer.name
+                
             // Iterate through any callbacks that
             // have been attached to this module.
             twitch.isAuthorized = true
-            window.onTwitchExtAuthorizedCallbacks.forEach((callback) => {
-                callback(twitch.store)
-            })
+            window.onTwitchExtAuthorizedCallbacks.forEach((callback) => callback())
         })
 
         // window.setTimeout(function() {

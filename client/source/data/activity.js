@@ -1,1 +1,1 @@
-module.exports = "ENCHIRIDION"
+module.exports = "ENCHIRIDION!"

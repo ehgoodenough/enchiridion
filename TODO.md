@@ -1,4 +1,8 @@
-v1.1.0
+- Leaderboards
+- Prompt for Names 
+
+......
+
 - Leaderboards
 - Reset Leaderboards on Config Page
 

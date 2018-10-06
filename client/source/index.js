@@ -5,10 +5,12 @@ import Yaafloop from "yaafloop"
 import Nimble from "library/Nimble"
 import analytics from "library/analytics.js"
 
+import activity from "data/activity.js"
+
 import Mount from "views/Mount.view.js"
 import Model from "models/Model.js"
 
-if(__STAGE__ === "DEVELOPMENT") {
+if(Nimble.twitch.extension.state !== "released") {
     console.clear()
     require("statgrab/do")
 }
@@ -29,3 +31,15 @@ if(Nimble.twitch.extension.state === "released") {
         analytics.reportError(error)
     })
 }
+
+Nimble.sparks.initialize().then(() => {
+    Nimble.sparks.listenToLeaderboard(`${activity}/session`, `TwitchArcade.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}.sessionId.${Nimble.sparks.sessionId}`)
+    Nimble.sparks.listenToLeaderboard(`${activity}/channel`, `ChannelHighScores.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}`)
+    Nimble.sparks.listenToLeaderboard(`${activity}/global`, `GlobalHighScores.activity.${activity}`)
+    
+    // // For populating the leaderboard.
+    // Nimble.sparks.submitLeaderboardEntry({
+    //     "score": Nimble.sparks.score,
+    //     "activity": activity,
+    // })
+})

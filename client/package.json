@@ -17,6 +17,7 @@
     "zip": "bestzip build.zip ./builds/web"
   },
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
     "gameanalytics": "^3.0.1",
     "keyb": "^1.1.0",
     "preact": "^8.2.7",
