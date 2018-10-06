@@ -1,9 +1,3 @@
-- Leaderboards
-- Prompt for Names 
-
-......
-
-- Leaderboards
 - Reset Leaderboards on Config Page
 
 ......
