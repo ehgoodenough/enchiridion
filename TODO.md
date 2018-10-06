@@ -1,4 +1,4 @@
-- Better room w/ pixel edges
+- Better room w/ pixel edges that isn't gray
 - More Monsters!!!
 
 ......
@@ -28,3 +28,10 @@
 - Add a stupid basic level editor?
 - Add a bunch more monsters!! Add a bunch more weapons!!
 - Hover over monsters to learn more about them.
+
+- Monsters transitioning in from the sides?
+- Name it something less serious and gritty?
+
+Roguelike-isms
+- action log text descriptions
+- items and inventory and stuff

@@ -16,13 +16,13 @@ export default class UI {
                     {this.flash}
                 </div>
                 <div className="title-banner">
-                    <span>Enchiridion</span>
+                    <span>Click to play!</span>
                 </div>
                 <div className="game-over-banner">
                     <span>{window.model.game.adventurer.deathtext}</span>
                 </div>
                 <div className="pause-banner">
-                    <span>paused</span>
+                    <span>PAUSED</span>
                 </div>
             </div>
         )
