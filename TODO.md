@@ -1,18 +1,20 @@
-- Reset Leaderboards on Config Page
+- Better background w/ gradient
+- Better room w/ pixel edges
+- More Monsters!!!
 
 ......
 
-- More Monsters
+- Minimizing for Overlays
+- Light Weight Tutorial
+- A call-to-action to play
+
 - Adventurer Animations
 - Better discovery image!!!
-- Better background w/ gradient
-- Better room w/ pixel edges
+- Reset Leaderboards on Config Page
 
 .....
 
 - Mobile Support
-- Minimizing for Overlays
-- Light Weight Tutorial
 - Localization
 - Language Option Button on Title Screen
 - Sounds
