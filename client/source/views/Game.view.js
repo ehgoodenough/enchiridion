@@ -13,7 +13,7 @@ export default class Game {
             <div className={this.className}>
                 <div className="Scene">
                     <Camera>
-                        {this.worldtiles}
+                        <div className="Room"/>
                         {this.entities}
                     </Camera>
                 </div>
@@ -33,11 +33,6 @@ export default class Game {
     get entities() {
         return window.model.game.entities.map((entity) => (
             <Entity entity={entity} key={entity.key}/>
-        ))
-    }
-    get worldtiles() {
-        return Object.values(window.model.game.room.tiles).map((tile) => (
-            <Entity entity={tile} key={tile.key}/>
         ))
     }
 }

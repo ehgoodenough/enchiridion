@@ -1,6 +1,5 @@
 @import "Base.view.less";
 
-@frame-roundness: 0.25em;
 @keyframes flow {
     0% {background-position: 0% 50%}
 	50% {background-position: 100% 50%}
@@ -25,18 +24,6 @@
     // background-image: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
 	// background-size: 400% 400%;
 
-    @media(min-aspect-ratio: ~"10/10") {
-        font-size: ((10 / 10)* 100vh) / 10;
-        // width: (10 / 10) * 100vh;
-        // height: 100vh;
-    }
-
-    @media(max-aspect-ratio: ~"10/10") {
-        font-size: ((10 / 10) * 100vw) / 10;
-        // height: (10 / 10) * 100vw;
-        // width: 100vw;
-    }
-
     #input {
         position: absolute;
         width: 0em;
@@ -56,17 +43,28 @@
     background-color: #111;
 
     .Frame {
-        @media(min-aspect-ratio: ~"16/9") {
-            font-size: ((16 / 9)* 100vh) / 16;
-            width: (16 / 9) * 100vh;
+        @media(min-aspect-ratio: ~"10/10") {
+            font-size: ((10 / 10)* 100vh) / 10;
+            width: (10 / 10) * 100vh;
             height: 100vh;
         }
-    
-        @media(max-aspect-ratio: ~"16/9") {
-            font-size: ((9 / 16) * 100vw) / 9;
-            height: (9 / 16) * 100vw;
+
+        @media(max-aspect-ratio: ~"10/10") {
+            font-size: ((10 / 10) * 100vw) / 10;
+            height: (10 / 10) * 100vw;
             width: 100vw;
         }
+        // @media(min-aspect-ratio: ~"16/9") {
+        //     font-size: ((16 / 9)* 100vh) / 16;
+        //     width: (16 / 9) * 100vh;
+        //     height: 100vh;
+        // }
+        // 
+        // @media(max-aspect-ratio: ~"16/9") {
+        //     font-size: ((9 / 16) * 100vw) / 9;
+        //     height: (9 / 16) * 100vw;
+        //     width: 100vw;
+        // }
     }
 }
 
@@ -81,8 +79,8 @@
         width: calc(~"(100vh - 180px) * (10 / 10)");
         font-size: calc(~"(100vh - 180px) * (10 / 10) / 10");
 
-        border-top-left-radius: @frame-roundness;
-        border-bottom-left-radius: @frame-roundness;
+        border-top-left-radius: @roundness;
+        border-bottom-left-radius: @roundness;
     }
 }
 
@@ -96,7 +94,7 @@
 
 #mounted-as-component {
     .Frame {
-        border-radius: @frame-roundness;
+        border-radius: @roundness;
         // TODO: Support minimizing
         // and hiding the Frame.
     }
@@ -110,7 +108,7 @@
 
 #mounted-as-config {
     .Frame {
-        border-radius: @frame-roundness;
+        border-radius: @roundness;
 
         // TODO: Do not respond
         // to the total screen
