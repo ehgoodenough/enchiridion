@@ -23,6 +23,14 @@
     // animation: flow 15s ease infinite;
     // background-image: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
 	// background-size: 400% 400%;
+    
+    @media(min-aspect-ratio: ~"10/10") {
+        font-size: ((10 / 10)* 100vh) / 10;
+    }
+    
+    @media(max-aspect-ratio: ~"10/10") {
+        font-size: ((10 / 10) * 100vw) / 10;
+    }
 
     #input {
         position: absolute;
@@ -48,7 +56,7 @@
             width: (10 / 10) * 100vh;
             height: 100vh;
         }
-
+        
         @media(max-aspect-ratio: ~"10/10") {
             font-size: ((10 / 10) * 100vw) / 10;
             height: (10 / 10) * 100vw;
