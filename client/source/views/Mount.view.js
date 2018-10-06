@@ -1,6 +1,8 @@
 import Preact from "preact"
 import Nimble from "library/Nimble"
 
+import cursor from "library/cursor.js"
+
 import Game from "views/Game.view.js"
 
 import "views/Mount.view.less"
@@ -9,7 +11,10 @@ export default class Mount {
     render() {
         return (
             <div className="Mount" id={this.id}>
-                <div className="Frame" onClick={this.onClick}>
+                <div className="Frame"
+                    onClick={this.onClick}
+                    onMouseUp={this.onMouseUp}
+                    onMouseDown={this.onMouseDown}>
                     <input id="input" onKeyDown={this.onKeyDown}
                         onFocus={this.onFocus} onBlur={this.onBlur}/>
                     {this.view}
@@ -30,8 +35,20 @@ export default class Mount {
         //     )
         // }
     }
-    onClick(event) {
-        document.getElementById("input").focus()
+    get onClick() {
+        return (event) => {
+            document.getElementById("input").focus()
+        }
+    }
+    get onMouseDown() {
+        return (event) => {
+            cursor.isDown = true
+        }
+    }
+    get onMouseUp() {
+        return (event) => {
+            cursor.isDown = false
+        }
     }
     onKeyDown(event) {
         event.preventDefault()

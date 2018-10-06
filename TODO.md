@@ -1,12 +1,11 @@
-- Better room w/ pixel edges that isn't gray
-- More Monsters!!!
+- Light Weight Tutorial
+
+- Why are builds taking so long??
+- Why am I still using a globalized model?
 
 ......
 
 - Minimizing for Overlays
-- Light Weight Tutorial
-- A call-to-action to play
-
 - Adventurer Animations
 - Better discovery image!!!
 - Reset Leaderboards on Config Page
@@ -30,8 +29,10 @@
 - Hover over monsters to learn more about them.
 
 - Monsters transitioning in from the sides?
-- Name it something less serious and gritty?
 
 Roguelike-isms
 - action log text descriptions
 - items and inventory and stuff
+
+Make it less serious and gritty? Focusing on the action, like Hotline Miami or something? Enforced by color and sound?
+Focus on the non-proc-gen level design, not worrying about asthetic just now, but how those levels could be interesting to fight through. Finding weapons, getting to bonfires, etc? Focus on boss design!!! Find a good good pun.

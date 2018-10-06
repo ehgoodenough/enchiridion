@@ -28,8 +28,7 @@ export default class Game {
         this.add(this.adventurer = new Adventurer({
             "position": {"x": 2, "y": 2}
         }))
-
-        this.deadtimer = 0
+        
         this.score = 0
     }
     add(entity) {
@@ -68,6 +67,7 @@ export default class Game {
         if(this.hasEndeded !== true) {
             this.hasEnded = true
             analytics.reportEndGame()
+            this.model.deathtime = 0
             if(Nimble.sparks.isInitialized === true) {
                 Nimble.sparks.submitLeaderboardEntry({
                     "activity": activity,
