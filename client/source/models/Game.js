@@ -79,4 +79,13 @@ export default class Game {
     get isDone() {
         return this.adventurer.isDead === true
     }
+    get isTutorial() {
+        if(this.isDemo) {
+            return false
+        }
+        if(window.hasInputted) {
+            return false
+        }
+        return true
+    }
 }

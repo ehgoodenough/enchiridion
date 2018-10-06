@@ -28,6 +28,7 @@ export default class Game {
             window.model.isFocused === false ? "isPaused" : "",
             window.model.game.isDone === true ? "isDone" : "",
             window.model.game.isDemo === true ? "isDemo" : "",
+            window.model.game.isTutorial ? "isTutorial" : "",
         ].join(" ")
     }
     get entities() {

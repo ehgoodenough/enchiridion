@@ -27,6 +27,10 @@ export default class UI {
                 <div className="pause-banner">
                     <span>PAUSED</span>
                 </div>
+                <div className="tutorial">
+                    <img src={require("images/ui/keyboard.png")}/>
+                    <span>MOVE INTO MONSTER TO SLAY</span>
+                </div>
             </div>
         )
     }

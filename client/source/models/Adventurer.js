@@ -62,18 +62,22 @@ export default class Adventurer {
         if(keyb.isJustDown("W", delta.ms)
         || keyb.isJustDown("<up>", delta.ms)) {
             this.onAction({"move": {"y": -1}})
+            window.hasInputted = true
         }
         if(keyb.isJustDown("S", delta.ms)
         || keyb.isJustDown("<down>", delta.ms)) {
             this.onAction({"move": {"y": +1}})
+            window.hasInputted = true
         }
         if(keyb.isJustDown("A", delta.ms)
         || keyb.isJustDown("<left>", delta.ms)) {
             this.onAction({"move": {"x": -1}})
+            window.hasInputted = true
         }
         if(keyb.isJustDown("D", delta.ms)
         || keyb.isJustDown("<right>", delta.ms)) {
             this.onAction({"move": {"x": +1}})
+            window.hasInputted = true
         }
 
         if(Nimble.twitch.extension.state !== "released") {
