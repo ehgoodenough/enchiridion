@@ -1,5 +1,3 @@
-import Keyb from "keyb"
-import Preact from "preact"
 import Yaafloop from "yaafloop"
 
 import Nimble from "library/Nimble"
@@ -7,19 +5,17 @@ import analytics from "library/analytics.js"
 
 import activity from "data/activity.js"
 
-import Mount from "views/Mount.view.js"
-import Model from "models/Model.js"
+import model from "models/_.js"
+import view from "views/_.js"
 
 if(Nimble.twitch.extension.state !== "released") {
     console.clear()
     require("statgrab/do")
 }
 
-const model = window.model = new Model()
-const mount = Preact.render(<Mount/>, document.body)
 const loop = new Yaafloop((delta) => {
     model.update(delta)
-    Preact.render(<Mount/>, document.body, mount)
+    view.update(delta)
 })
 
 document.body.addEventListener("dblclick", function(event) {

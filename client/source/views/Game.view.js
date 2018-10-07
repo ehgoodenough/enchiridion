@@ -5,6 +5,8 @@ import UI from "views/UI.view.js"
 import Camera from "views/Camera.view.js"
 import LeaderboardModal from "views/LeaderboardModal.view.js"
 
+import model from "models/_.js"
+
 import "views/Game.view.less"
 
 export default class Game {
@@ -25,14 +27,14 @@ export default class Game {
     get className() {
         return [
             "Game",
-            window.model.isFocused === false ? "isPaused" : "",
-            window.model.game.isDone === true ? "isDone" : "",
-            window.model.game.isDemo === true ? "isDemo" : "",
-            window.model.game.isTutorial ? "isTutorial" : "",
+            model.isFocused === false ? "isPaused" : "",
+            model.game.isDone === true ? "isDone" : "",
+            model.game.isDemo === true ? "isDemo" : "",
+            model.game.isTutorial ? "isTutorial" : "",
         ].join(" ")
     }
     get entities() {
-        return window.model.game.entities.map((entity) => (
+        return model.game.entities.map((entity) => (
             <Entity entity={entity} key={entity.key}/>
         ))
     }

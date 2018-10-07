@@ -2,6 +2,7 @@ import Preact from "preact"
 import Nimble from "library/Nimble"
 
 import cursor from "library/cursor.js"
+import model from "models/_.js"
 
 import Game from "views/Game.view.js"
 
@@ -54,9 +55,9 @@ export default class Mount {
         event.preventDefault()
     }
     onFocus(event) {
-        window.model.isFocused = true
+        model.isFocused = true
     }
     onBlur(event) {
-        window.model.isFocused = false
+        model.isFocused = false
     }
 }

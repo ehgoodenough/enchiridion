@@ -7,6 +7,8 @@ const MINIMUM_DEATH_TIME = 1.5 // in seconds
 
 export default class Model {
     constructor(model) {
+        // IF FINDS UNEXPIRED LOCAL STORAGE
+        // THEN DO NOT START DEMO BUT START GAME.
         this.startNewDemoGame()
     }
     startNewGame() {

@@ -10,7 +10,6 @@
 - Monster design
 
 - Why are builds taking so long??
-- Why am I still using a globalized model?
 
 ......
 
