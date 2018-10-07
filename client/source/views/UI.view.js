@@ -31,7 +31,7 @@ export default class UI {
                 </div>
                 <div className="tutorial">
                     <img src={require("images/ui/keyboard.png")}/>
-                    <span>MOVE INTO MONSTERS TO SLAY</span>
+                    <span>MOVE INTO MONSTERS TO SLAY THEM</span>
                 </div>
             </div>
         )
