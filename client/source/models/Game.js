@@ -76,12 +76,12 @@ export default class Game {
             this.hasEnded = true
             analytics.reportEndGame()
             this.model.deathtime = 0
-            if(Nimble.sparks.isInitialized === true) {
-                Nimble.sparks.submitLeaderboardEntry({
-                    "activity": activity,
-                    "score": this.score,
-                })
-            }
+            // if(Nimble.sparks.isInitialized === true) {
+            //     Nimble.sparks.submitLeaderboardEntry({
+            //         "activity": activity,
+            //         "score": this.score,
+            //     })
+            // }
         }
     }
     get isDone() {

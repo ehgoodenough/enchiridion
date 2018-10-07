@@ -14,7 +14,7 @@
     "build": "codeglue --stage=NONE",
     "start": "codeglue --stage=NONE --mode=SERVER --port=8080 --ssl=true",
     "deploy": "aws s3 sync ./builds/web s3://ehgoodenough/enchiridion/ --acl public-read",
-    "zip": "bestzip build.zip ./builds/web"
+    "zip": "cd ./builds/web && bestzip ../../build.zip *"
   },
   "dependencies": {
     "crypto-js": "^3.1.9-1",

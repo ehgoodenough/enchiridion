@@ -3,7 +3,7 @@ import Preact from "preact"
 import Entity from "views/Entity.view.js"
 import UI from "views/UI.view.js"
 import Camera from "views/Camera.view.js"
-import LeaderboardModal from "views/LeaderboardModal.view.js"
+// import LeaderboardModal from "views/LeaderboardModal.view.js"
 
 import model from "models/_.js"
 
@@ -20,7 +20,7 @@ export default class Game {
                     </Camera>
                 </div>
                 <UI/>
-                <LeaderboardModal/>
+                {/*<LeaderboardModal/>*/}
             </div>
         )
     }

@@ -6,7 +6,7 @@ import cursor from "library/cursor.js"
 import Game from "models/Game.js"
 
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
-const STATE_EXPIRATION = 2 * 1000 // in milliseconds
+const STATE_EXPIRATION = 10 * 1000 // in milliseconds
 
 const DEMO_GAME_STATE = {"isDemo": true, "adventurer": {"position": {"x": 2, "y": 2}}}
 const NEW_GAME_STATE = {"adventurer": {"position": {"x": 2, "y": 2}}}

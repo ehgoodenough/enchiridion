@@ -4,9 +4,9 @@ module.exports.utility = {
 }
 
 module.exports.twitch = require("./twitch.js")
-module.exports.sparks = require("./sparks.js")
+// module.exports.sparks = require("./sparks.js")
 
-module.exports.views = {
-    "Leaderboard": require("./views/Leaderboard.view.js"),
-    "BrowsableLeaderboard": require("./views/BrowsableLeaderboard.view.js"),
-}
+// module.exports.views = {
+//     "Leaderboard": require("./views/Leaderboard.view.js"),
+//     "BrowsableLeaderboard": require("./views/BrowsableLeaderboard.view.js"),
+// }

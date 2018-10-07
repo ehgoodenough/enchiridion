@@ -1,4 +1,3 @@
-
 - Minimizing for Overlays
 - Better discovery image!!!
 - Reset Leaderboards on Config Page
