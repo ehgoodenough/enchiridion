@@ -30,6 +30,6 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "bestzip": "^2.0.0",
-    "codeglue": "^1.5.2"
+    "codeglue": "^1.6.0"
   }
 }
