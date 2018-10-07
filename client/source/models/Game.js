@@ -1,6 +1,3 @@
-import keyb from "keyb"
-import shortid from "shortid"
-
 import Nimble from "library/Nimble"
 import analytics from "library/analytics.js"
 
@@ -12,24 +9,24 @@ import MonsterWave from "models/MonsterWave.js"
 import Room from "models/Room.js"
 
 export default class Game {
-    constructor(game) {
-        this.model = game.model
-        this.isDemo = game.isDemo
-        this.key = shortid.generate()
+    constructor(parameters) {
+        this.model = parameters.model
 
         analytics.reportStartGame()
 
-        this.monsters = []
-        this.entities = []
-
-        this.wave = new MonsterWave(this, {"capacity": 4})
-        this.room = new Room({"width": 5, "height": 5})
-        this.camera = {"position": {"x": 2.5, "y": 2.5}}
-        this.add(this.adventurer = new Adventurer({
-            "position": {"x": 2, "y": 2}
-        }))
+        parameters.game = parameters.game || {}
+        parameters.game.monsters = parameters.game.monsters || []
+        parameters.game.adventurer = parameters.game.adventurer || {}
         
-        this.score = 0
+        this.score = parameters.game.score || 0
+        this.add(this.adventurer = new Adventurer(parameters.game.adventurer))
+        parameters.game.monsters.forEach((monster) => this.add(new Monster(monster)))
+        
+        this.room = new Room({"width": 5, "height": 5})
+        this.camera = {"position": {"x": 2.5, "y": 2.5}} // new Camera()
+        this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
+        
+        this.isDemo = parameters.game.isDemo
     }
     add(entity) {
         entity.game = this
@@ -87,5 +84,15 @@ export default class Game {
             return false
         }
         return true
+    }
+    toState() {
+        return {
+            "score": this.score,
+            "adventurer": this.adventurer.toState(),
+            "monsters": this.monsters.map((monster) => monster.toState()),
+            // "camera": this.camera,
+            // "wave": this.wave.toState(),
+            // "room": this.room.toState(),
+        }
     }
 }

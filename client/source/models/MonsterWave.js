@@ -16,15 +16,17 @@ import frame from "data/frame.js"
 import Monster from "models/Monster.js"
 
 export default class MonsterWave {
-    constructor(game, wave) {
-        this.game = game
+    constructor(parameters) {
+        this.game = parameters.game
 
         // TODO: Change capacity from a variable
         // to a function of how many monsters have
         // already been killed, so the wave can
         // become more difficult during the wave.
-        this.capacity = wave.capacity || 4
-        this.killcount = wave.killcount || Infinity
+        this.capacity = parameters.wave.capacity || 4
+        this.killcount = parameters.wave.killcount || Infinity
+        
+        this.game.monsters = this.game.monsters || []
     }
     onAction() {
         // If attached to a game...
@@ -72,6 +74,12 @@ export default class MonsterWave {
                 && monster.position.y === position.y
         }))
         return position
+    }
+    toState() {
+        return {
+            "capacity": this.capacity,
+            "killcount": this.killcount,
+        }
     }
     // // Returns a random monster
     // // to be spawned. It randomizes

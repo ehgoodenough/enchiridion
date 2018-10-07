@@ -21,21 +21,20 @@ export default class Monster {
         this.key = "monster-" + shortid.generate()
 
         this.position = parameters.position || {"x": 0, "y": 0}
+        this.flipflop = parameters.flipflop || false
+        this.damage = parameters.damage || 0
 
         // this.color = colors.red
 
         this.title = "Red Slime"
         this.description = "It looks gross."
-
         this.health = 1
 
         this.group = "monsters"
-
-        this.isReady = false
         this.stack = 1
     }
     get image() {
-        if(this.isReady === true) {
+        if(this.flipflop === true) {
             return SLIME_OMEGA_IMAGE
         } else {
             return SLIME_ALPHA_IMAGE
@@ -53,7 +52,7 @@ export default class Monster {
             return "strike" + " " + this.direction
         }
 
-        if(this.isReady === true) {
+        if(this.flipflop === true) {
             return "shake"
         }
 
@@ -74,10 +73,10 @@ export default class Monster {
 
         this.isAttacking = false
 
-        if(this.isReady == false) {
-            this.isReady = true
-        } else if(this.isReady = true) {
-            this.isReady = false
+        if(this.flipflop == false) {
+            this.flipflop = true
+        } else if(this.flipflop = true) {
+            this.flipflop = false
 
             // move towards the this.game.adventurer, prioritzing whichever vector has a longer magnitude.
             if(Math.abs(this.position.y - ((this.game.adventurer.position.y + this.game.adventurer.prevposition.y) / 2))
@@ -139,8 +138,8 @@ export default class Monster {
         this.position.y += action.move.y
     }
     beAttacked() {
-        this.health -= 1
-        if(this.health <= 0) {
+        this.damage += 1
+        if(this.damage >= this.health) {
             this.isDead = true
             this.game.score += 1
             this.game.wave.killcount -= 1
@@ -150,6 +149,13 @@ export default class Monster {
             //     this.game.score += 2
             //     altar.isBloody = this.id
             // }
+        }
+    }
+    toState() {
+        return {
+            "damage": this.damage,
+            "position": this.position,
+            "flipflop": this.flipflop,
         }
     }
 }

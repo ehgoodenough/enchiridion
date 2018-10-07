@@ -5,17 +5,16 @@ import Game from "models/Game.js"
 
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
 
+const DEMO_GAME_STATE = {"isDemo": true, "adventurer": {"position": {"x": 2, "y": 2}}}
+const NEW_GAME_STATE = {"isDemo": true, "adventurer": {"position": {"x": 2, "y": 2}}}
+
 export default class Model {
     constructor(model) {
-        // IF FINDS UNEXPIRED LOCAL STORAGE
-        // THEN DO NOT START DEMO BUT START GAME.
-        this.startNewDemoGame()
+        // this.game = new Game({"model": this, "game": LOADED_GAME_STATE})
+        this.game = new Game({"model": this, "game": DEMO_GAME_STATE})
     }
     startNewGame() {
-        this.game = new Game({"model": this})
-    }
-    startNewDemoGame() {
-        this.game = new Game({"isDemo": true, "model": this})
+        this.game = new Game({"model": this, "game": NEW_GAME_STATE})
     }
     update(delta) {
         if(this.game.isDemo === true

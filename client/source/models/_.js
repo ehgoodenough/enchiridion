@@ -1,5 +1,5 @@
 import Model from "models/Model.js"
 
-const model = new Model()
+const model = window.model = new Model()
 
 export default model

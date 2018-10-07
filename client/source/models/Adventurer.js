@@ -31,14 +31,13 @@ export default class Adventurer {
         this.key = shortid.generate()
 
         this.position = parameters.position || {"x": 0, "y": 0}
-        this.prevposition = {"x": this.position.x, "y": this.position.y}
+        this.prevposition = parameters.prevposition || {"x": this.position.x, "y": this.position.y}
+        this.damage = parameters.damage || 0
 
         this.title = "The Adventurer"
         this.description = "It you!!"
-
-        this.maxhealth = 3
-        this.health = this.maxhealth
-
+        this.health = 3
+        
         this.stack = 1
     }
     update(delta) {
@@ -135,9 +134,9 @@ export default class Adventurer {
             return
         }
         if(this.isDead !== true) {
-            this.health -= 1
+            this.damage += 1
             this.isAttacked = shortid.generate()
-            if(this.health <= 0) {
+            if(this.damage >= this.health) {
                 this.isDead = true
                 this.deathtext = deathtext[0]
                 deathtext.push(deathtext.shift())
@@ -150,6 +149,14 @@ export default class Adventurer {
             return GRAVESTONE_IMAGE
         } else {
             return ADVENTURER_IMAGE
+        }
+    }
+    toState() {
+        return {
+            "damage": this.damage,
+            "position": this.position,
+            "prevposition": this.prevposition,
+            "isDead": this.isDead
         }
     }
 }

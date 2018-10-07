@@ -28,8 +28,10 @@ if(Nimble.twitch.extension.state === "released") {
     })
 }
 
-Nimble.sparks.initialize().then(() => {
-    Nimble.sparks.listenToLeaderboard(`${activity}/session`, `TwitchArcade.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}.sessionId.${Nimble.sparks.sessionId}`)
-    Nimble.sparks.listenToLeaderboard(`${activity}/channel`, `ChannelHighScores.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}`)
-    Nimble.sparks.listenToLeaderboard(`${activity}/global`, `GlobalHighScores.activity.${activity}`)
-})
+// Nimble.twitch.onAuthorized(function() {
+//     Nimble.sparks.initialize().then(() => {
+//         Nimble.sparks.listenToLeaderboard(`${activity}/session`, `TwitchArcade.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}.sessionId.${Nimble.sparks.sessionId}`)
+//         Nimble.sparks.listenToLeaderboard(`${activity}/channel`, `ChannelHighScores.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}`)
+//         Nimble.sparks.listenToLeaderboard(`${activity}/global`, `GlobalHighScores.activity.${activity}`)
+//     })
+// })

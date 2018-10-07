@@ -38,9 +38,9 @@ export default class UI {
     }
     get hearts() {
         var hearts = new Array()
-        for(var i = 0; i < model.game.adventurer.maxhealth; i++) {
-            if(i < model.game.adventurer.health) {
-                if(model.game.adventurer.health === 1) {
+        for(var i = model.game.adventurer.health - 1; i >= 0; i -= 1) {
+            if(i >= model.game.adventurer.damage) {
+                if(model.game.adventurer.damage + 1 === model.game.adventurer.health) {
                     hearts.push(<span className="final full heart" key={i}/>)
                 } else {
                     hearts.push(<span className="full heart" key={i}/>)
