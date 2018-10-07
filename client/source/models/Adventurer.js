@@ -61,22 +61,22 @@ export default class Adventurer {
         if(keyb.isJustDown("W", delta.ms)
         || keyb.isJustDown("<up>", delta.ms)) {
             this.onAction({"move": {"y": -1}})
-            window.hasInputted = true
+            this.game.model.hasUsedKeyboard = true
         }
         if(keyb.isJustDown("S", delta.ms)
         || keyb.isJustDown("<down>", delta.ms)) {
             this.onAction({"move": {"y": +1}})
-            window.hasInputted = true
+            this.game.model.hasUsedKeyboard = true
         }
         if(keyb.isJustDown("A", delta.ms)
         || keyb.isJustDown("<left>", delta.ms)) {
             this.onAction({"move": {"x": -1}})
-            window.hasInputted = true
+            this.game.model.hasUsedKeyboard = true
         }
         if(keyb.isJustDown("D", delta.ms)
         || keyb.isJustDown("<right>", delta.ms)) {
             this.onAction({"move": {"x": +1}})
-            window.hasInputted = true
+            this.game.model.hasUsedKeyboard = true
         }
 
         if(Nimble.twitch.extension.state !== "released") {
@@ -136,13 +136,15 @@ export default class Adventurer {
         if(this.isDead !== true) {
             this.damage += 1
             this.isAttacked = shortid.generate()
-            if(this.damage >= this.health) {
-                this.isDead = true
+            if(this.isDead === true) {
                 this.deathtext = deathtext[0]
                 deathtext.push(deathtext.shift())
                 this.game.onEnd()
             }
         }
+    }
+    get isDead() {
+        return this.damage >= this.health
     }
     get image() {
         if(this.isDead === true) {

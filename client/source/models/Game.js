@@ -1,3 +1,5 @@
+import "local-json-storage"
+
 import Nimble from "library/Nimble"
 import analytics from "library/analytics.js"
 
@@ -59,6 +61,15 @@ export default class Game {
             }
         })
         this.wave.onAction()
+        
+        // Save the state.
+        if(this.isDemo !== true) {
+            window.localStorage.setJSON("state", {
+                "date": Date.now(),
+                "game": this.toState(),
+                "hasUsedKeyboard": this.model.hasUsedKeyboard
+            })
+        }
     }
     onEnd() {
         if(this.hasEndeded !== true) {
@@ -80,7 +91,7 @@ export default class Game {
         if(this.isDemo) {
             return false
         }
-        if(window.hasInputted) {
+        if(this.model.hasUsedKeyboard) {
             return false
         }
         return true

@@ -1,17 +1,28 @@
+import "local-json-storage"
+
 import keyb from "keyb"
 import cursor from "library/cursor.js"
 
 import Game from "models/Game.js"
 
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
+const STATE_EXPIRATION = 2 * 1000 // in milliseconds
 
 const DEMO_GAME_STATE = {"isDemo": true, "adventurer": {"position": {"x": 2, "y": 2}}}
-const NEW_GAME_STATE = {"isDemo": true, "adventurer": {"position": {"x": 2, "y": 2}}}
+const NEW_GAME_STATE = {"adventurer": {"position": {"x": 2, "y": 2}}}
 
 export default class Model {
     constructor(model) {
-        // this.game = new Game({"model": this, "game": LOADED_GAME_STATE})
-        this.game = new Game({"model": this, "game": DEMO_GAME_STATE})
+        const state = window.localStorage.getJSON("state")
+        
+        if(state !== null
+        && Date.now() - state.date < STATE_EXPIRATION
+        && state.game.adventurer.isDead !== true) {
+            this.hasUsedKeyboard = state.hasUsedKeyboard
+            this.game = new Game({"model": this, "game": state.game})
+        } else {
+            this.game = new Game({"model": this, "game": DEMO_GAME_STATE})
+        }
     }
     startNewGame() {
         this.game = new Game({"model": this, "game": NEW_GAME_STATE})
