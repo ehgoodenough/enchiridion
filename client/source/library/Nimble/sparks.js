@@ -32,7 +32,7 @@ Sparks.initiate = function() {
             "onNonce": (nonce) => Sparks.onNonce(nonce),
             "onInit": (response) => resolve(response),
             "onError": (response) => reject(response),
-            "onMessage": (message) => Sparks.onMessageCallback(message),
+            "onMessage": (message) => Sparks.onMessageCallback(message)
         })
     })
 }

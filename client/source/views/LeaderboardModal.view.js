@@ -8,8 +8,8 @@ import "views/LeaderboardModal.view.less"
 export default class LeaderboardModal {
     render() {
         if(window.model.game !== undefined
-        && window.model.game.adventurer !== undefined
-        && window.model.game.adventurer.isDead === true) {
+        && window.model.game.adventurer !== undefined) {
+        // && window.model.game.adventurer.isDead === true) {
             return (
                 <div className="LeaderboardModal">
                     <header>High Scores</header>

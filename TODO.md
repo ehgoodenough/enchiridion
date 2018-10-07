@@ -1,4 +1,10 @@
-- Create a non-demo build for review.
+
+- Minimizing for Overlays
+- Better discovery image!!!
+- Reset Leaderboards on Config Page
+
+.........
+
 - Try to make an ascii renderer with zoom, hover, and colors.
 
 - Monster design
@@ -8,13 +14,8 @@
 
 ......
 
-- Minimizing for Overlays
-- Adventurer Animations
-- Better discovery image!!!
-- Reset Leaderboards on Config Page
-
-.....
-
+- Adventurer Animations?
+- Style the leaderboards differently?
 - Mobile Support
 - Localization
 - Language Option Button on Title Screen
@@ -30,6 +31,17 @@
 - Add a stupid basic level editor?
 - Add a bunch more monsters!! Add a bunch more weapons!!
 - Hover over monsters to learn more about them.
+
+* traps
+* pits, not walls
+* texture on the ground
+* non-square rooms
+* open villages
+* outside, made up of multiple screens
+* lighting???
+* square tiles with height for walls
+* seeing things you can't get to yet
+* overlapping back on itself
 
 - Monsters transitioning in from the sides?
 
