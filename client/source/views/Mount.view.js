@@ -18,6 +18,7 @@ export default class Mount {
                     onMouseDown={this.onMouseDown}>
                     <input id="input" onKeyDown={this.onKeyDown}
                         onFocus={this.onFocus} onBlur={this.onBlur}/>
+                    <Preload/>
                     {this.view}
                 </div>
             </div>
@@ -60,4 +61,19 @@ export default class Mount {
     onBlur(event) {
         model.isFocused = false
     }
+}
+
+function Preload() {
+    return (
+        <div className="Preload">
+            <img src={require("images/monsters/adventurer.png")}/>
+            <img src={require("images/monsters/gravestone.png")}/>
+            <img src={require("images/monsters/slime_alpha.png")}/>
+            <img src={require("images/monsters/slime_omega.png")}/>
+            <img src={require("images/ui/heart-full-white.png")}/>
+            <img src={require("images/ui/heart-half-white.png")}/>
+            <img src={require("images/ui/heart-none-white.png")}/>
+            <img src={require("images/ui/keyboard.png")}/>
+        </div>
+    )
 }
