@@ -1,26 +1,30 @@
+# Extension Tasks #
+
 - Minimizing for Overlays
 - Better discovery image!!!
 - Reset Leaderboards on Config Page
-
 .........
-
-- Try to make an ascii renderer with zoom, hover, and colors.
-
-- Monster design
-
-- Why are builds taking so long??
-
-......
-
-- Adventurer Animations?
 - Style the leaderboards differently?
-- Mobile Support
 - Localization
 - Language Option Button on Title Screen
-- Sounds
-- Sound & Mute Button on Title Screen
 
-.....
+# Roguelike Tasks #
+
+- Make an ascii renderer with zoom, hover, shaders, and colors?
+- Design the different monsters.
+- Design the different weapons and items.
+
+- Adventurer Animations
+- Sounds
+- Title Screen
+- Options Menu Screen
+
+- FOV
+- Camera, camera zones.
+- level editor tools
+- saving at bonfires, local storage.
+- ...npcs? shops? tutorials. quests?
+- itch.io deploys
 
 - Dig out a map. Add collision between the map and the walls.
 - Add depth to the walls. Add dirt and shrubs to the ground.
@@ -49,3 +53,9 @@ Roguelike-isms
 
 Make it less serious and gritty? Focusing on the action, like Hotline Miami or something? Enforced by color and sound?
 Focus on the non-proc-gen level design, not worrying about asthetic just now, but how those levels could be interesting to fight through. Finding weapons, getting to bonfires, etc? Focus on boss design!!! Find a good good pun.
+
+# Resources #
+
+- r/roguelikedev faq
+- roguebasin
+- roguelike radio
