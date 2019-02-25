@@ -1,31 +1,26 @@
-import "local-json-storage"
-
 import analytics from "library/analytics.js"
 
+import model from "models/.js"
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
 import MonsterWave from "models/MonsterWave.js"
 import Room from "models/Room.js"
 
 export default class Game {
-    constructor(parameters) {
-        this.model = parameters.model
-
+    constructor(game) {
         analytics.reportStartGame()
 
-        parameters.game = parameters.game || {}
-        parameters.game.monsters = parameters.game.monsters || []
-        parameters.game.adventurer = parameters.game.adventurer || {}
+        game = game || {}
+        game.monsters = game.monsters || []
+        game.adventurer = game.adventurer || {}
         
-        this.score = parameters.game.score || 0
-        this.add(this.adventurer = new Adventurer(parameters.game.adventurer))
-        parameters.game.monsters.forEach((monster) => this.add(new Monster(monster)))
+        this.score = game.score || 0
+        this.add(this.adventurer = new Adventurer(game.adventurer))
+        game.monsters.forEach((monster) => this.add(new Monster(monster)))
         
         this.room = new Room({"width": 5, "height": 5})
         this.camera = {"position": {"x": 2.5, "y": 2.5}} // new Camera()
         this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
-        
-        this.isDemo = parameters.game.isDemo
     }
     add(entity) {
         entity.game = this
@@ -61,18 +56,14 @@ export default class Game {
         
         // Save the state.
         if(this.isDemo !== true) {
-            window.localStorage.setJSON("state", {
-                "date": Date.now(),
-                "game": this.toState(),
-                "hasUsedKeyboard": this.model.hasUsedKeyboard
-            })
+            model.saveState()
         }
     }
     onEnd() {
         if(this.hasEndeded !== true) {
             this.hasEnded = true
             analytics.reportEndGame()
-            this.model.deathtime = 0
+            model.deathtime = 0
         }
     }
     get isDone() {
@@ -82,7 +73,7 @@ export default class Game {
         if(this.isDemo) {
             return false
         }
-        if(this.model.hasUsedKeyboard) {
+        if(model.hasUsedKeyboard) {
             return false
         }
         return true

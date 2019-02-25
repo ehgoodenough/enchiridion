@@ -1,5 +1,7 @@
 # Roguelike Tasks #
 
+- Use poin instead of cursor.
+
 - Dig out a map, with collision for the walls.
 - Add a camera. Center it on the player. Or on a camera zone.
 - Add lighting with a field-of-view.

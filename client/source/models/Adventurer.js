@@ -5,6 +5,7 @@ import colors from "data/colors.js"
 import deathtext from "data/deathtext.js"
 import isInDevelopment from "data/is-dev.js"
 
+import model from "models/.js"
 import Monster from "models/Monster.js"
 
 import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
@@ -60,22 +61,22 @@ export default class Adventurer {
         if(keyb.wasJustPressed("W", delta.ms)
         || keyb.wasJustPressed("<up>", delta.ms)) {
             this.onAction({"move": {"y": -1}})
-            this.game.model.hasUsedKeyboard = true
+            model.hasUsedKeyboard = true
         }
         if(keyb.wasJustPressed("S", delta.ms)
         || keyb.wasJustPressed("<down>", delta.ms)) {
             this.onAction({"move": {"y": +1}})
-            this.game.model.hasUsedKeyboard = true
+            model.hasUsedKeyboard = true
         }
         if(keyb.wasJustPressed("A", delta.ms)
         || keyb.wasJustPressed("<left>", delta.ms)) {
             this.onAction({"move": {"x": -1}})
-            this.game.model.hasUsedKeyboard = true
+            model.hasUsedKeyboard = true
         }
         if(keyb.wasJustPressed("D", delta.ms)
         || keyb.wasJustPressed("<right>", delta.ms)) {
             this.onAction({"move": {"x": +1}})
-            this.game.model.hasUsedKeyboard = true
+            model.hasUsedKeyboard = true
         }
 
         if(isInDevelopment === true) {
