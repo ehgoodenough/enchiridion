@@ -6,6 +6,7 @@ GameAnalytics._ = GameAnalytics.GameAnalytics
 
 const analytics = module.exports = {}
 analytics.isInitialized = false
+analytics.isInDevelopment = false
 
 analytics.initialize = function() {
     // GameAnalytics._.setEnabledInfoLog(true)
@@ -18,17 +19,29 @@ analytics.initialize = function() {
 }
 
 analytics.reportError = function(error) {
-    if(analytics.isInitialized === true) {
-        GameAnalytics._.addErrorEvent(GameAnalytics.EGAErrorSeverity.Error, error.message)
+    if(analytics.isInitialized !== true
+    || analytics.isInDevelopment === true) {
+        return
     }
+    GameAnalytics._.addErrorEvent(GameAnalytics.EGAErrorSeverity.Error, error.message)
 }
 
 analytics.reportStartGame = function() {
-    if(analytics.isInitialized === false) analytics.initialize()
+    if(analytics.isInDevelopment === true) {
+        return
+    }
+    if(analytics.isInitialized === false) {
+        analytics.initialize()
+    }
     GameAnalytics._.addProgressionEvent(GameAnalytics.EGAProgressionStatus.Start, "game")
 }
 
 analytics.reportEndGame = function() {
-    if(analytics.isInitialized === false) analytics.initialize()
+    if(analytics.isInDevelopment === true) {
+        return
+    }
+    if(analytics.isInitialized === false) {
+        analytics.initialize()
+    }
     GameAnalytics._.addProgressionEvent(GameAnalytics.EGAProgressionStatus.Complete, "game")
 }

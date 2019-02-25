@@ -31,9 +31,7 @@ const loop = new Yaafloop((delta) => {
 //////////////
 
 import analytics from "library/analytics.js"
-
-if(isInDevelopment === false) {
-    window.addEventListener("error", (error) => {
-        analytics.reportError(error)
-    })
-}
+analytics.isInDevelopment = isInDevelopment
+window.addEventListener("error", (error) => {
+    analytics.reportError(error)
+})
