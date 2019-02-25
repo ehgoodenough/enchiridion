@@ -5,9 +5,8 @@ node_modules
 .serverless
 .webpack
 build*
-builds
 
 # Temporary
 .DS_Store
-# *.log
+*.log
 ._*

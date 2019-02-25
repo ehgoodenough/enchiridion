@@ -1,37 +1,39 @@
-import Yaafloop from "yaafloop"
+////////////////////////////////////////////////////////
+//    _____         _   _     _   _ _                //
+//   |   __|___ ___| |_|_|___|_|_| |_|___ ___       //
+//   |   __|   |  _|   | |  _| | . | | . |   |     //
+//   |_____|_|_|___|_|_|_|_| |_|___|_|___|_|_|    //
+//                                               //
+//////////////////////////////////////////////////
 
-import Nimble from "library/Nimble"
-import analytics from "library/analytics.js"
+import isInDevelopment from "data/is-dev.js"
 
-import activity from "data/activity.js"
-
-import model from "models/_.js"
-import view from "views/_.js"
-
-if(Nimble.twitch.extension.state !== "released") {
-    console.clear()
+if(isInDevelopment === true) {
     require("statgrab/do")
 }
+
+//////////////
+// Looping //
+////////////
+
+import Yaafloop from "yaafloop"
+
+import model from "models/.js"
+import view from "views/.js"
 
 const loop = new Yaafloop((delta) => {
     model.update(delta)
     view.update(delta)
 })
 
-document.body.addEventListener("dblclick", function(event) {
-    event.stopPropagation()
-})
+////////////////
+// Analytics //
+//////////////
 
-if(Nimble.twitch.extension.state === "released") {
+import analytics from "library/analytics.js"
+
+if(isInDevelopment === false) {
     window.addEventListener("error", (error) => {
         analytics.reportError(error)
     })
 }
-
-// Nimble.twitch.onAuthorized(function() {
-//     Nimble.sparks.initialize().then(() => {
-//         Nimble.sparks.listenToLeaderboard(`${activity}/session`, `TwitchArcade.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}.sessionId.${Nimble.sparks.sessionId}`)
-//         Nimble.sparks.listenToLeaderboard(`${activity}/channel`, `ChannelHighScores.activity.${activity}.channelId.${Nimble.twitch.streamer.channelId}`)
-//         Nimble.sparks.listenToLeaderboard(`${activity}/global`, `GlobalHighScores.activity.${activity}`)
-//     })
-// })

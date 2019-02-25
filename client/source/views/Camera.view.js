@@ -1,7 +1,7 @@
 import Preact from "preact"
 
 import frame from "data/frame.js"
-import model from "models/_.js"
+import model from "models/.js"
 
 import "views/Camera.view.less"
 

@@ -1,5 +1,7 @@
 # Enchiridion (client-side) #
 
+The rogue-like beat-em-up.
+
 ### Getting Started ###
 
 Have node v8+ and npm v5+.

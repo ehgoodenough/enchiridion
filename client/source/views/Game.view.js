@@ -5,7 +5,7 @@ import UI from "views/UI.view.js"
 import Camera from "views/Camera.view.js"
 // import LeaderboardModal from "views/LeaderboardModal.view.js"
 
-import model from "models/_.js"
+import model from "models/.js"
 
 import "views/Game.view.less"
 

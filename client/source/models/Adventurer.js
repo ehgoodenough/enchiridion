@@ -1,10 +1,9 @@
 import keyb from "keyb"
 import shortid from "shortid"
 
-import Nimble from "library/Nimble"
-
 import colors from "data/colors.js"
 import deathtext from "data/deathtext.js"
+import isInDevelopment from "data/is-dev.js"
 
 import Monster from "models/Monster.js"
 
@@ -58,29 +57,29 @@ export default class Adventurer {
             return
         }
 
-        if(keyb.isJustDown("W", delta.ms)
-        || keyb.isJustDown("<up>", delta.ms)) {
+        if(keyb.wasJustPressed("W", delta.ms)
+        || keyb.wasJustPressed("<up>", delta.ms)) {
             this.onAction({"move": {"y": -1}})
             this.game.model.hasUsedKeyboard = true
         }
-        if(keyb.isJustDown("S", delta.ms)
-        || keyb.isJustDown("<down>", delta.ms)) {
+        if(keyb.wasJustPressed("S", delta.ms)
+        || keyb.wasJustPressed("<down>", delta.ms)) {
             this.onAction({"move": {"y": +1}})
             this.game.model.hasUsedKeyboard = true
         }
-        if(keyb.isJustDown("A", delta.ms)
-        || keyb.isJustDown("<left>", delta.ms)) {
+        if(keyb.wasJustPressed("A", delta.ms)
+        || keyb.wasJustPressed("<left>", delta.ms)) {
             this.onAction({"move": {"x": -1}})
             this.game.model.hasUsedKeyboard = true
         }
-        if(keyb.isJustDown("D", delta.ms)
-        || keyb.isJustDown("<right>", delta.ms)) {
+        if(keyb.wasJustPressed("D", delta.ms)
+        || keyb.wasJustPressed("<right>", delta.ms)) {
             this.onAction({"move": {"x": +1}})
             this.game.model.hasUsedKeyboard = true
         }
 
-        if(Nimble.twitch.extension.state !== "released") {
-            if(keyb.isJustDown("T", delta.ms)) {
+        if(isInDevelopment === true) {
+            if(keyb.wasJustPressed("T", delta.ms)) {
                 this.onAction({"move": {}})
             }
         }

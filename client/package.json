@@ -1,7 +1,7 @@
 {
   "name": "enchiridion",
   "version": "1.2.0",
-  "description": "...",
+  "description": "The rogue-like beat-em-up",
   "private": true,
   "contributors": [
     "Andrew McPherson <@ehgoodenough>"
@@ -11,15 +11,16 @@
     "url": "https://github.com/ehgoodenough/enchiridion"
   },
   "scripts": {
-    "build": "codeglue --stage=NONE",
-    "start": "codeglue --stage=NONE --mode=SERVER --port=8080 --ssl=true",
+    "build": "codeglue --stage=production",
+    "start": "codeglue --stage=development --mode=server",
     "deploy": "aws s3 sync ./builds/web s3://ehgoodenough/enchiridion/ --acl public-read",
+    "open": "opn https://s3-us-west-2.amazonaws.com/enchiridion/index.html",
     "zip": "cd ./builds/web && bestzip ../../build.zip *"
   },
   "dependencies": {
     "crypto-js": "^3.1.9-1",
     "gameanalytics": "^3.0.1",
-    "keyb": "^1.1.0",
+    "keyb": "^1.2.0",
     "local-json-storage": "^1.0.1",
     "preact": "^8.2.7",
     "query-string": "^6.1.0",
@@ -28,9 +29,10 @@
     "yaafloop": "^1.1.0"
   },
   "devDependencies": {
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "bestzip": "^2.0.0",
-    "codeglue": "^1.6.0"
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/preset-env": "^7.3.1",
+    "bestzip": "^2.1.2",
+    "codeglue": "^1.6.5",
+    "opn-cli": "^4.0.0"
   }
 }

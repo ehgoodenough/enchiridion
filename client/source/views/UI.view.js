@@ -1,6 +1,6 @@
 import Preact from "preact"
 
-import model from "models/_.js"
+import model from "models/.js"
 
 import "views/UI.view.less"
 

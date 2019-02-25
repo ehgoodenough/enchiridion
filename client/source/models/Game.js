@@ -1,9 +1,6 @@
 import "local-json-storage"
 
-import Nimble from "library/Nimble"
 import analytics from "library/analytics.js"
-
-import activity from "data/activity.js"
 
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
@@ -76,12 +73,6 @@ export default class Game {
             this.hasEnded = true
             analytics.reportEndGame()
             this.model.deathtime = 0
-            // if(Nimble.sparks.isInitialized === true) {
-            //     Nimble.sparks.submitLeaderboardEntry({
-            //         "activity": activity,
-            //         "score": this.score,
-            //     })
-            // }
         }
     }
     get isDone() {
