@@ -1,37 +1,27 @@
-# Extension Tasks #
-
-- Minimizing for Overlays
-- Better discovery image!!!
-- Reset Leaderboards on Config Page
-.........
-- Style the leaderboards differently?
-- Localization
-- Language Option Button on Title Screen
-
 # Roguelike Tasks #
 
-- Make an ascii renderer with zoom, hover, shaders, and colors?
+- Dig out a map, with collision for the walls.
+- Add a camera. Center it on the player. Or on a camera zone.
+- Add lighting with a field-of-view.
+
 - Design the different monsters.
 - Design the different weapons and items.
+- Add a stupid basic level editor, with easy export.
+- Saving your progress at bonfires.
 
+- shop for spending your points.
+- npcs with quests.
+- deeper tutorial.
+
+- electron wrapper
+- itch.io deploys
+
+- Add depth to the walls. Add dirt and shrubs to the ground.
+- Make an ascii renderer with zoom, hover, shaders, and colors?
 - Adventurer Animations
 - Sounds
 - Title Screen
 - Options Menu Screen
-
-- FOV
-- Camera, camera zones.
-- level editor tools
-- saving at bonfires, local storage.
-- ...npcs? shops? tutorials. quests?
-- itch.io deploys
-
-- Dig out a map. Add collision between the map and the walls.
-- Add depth to the walls. Add dirt and shrubs to the ground.
-- Add a camera. Center it on the player. Or on a camera zone.
-- Add lighting.
-- Add a stupid basic level editor?
-- Add a bunch more monsters!! Add a bunch more weapons!!
 - Hover over monsters to learn more about them.
 
 * traps
@@ -45,14 +35,18 @@
 * seeing things you can't get to yet
 * overlapping back on itself
 
-- Monsters transitioning in from the sides?
+- Make it less serious and gritty? Focusing on the action, like Hotline Miami or something? Enforced by color and sound?
+- Focus on the non-proc-gen level design, not worrying about asthetic just now, but how those levels could be interesting to fight through. Finding weapons, getting to bonfires, etc? Focus on boss design!!! Find a good good pun.
 
-Roguelike-isms
-- action log text descriptions
-- items and inventory and stuff
+# Extension Tasks #
 
-Make it less serious and gritty? Focusing on the action, like Hotline Miami or something? Enforced by color and sound?
-Focus on the non-proc-gen level design, not worrying about asthetic just now, but how those levels could be interesting to fight through. Finding weapons, getting to bonfires, etc? Focus on boss design!!! Find a good good pun.
+- Minimizing for Overlays
+- Better discovery image!!!
+- Reset Leaderboards on Config Page
+.........
+- Style the leaderboards differently?
+- Localization
+- Language Option Button on Title Screen
 
 # Resources #
 
