@@ -1,5 +1,6 @@
 import keyb from "keyb"
 import cursor from "library/cursor.js"
+import analytics from "library/analytics.js"
 
 import Game from "models/Game.js"
 
@@ -23,6 +24,7 @@ export default class Model {
     }
     startNewGame() {
         this.game = new Game(NEW_GAME_STATE)
+        analytics.reportStartGame()
     }
     toState() {
         return {

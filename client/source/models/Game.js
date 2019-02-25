@@ -8,8 +8,6 @@ import Room from "models/Room.js"
 
 export default class Game {
     constructor(game) {
-        analytics.reportStartGame()
-
         game = game || {}
         game.monsters = game.monsters || []
         game.adventurer = game.adventurer || {}

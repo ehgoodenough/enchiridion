@@ -12,6 +12,16 @@ if(isInDevelopment === true) {
     require("statgrab/do")
 }
 
+////////////////
+// Analytics //
+//////////////
+
+import analytics from "library/analytics.js"
+analytics.isInDevelopment = isInDevelopment
+window.addEventListener("error", (error) => {
+    analytics.reportError(error)
+})
+
 //////////////
 // Looping //
 ////////////
@@ -24,14 +34,4 @@ import view from "views/.js"
 const loop = new Yaafloop((delta) => {
     model.update(delta)
     view.update(delta)
-})
-
-////////////////
-// Analytics //
-//////////////
-
-import analytics from "library/analytics.js"
-analytics.isInDevelopment = isInDevelopment
-window.addEventListener("error", (error) => {
-    analytics.reportError(error)
 })
