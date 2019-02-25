@@ -6,24 +6,11 @@ import Game from "models/Game.js"
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
 const NEW_GAME_STATE = {"adventurer": {"position": {"x": 2, "y": 2}}}
 
-import "local-json-storage"
-const STATE_EXPIRATION = 10 * 1000 // in milliseconds
-function retrieveSavedState() {
-    const state = window.localStorage.getJSON("state")
-    if(state !== null
-    && Date.now() - state.date < STATE_EXPIRATION) {
-        return state
-    }
-}
-
-function submitSavedState(state) {
-    state.date = state.date || Date.now()
-    window.localStorage.setJSON("state", state)
-}
+import storage from "library/storage.js"
 
 export default class Model {
     constructor(model) {
-        const state = retrieveSavedState()
+        const state = storage.retrieve()
         
         if(state !== undefined
         && state.game.adventurer.isDead !== true) {
@@ -44,7 +31,7 @@ export default class Model {
         }
     }
     saveState() {
-        submitSavedState(this.toState())
+        storage.submit(this.toState())
     }
     update(delta) {
         if(this.game.isDemo === true
