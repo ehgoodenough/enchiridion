@@ -1,7 +1,5 @@
 # Roguelike Tasks #
 
-- Use poin instead of cursor.
-
 - Dig out a map, with collision for the walls.
 - Add a camera. Center it on the player. Or on a camera zone.
 - Add lighting with a field-of-view.
@@ -39,6 +37,19 @@
 
 - Make it less serious and gritty? Focusing on the action, like Hotline Miami or something? Enforced by color and sound?
 - Focus on the non-proc-gen level design, not worrying about asthetic just now, but how those levels could be interesting to fight through. Finding weapons, getting to bonfires, etc? Focus on boss design!!! Find a good good pun.
+
+rogue battle royale:
+- different weapons.
+- 99 different monsters.
+- big hand-designed world.
+...
+- pull up the map during game.
+- drop into the map at start of game.
+- some smarter ai for navigating without a hero to chase; to avoid death fog and fight other monsters.
+- death fog shrinking throughout the game.
+...
+- setup twitch stream for one of the monsters, and link to it from the game. only one player at a time can have them in their game, and their game is streamed. in-fiction sponsored energy drink.
+
 
 # Extension Tasks #
 
