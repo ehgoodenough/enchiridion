@@ -2,8 +2,6 @@ import keyb from "keyb"
 import poin from "poin"
 import analytics from "library/analytics.js"
 
-poin.element = "mount"
-
 import Game from "models/Game.js"
 
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
@@ -43,15 +41,15 @@ export default class Model {
             this.deathtime = this.deathtime || 0
             this.deathtime += delta.s
             if(this.deathtime > MINIMUM_DEATH_TIME) {
-                if(keyb.isJustDown("W", delta.ms)
-                || keyb.isJustDown("S", delta.ms)
-                || keyb.isJustDown("A", delta.ms)
-                || keyb.isJustDown("D", delta.ms)
-                || keyb.isJustDown("<up>", delta.ms)
-                || keyb.isJustDown("<down>", delta.ms)
-                || keyb.isJustDown("<left>", delta.ms)
-                || keyb.isJustDown("<right>", delta.ms)
-                || keyb.isJustDown("<space>", delta.ms)
+                if(keyb.wasJustPressed("W", delta.ms)
+                || keyb.wasJustPressed("S", delta.ms)
+                || keyb.wasJustPressed("A", delta.ms)
+                || keyb.wasJustPressed("D", delta.ms)
+                || keyb.wasJustPressed("<up>", delta.ms)
+                || keyb.wasJustPressed("<down>", delta.ms)
+                || keyb.wasJustPressed("<left>", delta.ms)
+                || keyb.wasJustPressed("<right>", delta.ms)
+                || keyb.wasJustPressed("<space>", delta.ms)
                 || poin.wasJustPressed(delta.ms)) {
                     return this.startNewGame()
                 }
