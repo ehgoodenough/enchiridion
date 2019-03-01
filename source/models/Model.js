@@ -1,6 +1,8 @@
 import keyb from "keyb"
-import cursor from "library/cursor.js"
+import poin from "poin"
 import analytics from "library/analytics.js"
+
+poin.element = "mount"
 
 import Game from "models/Game.js"
 
@@ -50,7 +52,7 @@ export default class Model {
                 || keyb.isJustDown("<left>", delta.ms)
                 || keyb.isJustDown("<right>", delta.ms)
                 || keyb.isJustDown("<space>", delta.ms)
-                || cursor.isDown) {
+                || poin.wasJustPressed(delta.ms)) {
                     return this.startNewGame()
                 }
             }

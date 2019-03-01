@@ -1,6 +1,5 @@
 import Preact from "preact"
 
-import cursor from "library/cursor.js"
 import model from "models/.js"
 
 import Game from "views/Game.view.js"
@@ -10,13 +9,8 @@ import "views/Mount.view.less"
 export default class Mount {
     render() {
         return (
-            <div className="Mount" id={"mounted-as-none"}>
-                <div className="Frame"
-                    onClick={this.onClick}
-                    onMouseUp={this.onMouseUp}
-                    onMouseDown={this.onMouseDown}>
-                    <input id="input" onKeyDown={this.onKeyDown}
-                        onFocus={this.onFocus} onBlur={this.onBlur}/>
+            <div className="Mount" id="mount">
+                <div className="Frame">
                     <Preload/>
                     {this.view}
                 </div>
@@ -28,29 +22,8 @@ export default class Mount {
             <Game model={this.props.model}/>
         )
     }
-    get onClick() {
-        return (event) => {
-            document.getElementById("input").focus()
-        }
-    }
-    get onMouseDown() {
-        return (event) => {
-            cursor.isDown = true
-        }
-    }
-    get onMouseUp() {
-        return (event) => {
-            cursor.isDown = false
-        }
-    }
     onKeyDown(event) {
         event.preventDefault()
-    }
-    onFocus(event) {
-        model.isFocused = true
-    }
-    onBlur(event) {
-        model.isFocused = false
     }
 }
 

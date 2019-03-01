@@ -27,7 +27,6 @@ export default class Game {
     get className() {
         return [
             "Game",
-            model.isFocused === false ? "isPaused" : "",
             model.game.isDone === true ? "isDone" : "",
             model.game.isDemo === true ? "isDemo" : "",
             model.game.isTutorial ? "isTutorial" : "",
