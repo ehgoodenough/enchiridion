@@ -27,9 +27,19 @@ export default class World {
     }
     update(delta) {
         if(poin.wasJustPressed(delta.ms)) {
-            let x = Math.floor(poin.position.x * 9) - this.game.camera.position.x
-            let y = Math.floor(poin.position.y * 9) - this.game.camera.position.y
-            console.log("!!!", x, y)
+            // TODO: Calculate the width of the frame in EMs, not hardcoded here.
+            let x = Math.floor((poin.position.x * 10) + this.game.camera.position.x)
+            let y = Math.floor((poin.position.y * 10) + this.game.camera.position.y)
+            let key = x + "x" + y
+
+            if(!!this.tiles[key]) {
+                delete this.tiles[key]
+            } else {
+                this.tiles[key] = {
+                    "position": {"x": x, "y": y},
+                    "key": key
+                }
+            }
         }
     }
 }
