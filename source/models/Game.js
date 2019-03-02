@@ -4,7 +4,7 @@ import model from "models/.js"
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
 import MonsterWave from "models/MonsterWave.js"
-import Room from "models/Room.js"
+import World from "models/World.js"
 
 export default class Game {
     constructor(game) {
@@ -14,11 +14,13 @@ export default class Game {
         
         this.score = game.score || 0
         this.add(this.adventurer = new Adventurer(game.adventurer))
+        this.monsters = []
         game.monsters.forEach((monster) => this.add(new Monster(monster)))
         
-        this.room = new Room({"width": 5, "height": 5})
+        this.world = new World({"width": 5, "height": 5})
         this.camera = {"position": {"x": 2.5, "y": 2.5}} // new Camera()
-        this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
+        // this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
+        // this.room = {"width": 5, "height": 5}
     }
     add(entity) {
         entity.game = this
@@ -50,7 +52,8 @@ export default class Game {
                 entity.onReaction()
             }
         })
-        this.wave.onAction()
+        
+        // this.wave.onAction()
         
         // Save the state.
         if(this.isDemo !== true) {
@@ -83,7 +86,6 @@ export default class Game {
             "monsters": this.monsters.map((monster) => monster.toState()),
             // "camera": this.camera,
             // "wave": this.wave.toState(),
-            // "room": this.room.toState(),
         }
     }
 }

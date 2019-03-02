@@ -49,7 +49,7 @@ rogue battle royale:
 - death fog shrinking throughout the game.
 ...
 - setup twitch stream for one of the monsters, and link to it from the game. only one player at a time can have them in their game, and their game is streamed. in-fiction sponsored energy drink.
-
+- loot boxes, quests, progression system, cosmetics.
 
 # Extension Tasks #
 
