@@ -37,7 +37,7 @@ export default class Adventurer {
         this.title = "The Adventurer"
         this.description = "It you!!"
         this.health = 3
-        
+
         this.stack = 1
     }
     update(delta) {
@@ -95,6 +95,7 @@ export default class Adventurer {
         this.game.entities.forEach((entity) => {
             if(entity !== this
             && entity.isDead !== true
+            && entity instanceof Monster
             && this.position.x + action.move.x === entity.position.x
             && this.position.y + action.move.y === entity.position.y) {
                 if(entity instanceof Monster
@@ -106,12 +107,12 @@ export default class Adventurer {
                 action.move.y = 0
             }
         })
-        
+
         let tile = this.game.world.getTile({
             "x": this.position.x + action.move.x,
             "y": this.position.y + action.move.y,
         })
-        
+
         if(tile.hasCollision) {
             action.move.x = 0
             action.move.y = 0

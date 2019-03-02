@@ -14,14 +14,9 @@ export default class Game {
 
         this.score = game.score || 0
         this.add(this.adventurer = new Adventurer(game.adventurer))
+        this.add(this.world = new World({"width": 5, "height": 5}))
+        this.add(this.camera = new Camera({"position": {"x": 2.5, "y": 2.5}}))
         game.monsters.forEach((monster) => this.add(new Monster(monster)))
-
-        this.world = new World({
-            "width": 5, "height": 5
-        })
-        this.add(this.camera = new Camera({
-            "position": {"x": 2.5, "y": 2.5}
-        }))
     }
     add(entity) {
         entity.game = this

@@ -27,7 +27,9 @@ export default class World {
     }
     update(delta) {
         if(poin.wasJustPressed(delta.ms)) {
-            console.log("!!!", poin.position.x, poin.position.y)
+            let x = Math.floor(poin.position.x * 9) - this.game.camera.position.x
+            let y = Math.floor(poin.position.y * 9) - this.game.camera.position.y
+            console.log("!!!", x, y)
         }
     }
 }
