@@ -1,13 +1,23 @@
 # Roguelike Tasks #
 
-- Dig out a map, with collision for the walls.
-- Add a camera. Center it on the player. Or on a camera zone.
+- Add a stupid basic level editor.
+    - Switch to Edit Mode.
+    - Zoom out, reset zoom.
+    - Saving to local storage.
+    - Exporting to file.
+    - Modes.
+        - Tiles.
+        - Collision.
+        - Camera zones.
+        - Monsters.
+        - Hero Spawn.
+- Add a camera. Center it on the player while remaining in a camera zone. (If you leave the current camera zone, it looks for a new one, or if none are found, just follows the player.)
+
+- Saving your progress at bonfires.
 - Add lighting with a field-of-view.
 
 - Design the different monsters.
 - Design the different weapons and items.
-- Add a stupid basic level editor, with easy export.
-- Saving your progress at bonfires.
 
 - shop for spending your points.
 - npcs with quests.
