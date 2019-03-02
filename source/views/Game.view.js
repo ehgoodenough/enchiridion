@@ -20,13 +20,13 @@ export default class Game {
                     </Camera>
                 </div>
                 <UI/>
-                {/*<LeaderboardModal/>*/}
             </div>
         )
     }
     get className() {
         return [
             "Game",
+            model.game.isEditing === true ? "isEditing" : "",
             model.game.isDone === true ? "isDone" : "",
             model.game.isDemo === true ? "isDemo" : "",
             model.game.isTutorial ? "isTutorial" : "",

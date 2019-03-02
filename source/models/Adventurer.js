@@ -78,12 +78,10 @@ export default class Adventurer {
             this.onAction({"move": {"x": +1}})
             model.hasUsedKeyboard = true
         }
-
-        if(isInDevelopment === true) {
-            if(keyb.wasJustPressed("T", delta.ms)) {
-                this.onAction({"move": {}})
-            }
-        }
+        
+        // if(keyb.wasJustPressed("T", delta.ms)) {
+        //     this.onAction({"move": {}})
+        // }
     }
     onAction(action) {
         this.isAttacking = false
@@ -113,7 +111,8 @@ export default class Adventurer {
             "y": this.position.y + action.move.y,
         })
 
-        if(tile.hasCollision) {
+        if(tile.hasCollision
+        && this.game.isEditing !== true) {
             action.move.x = 0
             action.move.y = 0
             return
