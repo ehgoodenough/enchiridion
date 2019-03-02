@@ -193,7 +193,7 @@
         }
     }
 
-    .edit-ribbon {
+    .editor-ribbon {
         top: 1em;
         left: -3em;
         width: 10em;
@@ -210,14 +210,6 @@
 
         opacity: 0;
         background-color: fadeout(@red, 50%);
-    }
-}
-
-.Game.isEditing {
-    .UI {
-        .edit-ribbon {
-            opacity: 1;
-        }
     }
 }
 
@@ -270,6 +262,21 @@
 
         .title-banner {
             transform: rotate(45deg) scaleY(1);
+        }
+    }
+}
+
+.Game.isEditing {
+    .UI {
+        .editor-ribbon {
+            opacity: 1;
+        }
+        .hearts,
+        .score,
+        .tutorial,
+        .play-prompt {
+            opacity: 0;
+            transition: none;
         }
     }
 }

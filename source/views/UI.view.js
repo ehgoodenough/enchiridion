@@ -33,8 +33,9 @@ export default class UI {
                     <img src={require("images/ui/keyboard.png")}/>
                     <span>MOVE INTO MONSTERS TO SLAY THEM</span>
                 </div>
-                <div className="edit-ribbon">
-                    <span>Editing</span>
+                <div className="editor-ribbon">
+                    {model.game.editor.mode === "tile" ? "Tiles" : ""}
+                    {model.game.editor.mode === "camera" ? "Camera" : ""}
                 </div>
             </div>
         )

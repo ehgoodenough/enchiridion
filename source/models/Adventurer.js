@@ -78,7 +78,7 @@ export default class Adventurer {
             this.onAction({"move": {"x": +1}})
             model.hasUsedKeyboard = true
         }
-        
+
         // if(keyb.wasJustPressed("T", delta.ms)) {
         //     this.onAction({"move": {}})
         // }
@@ -112,7 +112,7 @@ export default class Adventurer {
         })
 
         if(tile.hasCollision
-        && this.game.isEditing !== true) {
+        && this.game.editor.isActive !== true) {
             action.move.x = 0
             action.move.y = 0
             return

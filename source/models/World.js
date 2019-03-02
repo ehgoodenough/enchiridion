@@ -26,7 +26,8 @@ export default class World {
         }
     }
     update(delta) {
-        if(this.game.isEditing === true
+        if(this.game.editor.isActive === true
+        && this.game.editor.mode === "tile"
         && poin.wasJustPressed(delta.ms)) {
             // TODO: Calculate the width of the frame to support zooms.
             let x = Math.floor((poin.position.x * 10) + this.game.camera.position.x)

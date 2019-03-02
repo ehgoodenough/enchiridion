@@ -1,13 +1,11 @@
 import analytics from "library/analytics.js"
-import keyb from "keyb"
 
 import model from "models/.js"
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
 import World from "models/World.js"
 import Camera from "models/Camera.js"
-
-import isInDevelopment from "data/is-dev.js"
+import Editor from "models/Editor.js"
 
 export default class Game {
     constructor(game) {
@@ -21,7 +19,7 @@ export default class Game {
         this.add(this.camera = new Camera({"position": {"x": 2.5, "y": 2.5}}))
         game.monsters.forEach((monster) => this.add(new Monster(monster)))
 
-        this.isEditing = false
+        this.editor = new Editor()
     }
     add(entity) {
         entity.game = this
@@ -48,11 +46,7 @@ export default class Game {
         this.world.update(delta)
         this.adventurer.update(delta)
         this.camera.update(delta)
-
-        if(isInDevelopment === true
-        && keyb.wasJustPressed("`", delta.ms)) {
-            this.isEditing = !this.isEditing
-        }
+        this.editor.update(delta)
     }
     onReaction() {
         this.entities.forEach((entity) => {
