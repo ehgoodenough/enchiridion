@@ -33,6 +33,9 @@ export default class UI {
                     <img src={require("images/ui/keyboard.png")}/>
                     <span>MOVE INTO MONSTERS TO SLAY THEM</span>
                 </div>
+                <div className="edit-ribbon">
+                    <span>Editing</span>
+                </div>
             </div>
         )
     }
