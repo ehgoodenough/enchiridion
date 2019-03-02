@@ -14,8 +14,8 @@ export default class Camera {
     }
     get style() {
         return {
-            "marginLeft": -1 * model.game.camera.position.x + "em",
-            "marginTop": -1 * model.game.camera.position.y + "em",
+            "marginLeft": -1 * (model.game.camera.position.x + 0.5) + "em",
+            "marginTop": -1 * (model.game.camera.position.y + 0.5) + "em",
         }
     }
 }
