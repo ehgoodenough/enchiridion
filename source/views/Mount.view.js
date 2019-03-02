@@ -10,7 +10,7 @@ export default class Mount {
     render() {
         return (
             <div className="Mount" id="mount">
-                <div className="Frame">
+                <div className="Frame" id="frame">
                     <Preload/>
                     {this.view}
                 </div>

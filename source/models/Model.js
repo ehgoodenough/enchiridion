@@ -13,8 +13,8 @@ import storage from "library/storage.js"
 
 export default class Model {
     constructor(model) {
-        const state = storage.retrieve()
-        
+        const state = storage.retrieve("state")
+
         if(state !== undefined
         && state.game.adventurer.isDead !== true) {
             this.hasUsedKeyboard = state.hasUsedKeyboard
@@ -37,7 +37,7 @@ export default class Model {
         }
     }
     saveState() {
-        storage.submit(this.toState())
+        storage.submit("state", this.toState())
     }
     update(delta) {
         if(this.game.isDemo === true

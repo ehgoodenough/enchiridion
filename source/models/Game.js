@@ -11,12 +11,12 @@ export default class Game {
         game = game || {}
         game.monsters = game.monsters || []
         game.adventurer = game.adventurer || {}
-        
+
         this.score = game.score || 0
         this.add(this.adventurer = new Adventurer(game.adventurer))
         this.monsters = []
         game.monsters.forEach((monster) => this.add(new Monster(monster)))
-        
+
         this.world = new World({"width": 5, "height": 5})
         this.camera = {"position": {"x": 2.5, "y": 2.5}} // new Camera()
         // this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
@@ -44,6 +44,7 @@ export default class Game {
         }
     }
     update(delta) {
+        this.world.update(delta)
         this.adventurer.update(delta)
     }
     onReaction() {
@@ -52,9 +53,9 @@ export default class Game {
                 entity.onReaction()
             }
         })
-        
+
         // this.wave.onAction()
-        
+
         // Save the state.
         if(this.isDemo !== true) {
             model.saveState()
