@@ -16,16 +16,16 @@
 
         font-size: 1.25em;
         
-        .Room {
-            top: 0em;
-            left: 0em;
-            width: 5em;
-            height: 5em;
-            z-index: 0;
-            position: absolute;
-            
-            border-radius: @roundness;
-            background-color: #191923;
+        .World {
+            .Tile {
+                width: 1em;
+                height: 1em;
+                z-index: 0;
+                position: absolute;
+                
+                background-color: @black;
+                border-radius: @roundness / 4;
+            }
         }
     }
 

@@ -15,7 +15,7 @@ export default class Game {
             <div className={this.className}>
                 <div className="Scene">
                     <Camera>
-                        <div className="Room"/>
+                        <World/>
                         {this.entities}
                     </Camera>
                 </div>
@@ -36,5 +36,31 @@ export default class Game {
         return model.game.entities.map((entity) => (
             <Entity entity={entity} key={entity.key}/>
         ))
+    }
+}
+
+class World {
+    render() {
+        return (
+            <div class="World">
+                {Object.values(model.game.world.tiles).map((tile) => (
+                    <Tile tile={tile}/>
+                ))}
+            </div>
+        )
+    }
+}
+
+class Tile {
+    render() {
+        return (
+            <div class="Tile" style={this.style}/>
+        )
+    }
+    get style() {
+        return {
+            "left": this.props.tile.position.x + "em",
+            "top": this.props.tile.position.y + "em",
+        }
     }
 }
