@@ -7,9 +7,17 @@ export default class World {
                 this.tiles[x + "x" + y] = {
                     "position": {"x": x, "y": y},
                     "key": x + "x" + y,
-                    "color": "#191923"
+                    // "color": "#191923"
                 }
             }
+        }
+    }
+    getTile(position) {
+        const key = position.x + "x" + position.y
+        return this.tiles[key] || {
+            "position": position,
+            "key": key,
+            "hasCollision": true,
         }
     }
 }

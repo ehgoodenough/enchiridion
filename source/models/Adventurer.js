@@ -106,16 +106,17 @@ export default class Adventurer {
                 action.move.y = 0
             }
         })
-
-        // TODO: Collision with world.
-        // if(this.position.x + action.move.x < 0
-        // || this.position.y + action.move.y < 0
-        // || this.position.x + action.move.x >= this.game.room.width
-        // || this.position.y + action.move.y >= this.game.room.height) {
-        //     action.move.x = 0
-        //     action.move.y = 0
-        //     return
-        // }
+        
+        let tile = this.game.world.getTile({
+            "x": this.position.x + action.move.x,
+            "y": this.position.y + action.move.y,
+        })
+        
+        if(tile.hasCollision) {
+            action.move.x = 0
+            action.move.y = 0
+            return
+        }
 
         // if(action.move.x === 0
         // && action.move.y === 0) {

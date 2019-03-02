@@ -1,6 +1,8 @@
 import keyb from "keyb"
 import poin from "poin"
+
 import analytics from "library/analytics.js"
+import isInDevelopment from "data/is-dev.js"
 
 import Game from "models/Game.js"
 
@@ -17,6 +19,8 @@ export default class Model {
         && state.game.adventurer.isDead !== true) {
             this.hasUsedKeyboard = state.hasUsedKeyboard
             this.game = new Game(state.game)
+        } else if(isInDevelopment === true) {
+            this.game = new Game(NEW_GAME_STATE)
         } else {
             this.game = new Game(NEW_GAME_STATE)
             this.game.isDemo = true
