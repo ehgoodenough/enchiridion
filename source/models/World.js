@@ -3,6 +3,8 @@ import keyb from "keyb"
 
 poin.element = "frame"
 
+import isInDevelopment from "data/is-dev.js"
+
 export default class World {
     constructor(world) {
 
@@ -16,6 +18,8 @@ export default class World {
                 }
             }
         }
+
+        this.isEditing = false
     }
     getTile(position) {
         const key = position.x + "x" + position.y
@@ -26,8 +30,13 @@ export default class World {
         }
     }
     update(delta) {
-        if(poin.wasJustPressed(delta.ms)) {
-            // TODO: Calculate the width of the frame in EMs, not hardcoded here.
+        if(isInDevelopment === true
+        && keyb.wasJustPressed("`", delta.ms)) {
+            this.isEditing = !this.isEditing
+        }
+        if(this.isEditing === true
+        && poin.wasJustPressed(delta.ms)) {
+            // TODO: Calculate the width of the frame to support zooms.
             let x = Math.floor((poin.position.x * 10) + this.game.camera.position.x)
             let y = Math.floor((poin.position.y * 10) + this.game.camera.position.y)
             let key = x + "x" + y
