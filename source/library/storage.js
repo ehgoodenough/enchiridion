@@ -5,20 +5,24 @@ const EXPIRATION = 10 * 1000 // in milliseconds
 const storage = {}
 
 storage.retrieve = function(key = "state") {
-    const value = window.localStorage.getJSON(key)
-    if(value === null) {
+    const payload = window.localStorage.getJSON(key)
+    if(payload === null) {
         return
     }
-    if(value.date !== undefined
-    && Date.now() - value.date > EXPIRATION) {
+    if(payload.expirationDate !== undefined
+    && payload.expirationDate < Date.now()) {
         return
     }
-    return value
+    return payload.value
 }
 
-storage.submit = function(key, value) {
-    value.date = value.date || Date.now()
-    window.localStorage.setJSON(key, value)
+storage.submit = function(key, value, expiration = EXPIRATION) {
+    window.localStorage.setJSON(key, {
+        "key": key,
+        "value": value,
+        "creationDate": Date.now(),
+        "expirationDate": Date.now() + expiration
+    })
 }
 
 export default storage

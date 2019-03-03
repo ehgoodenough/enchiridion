@@ -11,7 +11,7 @@ export default class Editor {
         if(isInDevelopment === true) {
             window.export = () => {
                 copy(this.game.toStruct())
-                console.log("📋 Copied the game struct to the clipboard!!")
+                return "📋 Copied the game struct to the clipboard!!"
             }
         }
     }

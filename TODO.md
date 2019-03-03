@@ -4,10 +4,7 @@
 - Fix bug where tiles are sliiiightly apart.
 
 - Add a stupid basic level editor.
-    - Switch to Edit Mode.
     - Zoom out, reset zoom.
-    - Saving to local storage.
-    - Exporting to file.
     - Modes.
         - Tiles.
         - Collision.

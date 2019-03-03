@@ -60,8 +60,6 @@ export default class Game {
         // Save the state.
         if(this.isDemo !== true) {
             model.saveState()
-            model.saveStruct()
-            // TODO: Differantiate between `state` and `data`.
         }
     }
     onEnd() {

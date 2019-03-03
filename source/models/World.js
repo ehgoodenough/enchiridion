@@ -3,6 +3,8 @@ import keyb from "keyb"
 
 poin.element = "frame"
 
+import model from "models/.js"
+
 export default class World {
     constructor(world) {
         this.tiles = {}
@@ -45,6 +47,8 @@ export default class World {
                     "key": key
                 }
             }
+
+            model.saveStruct()
         }
     }
     toStruct() {

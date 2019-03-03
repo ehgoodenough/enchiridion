@@ -40,7 +40,7 @@ export default class Model {
         })
     }
     saveStruct() {
-        storage.submit("struct", this.game.toStruct())
+        storage.submit("struct", this.game.toStruct(), 60*60*1000)
     }
     update(delta) {
         if(this.game.isDemo === true
