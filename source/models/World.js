@@ -13,11 +13,14 @@ export default class World {
         this.tiles = {}
         world.tiles.forEach((tile) => {
             tile.key = tile.position.x + "x" + tile.position.y
+            tile.type = tile.type || "floor"
+            tile.hasCollision = (tile.type === "wall")
+
             this.tiles[tile.key] = tile
         })
 
         this.camzones = [
-            {"position": {"x1": 0, "x2": 4, "y1": 0, "y2": 4}},
+            {"position": {"x1": -2, "x2": 4, "y1": -2, "y2": 4}},
             {"position": {"x1": 0, "x2": 4, "y1": 6, "y2": 10}},
             {"position": {"x1": 6, "x2": 16, "y1": 0, "y2": 10}},
         ]
@@ -35,7 +38,6 @@ export default class World {
         return this.tiles[key] || {
             "position": position,
             "key": key,
-            "hasCollision": true,
         }
     }
     update(delta) {
@@ -47,13 +49,21 @@ export default class World {
             let y = Math.floor((poin.position.y * FRAME) + this.game.camera.position.y)
             let key = x + "x" + y
 
-            if(!!this.tiles[key]) {
-                delete this.tiles[key]
-            } else {
+            if(this.tiles[key] === undefined) {
                 this.tiles[key] = {
                     "position": {"x": x, "y": y},
+                    "type": "wall",
+                    "key": key,
+                    "hasCollision": true
+                }
+            } else if(this.tiles[key].type === "wall") {
+                this.tiles[key] = {
+                    "position": {"x": x, "y": y},
+                    "type": "floor",
                     "key": key
                 }
+            } else {
+                delete this.tiles[key]
             }
 
             model.saveStruct()
@@ -64,6 +74,7 @@ export default class World {
             "tiles": Object.values(this.tiles).map((tile) => {
                 return {
                     "position": tile.position,
+                    "type": tile.type
                 }
             })
         }

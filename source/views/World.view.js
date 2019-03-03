@@ -4,6 +4,11 @@ import model from "models/.js"
 
 import "views/World.view.less"
 
+const IMAGES = {
+    "floor": require("images/tiles/floor.png"),
+    "wall": require("images/tiles/wall.png"),
+}
+
 export default class World {
     render() {
         return (
@@ -29,6 +34,7 @@ class Tile {
         return {
             "left": this.props.tile.position.x + "em",
             "top": this.props.tile.position.y + "em",
+            "background-image": `url(${IMAGES[this.props.tile.type]})`,
         }
     }
 }
