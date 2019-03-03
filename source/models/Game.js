@@ -8,18 +8,18 @@ import Camera from "models/Camera.js"
 import Editor from "models/Editor.js"
 
 export default class Game {
-    constructor(game) {
+    constructor(game, gamestruct) {
         game = game || {}
         game.monsters = game.monsters || []
         game.adventurer = game.adventurer || {}
 
         this.score = game.score || 0
         this.add(this.adventurer = new Adventurer(game.adventurer))
-        this.add(this.world = new World({"width": 5, "height": 5}))
+        this.add(this.world = new World(gamestruct.world))
         this.add(this.camera = new Camera({"position": {"x": 2.5, "y": 2.5}}))
         game.monsters.forEach((monster) => this.add(new Monster(monster)))
 
-        this.editor = new Editor()
+        this.add(this.editor = new Editor())
     }
     add(entity) {
         entity.game = this
@@ -60,6 +60,8 @@ export default class Game {
         // Save the state.
         if(this.isDemo !== true) {
             model.saveState()
+            model.saveStruct()
+            // TODO: Differantiate between `state` and `data`.
         }
     }
     onEnd() {
@@ -86,8 +88,11 @@ export default class Game {
             "score": this.score,
             "adventurer": this.adventurer.toState(),
             "monsters": this.monsters && this.monsters.map((monster) => monster.toState()),
-            // "camera": this.camera,
-            // "wave": this.wave.toState(),
+        }
+    }
+    toStruct() {
+        return {
+            "world": this.world.toStruct()
         }
     }
 }

@@ -1,5 +1,8 @@
 # Roguelike Tasks #
 
+- Fix bug where tutorial is still draggable even when invisible.
+- Fix bug where tiles are sliiiightly apart.
+
 - Add a stupid basic level editor.
     - Switch to Edit Mode.
     - Zoom out, reset zoom.

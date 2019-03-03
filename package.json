@@ -18,6 +18,7 @@
     "zip": "cd ./builds/web && bestzip ../../build.zip *"
   },
   "dependencies": {
+    "copy-to-clipboard": "^3.0.8",
     "crypto-js": "^3.1.9-1",
     "gameanalytics": "^3.0.1",
     "keyb": "^1.2.0",

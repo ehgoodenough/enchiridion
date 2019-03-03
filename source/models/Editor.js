@@ -7,6 +7,13 @@ export default class Editor {
         this.isActive = false
 
         this.mode = "tile"
+
+        if(isInDevelopment === true) {
+            window.export = () => {
+                copy(this.game.toStruct())
+                console.log("📋 Copied the game struct to the clipboard!!")
+            }
+        }
     }
     update(delta) {
         if(isInDevelopment === false) {
