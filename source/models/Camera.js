@@ -23,13 +23,15 @@ export default class Camera {
         }
 
         if(this.camzone !== undefined
-        && this.camzone.position.w < FRAME - 1) {
+        && this.camzone.position.w < FRAME - 1
+        && this.game.editor.isActive !== true) {
             this.targetposition.x = this.camzone.position.cx
         } else {
             this.targetposition.x = this.game.adventurer.position.x
         }
         if(this.camzone !== undefined
-        && this.camzone.position.h < FRAME) {
+        && this.camzone.position.h < FRAME
+        && this.game.editor.isActive !== true) {
             this.targetposition.y = this.camzone.position.cy
         } else {
             this.targetposition.y = this.game.adventurer.position.y
@@ -38,7 +40,8 @@ export default class Camera {
         this.position.x = this.targetposition.x - (FRAME / 2) + (TILE / 2)
         this.position.y = this.targetposition.y - (FRAME / 2) + (TILE / 2)
 
-        if(this.camzone !== undefined) {
+        if(this.camzone !== undefined
+        && this.game.editor.isActive !== true) {
             if(this.camzone.position.w >= FRAME - 1) {
                 this.position.x = Math.max(this.position.x, this.camzone.position.x1 - 0.5)
                 this.position.x = Math.min(this.position.x, (this.camzone.position.x2 - FRAME) + 1 + 0.5)
