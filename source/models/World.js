@@ -14,9 +14,9 @@ export default class World {
         })
 
         this.camzones = [
-            {"position": {"x1": 0, "x2": 5, "y1": 0, "y2": 5}},
-            {"position": {"x1": 0, "x2": 5, "y1": 5, "y2": 10}},
-            {"position": {"x1": 5, "x2": 16, "y1": 0, "y2": 10}},
+            {"position": {"x1": 0, "x2": 4, "y1": 0, "y2": 4}},
+            {"position": {"x1": 0, "x2": 4, "y1": 6, "y2": 10}},
+            {"position": {"x1": 6, "x2": 16, "y1": 0, "y2": 10}},
         ]
         this.camzones.forEach((camzone) => {
             camzone.position.x = Math.min(camzone.position.x1, camzone.position.x2)
