@@ -5,6 +5,9 @@ poin.element = "frame"
 
 import model from "models/.js"
 
+import frame from "data/frame.js"
+const FRAME = frame.width
+
 export default class World {
     constructor(world) {
         this.tiles = {}
@@ -40,8 +43,8 @@ export default class World {
         && this.game.editor.mode === "tiles"
         && poin.wasJustPressed(delta.ms)) {
             // TODO: Calculate the width of the frame to support zooms.
-            let x = Math.floor((poin.position.x * 10) + this.game.camera.position.x)
-            let y = Math.floor((poin.position.y * 10) + this.game.camera.position.y)
+            let x = Math.floor((poin.position.x * FRAME) + this.game.camera.position.x)
+            let y = Math.floor((poin.position.y * FRAME) + this.game.camera.position.y)
             let key = x + "x" + y
 
             if(!!this.tiles[key]) {

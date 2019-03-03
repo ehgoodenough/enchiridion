@@ -1,5 +1,6 @@
 // TODO: Calculate the width of the frame in EMs, not hardcoded here.
-const FRAME = 10
+import frame from "data/frame.js"
+const FRAME = frame.width
 const TILE = 1
 
 export default class Camera {
