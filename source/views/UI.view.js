@@ -29,13 +29,12 @@ export default class UI {
                 <div className="pause-banner">
                     <span>PAUSED</span>
                 </div>
-                <div className="tutorial">
+                {/*<div className="tutorial">
                     <img src={require("images/ui/keyboard.png")}/>
                     <span>MOVE INTO MONSTERS TO SLAY THEM</span>
-                </div>
+                </div>*/}
                 <div className="editor-ribbon">
-                    {model.game.editor.mode === "tile" ? "Tiles" : ""}
-                    {model.game.editor.mode === "camzone" ? "Camzones" : ""}
+                    {model.game.editor.mode}
                 </div>
             </div>
         )

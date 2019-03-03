@@ -1,0 +1,22 @@
+@import "Variables.view.less";
+
+.World {
+    .Tile {
+        width: 1em;
+        height: 1em;
+        z-index: 0;
+        position: absolute;
+
+        background-color: @black;
+        // border-radius: @roundness / 4;
+    }
+    .Camzone {
+        opacity: 0;
+
+        z-index: 999;
+        position: absolute;
+
+        background-color: fadeout(@red, 50%);
+        border-radius: @roundness / 4;
+    }
+}

@@ -6,7 +6,7 @@ export default class Editor {
     constructor() {
         this.isActive = false
 
-        this.mode = "tile"
+        this.mode = "tiles"
 
         if(isInDevelopment === true) {
             window.export = () => {
@@ -26,12 +26,12 @@ export default class Editor {
 
         if(keyb.wasJustPressed("1", delta.ms)) {
             this.isActive = true
-            this.mode = "tile"
+            this.mode = "tiles"
         }
 
         if(keyb.wasJustPressed("2", delta.ms)) {
             this.isActive = true
-            this.mode = "camzone"
+            this.mode = "camzones"
         }
     }
 }
