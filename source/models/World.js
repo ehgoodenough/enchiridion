@@ -12,15 +12,11 @@ export default class World {
             tile.key = tile.position.x + "x" + tile.position.y
             this.tiles[tile.key] = tile
         })
-        // for(let x = 0; x < 5; x += 1) {
-        //     for(let y = 0; y < 5; y += 1) {
-        //         this.tiles[x + "x" + y] = {
-        //             "position": {"x": x, "y": y},
-        //             "key": x + "x" + y,
-        //             // "color": "#191923"
-        //         }
-        //     }
-        // }
+
+        this.camzones = [
+            {"position": {"x1": 0, "x2": 4, "y1": 0, "y2": 5}},
+            {"position": {"x1": 0, "x2": 4, "y1": 5, "y2": 10}},
+        ]
     }
     getTile(position) {
         const key = position.x + "x" + position.y

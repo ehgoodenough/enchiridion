@@ -35,7 +35,7 @@ export default class UI {
                 </div>
                 <div className="editor-ribbon">
                     {model.game.editor.mode === "tile" ? "Tiles" : ""}
-                    {model.game.editor.mode === "camera" ? "Camera" : ""}
+                    {model.game.editor.mode === "camzone" ? "Camzones" : ""}
                 </div>
             </div>
         )

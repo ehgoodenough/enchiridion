@@ -31,7 +31,7 @@ export default class Editor {
 
         if(keyb.wasJustPressed("2", delta.ms)) {
             this.isActive = true
-            this.mode = "camera"
+            this.mode = "camzone"
         }
     }
 }

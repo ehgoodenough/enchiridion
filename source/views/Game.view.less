@@ -26,6 +26,15 @@
                 background-color: @black;
                 border-radius: @roundness / 4;
             }
+            .Camzone {
+                opacity: 0;
+
+                z-index: 999;
+                position: absolute;
+
+                background-color: fadeout(@red, 50%);
+                border-radius: @roundness / 4;
+            }
         }
     }
 
@@ -60,4 +69,14 @@
     //         transition-property: filter;
     //     }
     // }
+
+    &.isEditingCamzones {
+        .Scene {
+            .World {
+                .Camzone {
+                    opacity: 1;
+                }
+            }
+        }
+    }
 }

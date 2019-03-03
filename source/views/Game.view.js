@@ -27,6 +27,8 @@ export default class Game {
         return [
             "Game",
             model.game.editor.isActive === true ? "isEditing" : "",
+            model.game.editor.mode === "tile" ? "isEditingTiles" : "",
+            model.game.editor.mode === "camzone" ? "isEditingCamzones" : "",
             model.game.isDone === true ? "isDone" : "",
             model.game.isDemo === true ? "isDemo" : "",
             model.game.isTutorial ? "isTutorial" : "",
@@ -46,6 +48,9 @@ class World {
                 {Object.values(model.game.world.tiles).map((tile) => (
                     <Tile tile={tile}/>
                 ))}
+                {Object.values(model.game.world.camzones).map((camzone) => (
+                    <Camzone camzone={camzone}/>
+                ))}
             </div>
         )
     }
@@ -61,6 +66,22 @@ class Tile {
         return {
             "left": this.props.tile.position.x + "em",
             "top": this.props.tile.position.y + "em",
+        }
+    }
+}
+
+class Camzone {
+    render() {
+        return (
+            <div class="Camzone" style={this.style}/>
+        )
+    }
+    get style() {
+        return {
+            "left": Math.min(this.props.camzone.position.x1, this.props.camzone.position.x2) + "em",
+            "top": Math.min(this.props.camzone.position.y1, this.props.camzone.position.y2) + "em",
+            "width": Math.abs(this.props.camzone.position.x1 - this.props.camzone.position.x2) + 1 + "em",
+            "height": Math.abs(this.props.camzone.position.y1 - this.props.camzone.position.y2) + 1 + "em",
         }
     }
 }
