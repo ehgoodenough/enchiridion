@@ -1,17 +1,17 @@
 # Roguelike Tasks #
 
+- Let editors add or delete camzones.
+- Let editors add or delete entities.
+
+- Rename ""state"" to ""session"" or ""progress"".
 - Fix bug where tutorial is still draggable even when invisible.
 - Fix bug where tiles are sliiiightly apart.
 
-- Add a stupid basic level editor.
-    - Zoom out, reset zoom.
-    - Modes for Monsters.
-
 - Saving your progress at bonfires.
 - Add lighting with a field-of-view.
-
 - Design the different monsters.
 - Design the different weapons and items.
+- Add zoom, compatible with the pointer logic.
 
 - shop for spending your points.
 - npcs with quests.
