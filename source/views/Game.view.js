@@ -27,8 +27,8 @@ export default class Game {
         return [
             "Game",
             model.game.editor.isActive === true ? "isEditing" : "",
-            model.game.editor.mode === "tile" ? "isEditingTiles" : "",
-            model.game.editor.mode === "camzone" ? "isEditingCamzones" : "",
+            model.game.editor.isActive === true && model.game.editor.mode === "tile" ? "isEditingTiles" : "",
+            model.game.editor.isActive === true && model.game.editor.mode === "camzone" ? "isEditingCamzones" : "",
             model.game.isDone === true ? "isDone" : "",
             model.game.isDemo === true ? "isDemo" : "",
             model.game.isTutorial ? "isTutorial" : "",
@@ -78,10 +78,10 @@ class Camzone {
     }
     get style() {
         return {
-            "left": Math.min(this.props.camzone.position.x1, this.props.camzone.position.x2) + "em",
-            "top": Math.min(this.props.camzone.position.y1, this.props.camzone.position.y2) + "em",
-            "width": Math.abs(this.props.camzone.position.x1 - this.props.camzone.position.x2) + 1 + "em",
-            "height": Math.abs(this.props.camzone.position.y1 - this.props.camzone.position.y2) + 1 + "em",
+            "left": this.props.camzone.position.x + "em",
+            "top": this.props.camzone.position.y + "em",
+            "width": this.props.camzone.position.w + 1 + "em",
+            "height": this.props.camzone.position.h + 1 + "em",
         }
     }
 }

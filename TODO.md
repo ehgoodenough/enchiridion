@@ -5,13 +5,7 @@
 
 - Add a stupid basic level editor.
     - Zoom out, reset zoom.
-    - Modes.
-        - Tiles.
-        - Collision.
-        - Camera zones.
-        - Monsters.
-        - Hero Spawn.
-- Add a camera. Center it on the player while remaining in a camera zone. (If you leave the current camera zone, it looks for a new one, or if none are found, just follows the player.)
+    - Modes for Monsters.
 
 - Saving your progress at bonfires.
 - Add lighting with a field-of-view.

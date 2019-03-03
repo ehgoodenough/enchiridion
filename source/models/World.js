@@ -14,9 +14,18 @@ export default class World {
         })
 
         this.camzones = [
-            {"position": {"x1": 0, "x2": 4, "y1": 0, "y2": 5}},
-            {"position": {"x1": 0, "x2": 4, "y1": 5, "y2": 10}},
+            {"position": {"x1": 0, "x2": 5, "y1": 0, "y2": 5}},
+            {"position": {"x1": 0, "x2": 5, "y1": 5, "y2": 10}},
+            {"position": {"x1": 5, "x2": 16, "y1": 0, "y2": 10}},
         ]
+        this.camzones.forEach((camzone) => {
+            camzone.position.x = Math.min(camzone.position.x1, camzone.position.x2)
+            camzone.position.y = Math.min(camzone.position.y1, camzone.position.y2)
+            camzone.position.w = Math.abs(camzone.position.x1 - camzone.position.x2)
+            camzone.position.h = Math.abs(camzone.position.y1 - camzone.position.y2)
+            camzone.position.cx = camzone.position.x + (camzone.position.w / 2)
+            camzone.position.cy = camzone.position.y + (camzone.position.h / 2)
+        })
     }
     getTile(position) {
         const key = position.x + "x" + position.y
