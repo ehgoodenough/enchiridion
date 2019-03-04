@@ -1,25 +1,29 @@
 # Roguelike Tasks #
 
+[Mechanics]
+- Add lighting with a field-of-view.
+- Design the different monsters to navigate a more complex map.
+
+[Level Design Tools]
 - Let editors add or delete camzones.
 - Let editors add or delete entities.
 
-- Rename ""state"" to ""session"" or ""progress"".
-- Fix bug where tutorial is still draggable even when invisible.
-- Fix bug where tiles are sliiiightly apart.
-
+[Remix]
+- Design different monsters.
+- Design different weapons/items.
 - Saving your progress at bonfires.
-- Add lighting with a field-of-view.
-- Design the different monsters.
-- Design the different weapons and items.
-- Add zoom, compatible with the pointer logic.
+- Spending your points at the bonfires.
+- NPCs with quests?
+- Deeper Tutorial?
 
-- shop for spending your points.
-- npcs with quests.
-- deeper tutorial.
+[Tech Debt]
+- Rename ""state"" to ""session"" or ""progress"".
 
-- electron wrapper
-- itch.io deploys
+[Deployment]
+- Wrap the game with Electron
+- Create a script to upload to Itch.io
 
+[Look-and-feel]
 - Add depth to the walls. Add dirt and shrubs to the ground.
 - Make an ascii renderer with zoom, hover, shaders, and colors?
 - Adventurer Animations
@@ -27,6 +31,10 @@
 - Title Screen
 - Options Menu Screen
 - Hover over monsters to learn more about them.
+- Fix bug where tiles are sliiiightly apart.
+- Add zoom, compatible with the pointer logic.
+
+# Roguelike Ideation #
 
 * traps
 * pits, not walls
