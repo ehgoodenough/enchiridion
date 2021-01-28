@@ -1,7 +1,7 @@
 {
   "name": "enchiridion",
-  "version": "1.2.0",
-  "description": "...",
+  "version": "2.0.0",
+  "description": "A rogue-like hack-and-slash.",
   "private": true,
   "contributors": [
     "Andrew McPherson <@ehgoodenough>"
