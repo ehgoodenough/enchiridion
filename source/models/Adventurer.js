@@ -6,8 +6,8 @@ import deathtext from "data/deathtext.js"
 
 import Monster from "models/Monster.js"
 
-import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
-import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
+import GRAVESTONE_IMAGE from "assets/images/monsters/gravestone.png"
+import ADVENTURER_IMAGE from "assets/images/monsters/adventurer.png"
 
 const Dev = {"isInGodMode": __STAGE__ == "NONE"}
 
