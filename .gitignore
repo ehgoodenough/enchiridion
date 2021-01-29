@@ -2,9 +2,6 @@
 node_modules
 
 # Artifacts
-.serverless
-.webpack
-build*
 builds
 
 # Temporary
