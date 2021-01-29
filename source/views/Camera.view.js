@@ -1,4 +1,4 @@
-import Preact from "preact"
+import * as Preact from "preact"
 
 import frame from "data/frame.js"
 import model from "models/_.js"

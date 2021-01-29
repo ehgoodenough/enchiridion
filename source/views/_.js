@@ -1,4 +1,4 @@
-import Preact from "preact"
+import * as Preact from "preact"
 
 import Mount from "views/Mount.view.js"
 const mount = Preact.render(<Mount/>, document.body)

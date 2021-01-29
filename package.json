@@ -12,25 +12,25 @@
   },
   "scripts": {
     "build": "codeglue --stage=NONE",
-    "start": "codeglue --stage=NONE --mode=SERVER --port=8080 --ssl=true",
+    "start": "codeglue --stage=NONE --mode=SERVER --port=8080",
     "deploy": "aws s3 sync ./builds/web s3://ehgoodenough/enchiridion/ --acl public-read",
     "zip": "cd ./builds/web && bestzip ../../build.zip *"
   },
   "dependencies": {
-    "crypto-js": "^3.1.9-1",
-    "gameanalytics": "^3.0.1",
-    "keyb": "^1.1.0",
+    "crypto-js": "^4.0.0",
+    "gameanalytics": "^4.1.4",
+    "keyb": "^1.4.1",
     "local-json-storage": "^1.0.1",
-    "preact": "^8.2.7",
-    "query-string": "^6.1.0",
-    "shortid": "^2.2.8",
-    "statgrab": "^1.2.0",
-    "yaafloop": "^1.1.0"
+    "preact": "^10.5.12",
+    "query-string": "^6.13.8",
+    "shortid": "^2.2.16",
+    "statgrab": "^1.2.1",
+    "yaafloop": "^1.2.0"
   },
   "devDependencies": {
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "bestzip": "^2.0.0",
-    "codeglue": "^1.6.0"
+    "@babel/plugin-transform-react-jsx": "^7.12.12",
+    "@babel/preset-env": "^7.12.11",
+    "bestzip": "^2.1.7",
+    "codeglue": "^1.9.4"
   }
 }

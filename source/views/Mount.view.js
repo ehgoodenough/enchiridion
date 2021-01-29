@@ -1,4 +1,4 @@
-import Preact from "preact"
+import * as Preact from "preact"
 import Nimble from "library/Nimble"
 
 import cursor from "library/cursor.js"

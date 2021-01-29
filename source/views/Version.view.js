@@ -1,4 +1,4 @@
-import Preact from "preact"
+import * as Preact from "preact"
 
 import "views/Version.view.less"
 

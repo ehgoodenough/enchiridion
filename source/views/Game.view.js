@@ -1,4 +1,4 @@
-import Preact from "preact"
+import * as Preact from "preact"
 
 import Entity from "views/Entity.view.js"
 import UI from "views/UI.view.js"
