@@ -1,8 +1,6 @@
 import keyb from "keyb"
 import shortid from "shortid"
 
-import Nimble from "library/Nimble"
-
 import colors from "data/colors.js"
 import deathtext from "data/deathtext.js"
 
@@ -10,6 +8,8 @@ import Monster from "models/Monster.js"
 
 import GRAVESTONE_IMAGE from "images/monsters/gravestone.png"
 import ADVENTURER_IMAGE from "images/monsters/adventurer.png"
+
+const Dev = {"isInGodMode": __STAGE__ == "NONE"}
 
 const DIRECTIONS = {
     "-1x0": "west",
@@ -37,7 +37,7 @@ export default class Adventurer {
         this.title = "The Adventurer"
         this.description = "It you!!"
         this.health = 3
-        
+
         this.stack = 1
     }
     update(delta) {
@@ -79,7 +79,7 @@ export default class Adventurer {
             this.game.model.hasUsedKeyboard = true
         }
 
-        if(Nimble.twitch.extension.state !== "released") {
+        if(Dev.isInGodMode) {
             if(keyb.isJustDown("T", delta.ms)) {
                 this.onAction({"move": {}})
             }

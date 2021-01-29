@@ -1,5 +1,4 @@
 import * as Preact from "preact"
-import Nimble from "library/Nimble"
 
 import activity from "data/activity.js"
 import model from "models/_.js"
@@ -14,7 +13,6 @@ export default class LeaderboardModal {
             return (
                 <div className="LeaderboardModal">
                     <header>High Scores</header>
-                    <Nimble.views.BrowsableLeaderboard activity={activity} size="big"/>
                 </div>
             )
         } else {

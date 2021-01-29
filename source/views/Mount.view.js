@@ -1,5 +1,4 @@
 import * as Preact from "preact"
-import Nimble from "library/Nimble"
 
 import cursor from "library/cursor.js"
 import model from "models/_.js"
@@ -11,7 +10,7 @@ import "views/Mount.view.less"
 export default class Mount {
     render() {
         return (
-            <div className="Mount" id={this.id}>
+            <div className="Mount" id="mounted-as-none">
                 <div className="Frame"
                     onClick={this.onClick}
                     onMouseUp={this.onMouseUp}
@@ -24,18 +23,10 @@ export default class Mount {
             </div>
         )
     }
-    get id() {
-        return `mounted-as-${Nimble.twitch.extension.mount}`
-    }
     get view() {
         return (
             <Game model={this.props.model}/>
         )
-        // if(Nimble.twitch.extension.mount === "config") {
-        //     return (
-        //         <Config model={this.props.model}/>
-        //     )
-        // }
     }
     get onClick() {
         return (event) => {

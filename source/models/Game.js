@@ -1,6 +1,5 @@
 import "local-json-storage"
 
-import Nimble from "library/Nimble"
 import analytics from "library/analytics.js"
 
 import activity from "data/activity.js"
@@ -19,15 +18,15 @@ export default class Game {
         parameters.game = parameters.game || {}
         parameters.game.monsters = parameters.game.monsters || []
         parameters.game.adventurer = parameters.game.adventurer || {}
-        
+
         this.score = parameters.game.score || 0
         this.add(this.adventurer = new Adventurer(parameters.game.adventurer))
         parameters.game.monsters.forEach((monster) => this.add(new Monster(monster)))
-        
+
         this.room = new Room({"width": 5, "height": 5})
         this.camera = {"position": {"x": 2.5, "y": 2.5}} // new Camera()
         this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
-        
+
         this.isDemo = parameters.game.isDemo
     }
     add(entity) {
@@ -61,7 +60,7 @@ export default class Game {
             }
         })
         this.wave.onAction()
-        
+
         // Save the state.
         if(this.isDemo !== true) {
             window.localStorage.setJSON("state", {
@@ -76,12 +75,6 @@ export default class Game {
             this.hasEnded = true
             analytics.reportEndGame()
             this.model.deathtime = 0
-            // if(Nimble.sparks.isInitialized === true) {
-            //     Nimble.sparks.submitLeaderboardEntry({
-            //         "activity": activity,
-            //         "score": this.score,
-            //     })
-            // }
         }
     }
     get isDone() {
