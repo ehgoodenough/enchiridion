@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":2,
+ "tilecount":3,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -29,6 +29,12 @@
         {
          "id":1,
          "image":"..\/..\/assets\/images\/world\/tiles\/0.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":2,
+         "image":"..\/..\/assets\/images\/world\/tiles\/2.png",
          "imageheight":16,
          "imagewidth":16
         }],
