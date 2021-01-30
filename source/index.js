@@ -1,11 +1,33 @@
-import Yaafloop from "yaafloop"
+////////////////
+// Analytics //
+//////////////
 
 import analytics from "library/analytics.js"
 
-import model from "models/_.js"
-import view from "views/_.js"
+////////////
+// Frame //
+//////////
+
+import frem from "frem"
+
+frem({
+    "width": 10,
+    "height": 10,
+})
+
+
+///////////
+// Loop //
+/////////
+
+import Yaafloop from "yaafloop"
+
+import App from "models/App.js"
+
+import View from "views/Mount.view.js"
+import render from "library/render.js"
 
 const loop = new Yaafloop((delta) => {
-    model.update(delta)
-    view.update(delta)
+    App.update(delta)
+    render(View)
 })

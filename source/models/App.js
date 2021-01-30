@@ -1,7 +1,7 @@
 import "local-json-storage"
 
 import keyb from "keyb"
-import cursor from "library/cursor.js"
+import poin from "poin"
 
 import Game from "models/Game.js"
 
@@ -11,10 +11,16 @@ const STATE_EXPIRATION = 10 * 1000 // in milliseconds
 const DEMO_GAME_STATE = {"isDemo": true, "adventurer": {"position": {"x": 2, "y": 2}}}
 const NEW_GAME_STATE = {"adventurer": {"position": {"x": 2, "y": 2}}}
 
-export default class Model {
-    constructor(model) {
+const Dev = {"isInDevMode": true}
+
+export default new class Model {
+    constructor() {
+        if(Dev.isInDevMode == true) {
+            window.app = this
+        }
+
         const state = window.localStorage.getJSON("state")
-        
+
         if(state !== null
         && Date.now() - state.date < STATE_EXPIRATION
         && state.game.adventurer.isDead !== true) {
@@ -42,7 +48,7 @@ export default class Model {
                 || keyb.isJustDown("<left>", delta.ms)
                 || keyb.isJustDown("<right>", delta.ms)
                 || keyb.isJustDown("<space>", delta.ms)
-                || cursor.isDown) {
+                || poin.wasJustPressed("primary", delta.ms)) {
                     return this.startNewGame()
                 }
             }

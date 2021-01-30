@@ -18,9 +18,11 @@
   },
   "dependencies": {
     "crypto-js": "^4.0.0",
+    "frem": "^1.0.0",
     "gameanalytics": "^4.1.4",
     "keyb": "^1.4.1",
     "local-json-storage": "^1.0.1",
+    "poin": "^2.1.2",
     "preact": "^10.5.12",
     "query-string": "^6.13.8",
     "shortid": "^2.2.16",

@@ -1,6 +1,6 @@
 import * as Preact from "preact"
 
-import model from "models/_.js"
+import App from "models/App.js"
 
 import "views/UI.view.less"
 
@@ -24,7 +24,7 @@ export default class UI {
                     </span>
                 </div>
                 <div className="game-over-banner">
-                    <span>{model.game.adventurer.deathtext}</span>
+                    <span>{App.game.adventurer.deathtext}</span>
                 </div>
                 <div className="pause-banner">
                     <span>PAUSED</span>
@@ -38,9 +38,9 @@ export default class UI {
     }
     get hearts() {
         var hearts = new Array()
-        for(var i = model.game.adventurer.health - 1; i >= 0; i -= 1) {
-            if(i >= model.game.adventurer.damage) {
-                if(model.game.adventurer.damage + 1 === model.game.adventurer.health) {
+        for(var i = App.game.adventurer.health - 1; i >= 0; i -= 1) {
+            if(i >= App.game.adventurer.damage) {
+                if(App.game.adventurer.damage + 1 === App.game.adventurer.health) {
                     hearts.push(<span className="final full heart" key={i}/>)
                 } else {
                     hearts.push(<span className="full heart" key={i}/>)
@@ -52,7 +52,7 @@ export default class UI {
         return hearts
     }
     get score() {
-        let score = model.game.score
+        let score = App.game.score
         return (
             <span>
                 {score < 100 ? <i>0</i> : undefined}
@@ -62,9 +62,9 @@ export default class UI {
         )
     }
     get flash() {
-        if(model.game.adventurer.isAttacked) {
+        if(App.game.adventurer.isAttacked) {
             return (
-                <div className="blood" key={model.game.adventurer.isAttacked}/>
+                <div className="blood" key={App.game.adventurer.isAttacked}/>
             )
         }
     }

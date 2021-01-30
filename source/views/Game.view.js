@@ -3,9 +3,8 @@ import * as Preact from "preact"
 import Entity from "views/Entity.view.js"
 import UI from "views/UI.view.js"
 import Camera from "views/Camera.view.js"
-// import LeaderboardModal from "views/LeaderboardModal.view.js"
 
-import model from "models/_.js"
+import App from "models/App.js"
 
 import "views/Game.view.less"
 
@@ -20,21 +19,19 @@ export default class Game {
                     </Camera>
                 </div>
                 <UI/>
-                {/*<LeaderboardModal/>*/}
             </div>
         )
     }
     get className() {
         return [
             "Game",
-            model.isFocused === false ? "isPaused" : "",
-            model.game.isDone === true ? "isDone" : "",
-            model.game.isDemo === true ? "isDemo" : "",
-            model.game.isTutorial ? "isTutorial" : "",
+            App.game.isDone === true ? "isDone" : "",
+            App.game.isDemo === true ? "isDemo" : "",
+            App.game.isTutorial ? "isTutorial" : "",
         ].join(" ")
     }
     get entities() {
-        return model.game.entities.map((entity) => (
+        return App.game.entities.map((entity) => (
             <Entity entity={entity} key={entity.key}/>
         ))
     }
