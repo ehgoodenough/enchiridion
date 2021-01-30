@@ -15,8 +15,6 @@ if(tilemap.tilesets.length != 1
     console.error("Unexpected tilesets", tilemap.tilesets)
 }
 
-console.log(tilemap)
-
 // tilemap.renderorder == "right-down"
 // tilemap.orientation == "orthogonal"
 // tilemap.tiledversion == "1.4.2"
@@ -36,8 +34,8 @@ export default class World {
         this.tiles = {}
 
         tilemap.layers.forEach((layer) => {
-            if(layer.type == "tilelayer"
-            && layer.name == "collision") {
+            if(layer.name == "collision"
+            && layer.type == "tilelayer") {
                 layer.data.forEach((tilegid, index) => {
                     tilegid -= FIRST_TILEGID
 
@@ -46,64 +44,48 @@ export default class World {
 
                     if(tilegid > -1) {
                         this.tiles[x + "x" + y] = this.tiles[x + "x" + y] || {}
+                        this.tiles[x + "x" + y].position = this.tiles[x + "x" + y].position || {x, y}
                         this.tiles[x + "x" + y].collision = true
                     }
                 })
             }
-            if(layer.type == "group"
-            && layer.name == "images"
+            if(layer.name == "tile layers"
+            && layer.type == "group"
             && layer.visible == true) {
                 layer.layers.forEach((sublayer) => {
                     if(sublayer.type == "group"
-                    && sublayer.name == "main"
                     && sublayer.visible == true) {
-                        sublayer.layers.forEach((subsublayer) => {
-                            if(subsublayer.type == "group"
-                            && subsublayer.visible == true) {
-                                console.error("Don't yet support groups within the main images layer.")
+                        console.error("Don't yet support groups within the main images layer.")
+                        return
+                    }
+                    if(sublayer.type == "tilelayer"
+                    && sublayer.visible == true) {
+                        sublayer.data.forEach((tilegid, index) => {
+                            tilegid -= FIRST_TILEGID
+
+                            const tile = tileset.tiles[tilegid]
+
+                            if(tile == undefined) {
                                 return
                             }
-                            if(subsublayer.type == "tilelayer"
-                            && subsublayer.visible == true) {
-                                subsublayer.data.forEach((tilegid, index) => {
-                                    tilegid -= FIRST_TILEGID
 
-                                    const tile = tileset.tiles[tilegid]
+                            const x = index % sublayer.width
+                            const y = Math.floor(index / sublayer.width)
 
-                                    if(tile == undefined) {
-                                        return
-                                    }
+                            this.tiles[x + "x" + y] = this.tiles[x + "x" + y] || {}
+                            this.tiles[x + "x" + y].position = this.tiles[x + "x" + y].position || {x, y}
+                            this.tiles[x + "x" + y].images = this.tiles[x + "x" + y].images || []
 
-                                    const x = index % subsublayer.width
-                                    const y = Math.floor(index / subsublayer.width)
+                            // tile.imageheight == 16
+                            // tile.imagewidth == 16
 
-                                    this.tiles[x + "x" + y] = this.tiles[x + "x" + y] || {}
-                                    this.tiles[x + "x" + y].position = this.tiles[x + "x" + y].position || {x, y}
-                                    this.tiles[x + "x" + y].images = this.tiles[x + "x" + y].images || []
-
-                                    // tile.imageheight == 16
-                                    // tile.imagewidth == 16
-
-                                    const sourceImagePath = tile.image.replace("../../assets/images/world/tiles/", "./")
-                                    const buildImagePath = buildImagePaths[sourceImagePath]
-                                    this.tiles[x + "x" + y].images.push({"source": buildImagePath})
-                                })
-                            }
+                            const sourceImagePath = tile.image.replace("../../assets/images/world/tiles/", "./")
+                            const buildImagePath = buildImagePaths[sourceImagePath]
+                            this.tiles[x + "x" + y].images.push({"source": buildImagePath})
                         })
                     }
                 })
             }
         })
-        // this.tiles = {}
-        // for(let x = 0; x < this.width; x += 1) {
-        //     for(let y = 0; y < this.height; y += 1) {
-        //         this.tiles[x + "x" + y] = {
-        //             "position": {"x": x, "y": y},
-        //             "key": x + "x" + y,
-        //             "color": "#191923",
-        //             "stack": 0
-        //         }
-        //     }
-        // }
     }
 }

@@ -22,16 +22,16 @@
  "tiles":[
         {
          "id":0,
-         "image":"..\/..\/assets\/images\/world\/tiles\/1.png",
-         "imageheight":16,
-         "imagewidth":16
-        }, 
-        {
-         "id":1,
          "image":"..\/..\/assets\/images\/world\/tiles\/0.png",
          "imageheight":16,
          "imagewidth":16
-        }, 
+        },
+           {
+            "id":1,
+            "image":"..\/..\/assets\/images\/world\/tiles\/1.png",
+            "imageheight":16,
+            "imagewidth":16
+           },
         {
          "id":2,
          "image":"..\/..\/assets\/images\/world\/tiles\/2.png",

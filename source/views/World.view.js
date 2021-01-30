@@ -12,7 +12,7 @@ export default class World {
                     {Object.values(App.game.world.tiles).map((tile) => {
                         return (
                             <div class="Tile" style={{"left": tile.position.x + "em", "top": tile.position.y + "em"}}>
-                                {tile.images.map((image) => {
+                                {tile.images && tile.images.map((image) => {
                                     return (
                                         <div class="Image" style={{
                                             "background-image": "url(" + image.source + ")"
