@@ -65,77 +65,7 @@ export default class Monster {
             || this.position.y >= this.game.room.height
     }
     onReaction() {
-        if(this.isDead) {
-            return
-        }
-
-        const action = {"move": {"x": 0, "y": 0}}
-
-        this.isAttacking = false
-
-        if(this.flipflop == false) {
-            this.flipflop = true
-        } else if(this.flipflop = true) {
-            this.flipflop = false
-
-            // move towards the this.game.adventurer, prioritzing whichever vector has a longer magnitude.
-            if(Math.abs(this.position.y - ((this.game.adventurer.position.y + this.game.adventurer.prevposition.y) / 2))
-            >= Math.abs(this.position.x - ((this.game.adventurer.position.x + this.game.adventurer.prevposition.x) / 2))) {
-                if(this.position.y > this.game.adventurer.position.y) {
-                    action.move.y = -1
-                } else if(this.position.y < this.game.adventurer.position.y) {
-                    action.move.y = +1
-                }
-            } else {
-                if(this.position.x > this.game.adventurer.position.x) {
-                    action.move.x = -1
-                } else if(this.position.x < this.game.adventurer.position.x) {
-                    action.move.x = +1
-                }
-            }
-
-            if(this.isOutOfRoom) {
-                if(this.position.x < 0) action.move = {x: +1}
-                if(this.position.x >= this.game.room.width) action.move = {x: -1}
-                if(this.position.y < 0) action.move = {y: +1}
-                if(this.position.y >= this.game.room.height) action.move = {y: -1}
-            }
-        }
-
-        ///////////
-        // MOVE //
-        /////////
-
-        action.move.x = action.move.x || 0
-        action.move.y = action.move.y || 0
-
-        this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
-
-        if(this.isOutOfRoom !== true) {
-            if(this.position.x + action.move.x < 0
-            || this.position.y + action.move.y < 0
-            || this.position.x + action.move.x >= this.game.room.width
-            || this.position.y + action.move.y >= this.game.room.height) {
-                action.move.x = 0
-                action.move.y = 0
-            }
-        }
-
-        this.game.entities.forEach((entity) => {
-            if(entity !== this
-            && this.position.x + action.move.x === entity.position.x
-            && this.position.y + action.move.y === entity.position.y) {
-                if(entity instanceof Adventurer) {
-                    this.isAttacking = true
-                    entity.beAttacked()
-                }
-                action.move.x = 0
-                action.move.y = 0
-            }
-        })
-
-        this.position.x += action.move.x
-        this.position.y += action.move.y
+        // 
     }
     toState() {
         return {
