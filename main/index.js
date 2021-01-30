@@ -97,8 +97,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
 /* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(yaafloop__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
-/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(40);
-/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(70);
+/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(45);
+/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(69);
 ////////////////
 // Analytics //
 //////////////
@@ -4209,9 +4209,9 @@ var NEW_GAME_STATE = {
 var Dev = {
   "isInDevMode": true
 };
-/* harmony default export */ __webpack_exports__["default"] = (new ( /*#__PURE__*/function () {
-  function Model() {
-    _classCallCheck(this, Model);
+var App = new ( /*#__PURE__*/function () {
+  function _class() {
+    _classCallCheck(this, _class);
 
     if (Dev.isInDevMode == true) {
       window.app = this;
@@ -4237,7 +4237,7 @@ var Dev = {
     }
   }
 
-  _createClass(Model, [{
+  _createClass(_class, [{
     key: "startNewGame",
     value: function startNewGame() {
       this.game = new models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"]({
@@ -4247,7 +4247,7 @@ var Dev = {
   }, {
     key: "update",
     value: function update(delta) {
-      if (this.game.isDemo === true || this.game.isDone === true) {
+      if (this.game.isDemo === true || this.game.hasEnded === true) {
         this.deathtime = this.deathtime || 0;
         this.deathtime += delta.s;
 
@@ -4260,10 +4260,20 @@ var Dev = {
 
       this.game.update(delta);
     }
+  }], [{
+    key: "saveGame",
+    value: function saveGame(game) {
+      window.localStorage.setJSON("state", {
+        "date": Date.now(),
+        "game": this.toState(),
+        "hasUsedKeyboard": App.hasUsedKeyboard
+      });
+    }
   }]);
 
-  return Model;
-}())());
+  return _class;
+}())();
+/* harmony default export */ __webpack_exports__["default"] = (App);
 
 /***/ }),
 /* 7 */
@@ -4549,16 +4559,13 @@ module.exports = Poin
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
-/* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(local_json_storage__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
 /* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(library_analytics_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var models_Adventurer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
-/* harmony import */ var models_Monster_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(25);
-/* harmony import */ var models_MonsterWave_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(31);
-/* harmony import */ var models_World_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(32);
-/* harmony import */ var models_Camera_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(39);
+/* harmony import */ var models_Player_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(23);
+/* harmony import */ var models_World_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(28);
+/* harmony import */ var models_Camera_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(44);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -4572,107 +4579,34 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
-
 var Game = /*#__PURE__*/function () {
-  function Game(_ref) {
-    var _this = this;
-
-    var game = _ref.game;
-
+  function Game() {
     _classCallCheck(this, Game);
 
     library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default.a.reportStartGame();
-    game = game || {};
-    game.monsters = game.monsters || [];
-    game.adventurer = game.adventurer || {};
-    this.score = game.score || 0;
-    this.add(this.adventurer = new models_Adventurer_js__WEBPACK_IMPORTED_MODULE_3__["default"](game.adventurer));
-    game.monsters.forEach(function (monster) {
-      return _this.add(new models_Monster_js__WEBPACK_IMPORTED_MODULE_4__["default"](monster));
-    });
-    this.world = new models_World_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
-    this.camera = new models_Camera_js__WEBPACK_IMPORTED_MODULE_7__["default"]({
-      "game": this
-    });
-    this.camera.onReaction();
-    this.monsters = [];
-    this.isDemo = game.isDemo;
+    this.world = new models_World_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
+    this.camera = new models_Camera_js__WEBPACK_IMPORTED_MODULE_5__["default"](this);
   }
 
   _createClass(Game, [{
-    key: "add",
-    value: function add(entity) {
-      entity.game = this;
-      this.entities = this.entities || [];
-      this.entities.push(entity);
-
-      if (entity.group) {
-        this[entity.group] = this[entity.group] || [];
-        this[entity.group].push(entity);
-      }
-    }
-  }, {
-    key: "remove",
-    value: function remove(entity) {
-      entity.game = this;
-      this.entities.splice(this.entities.indexOf(entity), 1);
-
-      if (entity.group) {
-        this[entity.group] = this[entity.group] || [];
-        this[entity.group].splice(this[entity.group].indexOf(entity), 1);
-      }
-    }
-  }, {
     key: "update",
     value: function update(delta) {
-      this.adventurer.update(delta);
-    }
-  }, {
-    key: "onReaction",
-    value: function onReaction() {
-      this.camera.onReaction();
-      this.entities.forEach(function (entity) {
-        if (entity.onReaction instanceof Function) {
-          entity.onReaction();
-        }
-      }); // this.wave.onAction()
-      // Save the state.
-
-      if (this.isDemo !== true) {
-        window.localStorage.setJSON("state", {
-          "date": Date.now(),
-          "game": this.toState(),
-          "hasUsedKeyboard": models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].hasUsedKeyboard
-        });
+      if (this.hasEnded) {
+        return;
       }
-    }
-  }, {
-    key: "onEnd",
-    value: function onEnd() {
-      if (this.hasEndeded !== true) {
-        this.hasEnded = true;
-        library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default.a.reportEndGame();
-        models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].deathtime = 0;
-      }
-    }
-  }, {
-    key: "toState",
-    value: function toState() {
-      return {
-        "score": this.score,
-        "adventurer": this.adventurer.toState(),
-        "monsters": this.monsters.map(function (monster) {
-          return monster.toState();
-        }) // "camera": this.camera,
-        // "wave": this.wave.toState(),
 
-      };
+      models_Player_js__WEBPACK_IMPORTED_MODULE_3__["default"].update(this, delta);
+      this.camera.reaction(this);
+    }
+  }, {
+    key: "end",
+    value: function end() {
+      library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default.a.reportEndGame();
     }
   }, {
     key: "isDone",
     get: function get() {
-      return this.adventurer.isDead === true;
+      return this.hasEnded;
     }
   }, {
     key: "isTutorial",
@@ -4687,6 +4621,17 @@ var Game = /*#__PURE__*/function () {
 
       return true;
     }
+  }], [{
+    key: "performReactions",
+    value: function performReactions(game) {
+      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.world.entities, function (entity) {
+        if (entity.reaction instanceof Function) {
+          entity.reaction(game);
+        }
+      }); // if(this.isDemo != true) {
+      //     // App.saveGame(game)
+      // }
+    }
   }]);
 
   return Game;
@@ -4700,246 +4645,105 @@ var Game = /*#__PURE__*/function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Adventurer; });
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(keyb__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var data_colors_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
-/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(6);
-/* harmony import */ var models_Monster_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(25);
-/* harmony import */ var assets_images_monsters_gravestone_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(29);
-/* harmony import */ var assets_images_monsters_gravestone_png__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(assets_images_monsters_gravestone_png__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var assets_images_monsters_adventurer_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(30);
-/* harmony import */ var assets_images_monsters_adventurer_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(assets_images_monsters_adventurer_png__WEBPACK_IMPORTED_MODULE_7__);
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "merge", function() { return merge; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "map", function() { return map; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "find", function() { return find; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convert", function() { return convert; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "from", function() { return from; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "forEach", function() { return forEach; });
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_0__);
+// What is an object-based dictionary? It's any object with key-value pairs!
+// This is just a more primitive version of the ES2015 Maps.
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-
-
-
-
-
-
-var Dev = {
-  "isInGodMode": "NONE" == "NONE"
-};
-var DIRECTIONS = {
-  "-1x0": "west",
-  "1x0": "east",
-  "0x-1": "north",
-  "0x1": "south"
-};
-var DEMO_CLOCK = 0.25; // in seconds
-
-var DEMO_MOVEMENTS = [{
-  "movement": {
-    "x": -1
-  }
-}, {
-  "movement": {
-    "x": +1
-  }
-}, {
-  "movement": {
-    "y": -1
-  }
-}, {
-  "movement": {
-    "y": +1
-  }
-}];
-
-var Adventurer = /*#__PURE__*/function () {
-  function Adventurer() {
-    var parameters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, Adventurer);
-
-    this.key = shortid__WEBPACK_IMPORTED_MODULE_1___default.a.generate();
-    this.position = parameters.position || {
-      "x": 0,
-      "y": 0
-    };
-    this.prevposition = parameters.prevposition || {
-      "x": this.position.x,
-      "y": this.position.y
-    };
-    this.damage = parameters.damage || 0;
-    this.title = "The Adventurer";
-    this.description = "It you!!";
-    this.health = 3;
-    this.stack = 1;
-  }
-
-  _createClass(Adventurer, [{
-    key: "update",
-    value: function update(delta) {
-      if (this.isDead) {
-        return;
-      }
-
-      if (this.game.isDemo) {
-        this.clock = (this.clock || 0) + delta.s;
-
-        if (this.clock > DEMO_CLOCK) {
-          this.clock -= DEMO_CLOCK;
-          var move = Math.random();
-          this.onAction({
-            "move": {
-              "x": move < 0.5 ? 0 : Math.random() < 0.25 ? this.position.x !== 0 ? -1 : +1 : this.position.x !== 5 - 1 ? +1 : -1,
-              "y": move >= 0.5 ? 0 : Math.random() < 0.25 ? this.position.y !== 0 ? -1 : +1 : this.position.y !== 5 - 1 ? +1 : -1
+// Objdict.merge
+// When merging, deletes any values of undefined.
+// When merging, the later arguments will overwrite previous arguments.
+// When merging, will assign a unique identifier to any units missing a key.
+// This is a shallow merge.
+// Returns a new untouched dict.
+// Does not touch the passed in dicts.
+function merge() {
+    const omegadict = {}
+    Array.from(arguments).forEach((alphadict) => {
+        if(alphadict instanceof Array) {
+            alphadict = Objdict.from(alphadict)
+        }
+        Object.keys(alphadict).forEach((key) => {
+            omegadict[key] = alphadict[key]
+            if(omegadict[key] === undefined) {
+                delete omegadict[key]
             }
-          });
+        })
+    })
+    return omegadict
+}
+
+// Objdict.map
+// Assumes the "order" from Object.keys, which honestly isn't supposed to have order.
+// For the iterator function, we pass the (value, key) => {}
+// Returns a new untouched dict.
+// In the current design, if you change the key in the iterator, it will still be saved in the dict by the old key.
+function map(alphadict, iterator) {
+    if(alphadict == undefined) {
+        return {}
+    }
+    const omegadict = {}
+    Object.keys(alphadict).forEach((key) => {
+        omegadict[key] = iterator(alphadict[key], key)
+    })
+    return omegadict
+}
+
+// Objdict.find
+// Assumes the "order" from Object.keys, which honestly isn't supposed to have order.
+// For the iterator function, we pass the (value, key) => {}
+function find(dict, iterator) {
+    if(dict == undefined) {
+        return undefined
+    }
+    const keys = Object.keys(dict)
+    for(let index in keys) {
+        const key = keys[index]
+        const value = dict[key]
+        if(iterator(value, key)) {
+            return value
         }
-
-        return;
-      }
-
-      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("W", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<up>", delta.ms)) {
-        this.onAction({
-          "move": {
-            "y": -1
-          }
-        });
-        models_App_js__WEBPACK_IMPORTED_MODULE_4__["default"].hasUsedKeyboard = true;
-      }
-
-      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("S", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<down>", delta.ms)) {
-        this.onAction({
-          "move": {
-            "y": +1
-          }
-        });
-        models_App_js__WEBPACK_IMPORTED_MODULE_4__["default"].hasUsedKeyboard = true;
-      }
-
-      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("A", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<left>", delta.ms)) {
-        this.onAction({
-          "move": {
-            "x": -1
-          }
-        });
-        models_App_js__WEBPACK_IMPORTED_MODULE_4__["default"].hasUsedKeyboard = true;
-      }
-
-      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("D", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<right>", delta.ms)) {
-        this.onAction({
-          "move": {
-            "x": +1
-          }
-        });
-        models_App_js__WEBPACK_IMPORTED_MODULE_4__["default"].hasUsedKeyboard = true;
-      }
-
-      if (Dev.isInGodMode) {
-        if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("T", delta.ms)) {
-          this.onAction({
-            "move": {}
-          });
-        }
-      }
     }
-  }, {
-    key: "onAction",
-    value: function onAction(action) {
-      var _this = this;
+}
 
-      this.isAttacking = false;
-      action.move.x = action.move.x || 0;
-      action.move.y = action.move.y || 0;
-      this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none";
-      this.game.entities.forEach(function (entity) {
-        if (entity !== _this && entity.isDead !== true && _this.position.x + action.move.x === entity.position.x && _this.position.y + action.move.y === entity.position.y) {
-          if (entity instanceof models_Monster_js__WEBPACK_IMPORTED_MODULE_5__["default"] && entity.beAttacked instanceof Function) {
-            _this.isAttacking = true;
-            entity.beAttacked();
-          }
+// Objdict.convert
 
-          action.move.x = 0;
-          action.move.y = 0;
-        }
-      });
-      var mx = this.position.x + action.move.x;
-      var my = this.position.y + action.move.y;
-      var tile = this.game.world.tiles[mx + "x" + my];
-
-      if (tile != undefined && tile.collision == true) {
-        action.move.x = 0;
-        action.move.y = 0;
-      } // if(this.position.x + action.move.x < 0
-      // || this.position.y + action.move.y < 0
-      // || this.position.x + action.move.x >= this.game.room.width
-      // || this.position.y + action.move.y >= this.game.room.height) {
-      //     action.move.x = 0
-      //     action.move.y = 0
-      //     return
-      // }
-      // if(action.move.x === 0
-      // && action.move.y === 0) {
-      //     return
-      // }
-
-
-      this.prevposition.x = this.position.x;
-      this.prevposition.y = this.position.y;
-      this.position.x += action.move.x;
-      this.position.y += action.move.y;
-      this.game.onReaction();
+function convert(alphalist, key = "key") {
+    if(alphalist == undefined) {
+        return {}
     }
-  }, {
-    key: "beAttacked",
-    value: function beAttacked() {
-      if (this.game.isDemo) {
-        return;
-      }
-
-      if (this.isDead !== true) {
-        this.damage += 1;
-        this.isAttacked = shortid__WEBPACK_IMPORTED_MODULE_1___default.a.generate();
-
-        if (this.isDead === true) {
-          this.deathtext = data_deathtext_js__WEBPACK_IMPORTED_MODULE_3__["default"][0];
-          data_deathtext_js__WEBPACK_IMPORTED_MODULE_3__["default"].push(data_deathtext_js__WEBPACK_IMPORTED_MODULE_3__["default"].shift());
-          this.game.onEnd();
-        }
-      }
+    if(alphalist instanceof Array) {
+        const omegadict = {}
+        alphalist.forEach((value) => {
+            value[key] = value[key] || shortid__WEBPACK_IMPORTED_MODULE_0___default.a.generate()
+            omegadict[value[key]] = value
+        })
+        return omegadict
     }
-  }, {
-    key: "toState",
-    value: function toState() {
-      return {
-        "damage": this.damage,
-        "position": this.position,
-        "prevposition": this.prevposition,
-        "isDead": this.isDead
-      };
-    }
-  }, {
-    key: "isDead",
-    get: function get() {
-      return this.damage >= this.health;
-    }
-  }, {
-    key: "image",
-    get: function get() {
-      if (this.isDead === true) {
-        return assets_images_monsters_gravestone_png__WEBPACK_IMPORTED_MODULE_6___default.a;
-      } else {
-        return assets_images_monsters_adventurer_png__WEBPACK_IMPORTED_MODULE_7___default.a;
-      }
-    }
-  }]);
+    return alphalist
+}
+function from() {
+    return Objdict.convert(...arguments)
+}
 
-  return Adventurer;
-}();
+// Objdict.forEach
+// Assumes the "order" from Object.keys, which honestly isn't supposed to have order.
+// For the iterator function, we pass the (value, key) => {}
+function forEach(dict, iterator) {
+    dict = dict || []
+    Object.keys(dict).forEach((key) => {
+        const value = dict[key]
+        iterator(value, key)
+    })
+}
 
+// TODO: Support objdicts that use a different property as the key, like name or id.
 
 
 /***/ }),
@@ -5355,6 +5159,220 @@ module.exports = 0;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Player; });
+/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(keyb__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
+/* harmony import */ var data_colors_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(24);
+/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(25);
+/* harmony import */ var assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(26);
+/* harmony import */ var assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(27);
+/* harmony import */ var assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
+
+
+var Dev = {
+  "isInGodMode": "NONE" == "NONE"
+};
+
+
+
+
+var DIRECTIONS = {
+  "-1x0": "west",
+  "1x0": "east",
+  "0x-1": "north",
+  "0x1": "south"
+};
+var DEMO_CLOCK = 0.25; // in seconds
+
+var DEMO_MOVEMENTS = [{
+  "movement": {
+    "x": -1
+  }
+}, {
+  "movement": {
+    "x": +1
+  }
+}, {
+  "movement": {
+    "y": -1
+  }
+}, {
+  "movement": {
+    "y": +1
+  }
+}];
+
+var Player = /*#__PURE__*/function () {
+  function Player() {
+    _classCallCheck(this, Player);
+  }
+
+  _createClass(Player, null, [{
+    key: "update",
+    value: function update(game, delta) {
+      if (Player.isDead(game)) {
+        return;
+      } // if(this.game.isDemo) {
+      //     this.clock = (this.clock || 0) + delta.s
+      //     if(this.clock > DEMO_CLOCK) {
+      //         this.clock -= DEMO_CLOCK
+      //         let move = Math.random()
+      //         Player.performAction(game, {"move": {
+      //             "x": move < 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.x !== 0 ? -1 : +1) : (this.position.x !== 5 - 1 ? +1 : -1)),
+      //             "y": move >= 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.y !== 0 ? -1 : +1) : (this.position.y !== 5 - 1 ? +1 : -1)),
+      //         }})
+      //     }
+      //     return
+      // }
+
+
+      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("W", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<up>", delta.ms)) {
+        Player.performAction(game, {
+          "move": {
+            "y": -1
+          }
+        });
+        models_App_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasUsedKeyboard = true;
+      }
+
+      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("S", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<down>", delta.ms)) {
+        Player.performAction(game, {
+          "move": {
+            "y": +1
+          }
+        });
+        models_App_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasUsedKeyboard = true;
+      }
+
+      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("A", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<left>", delta.ms)) {
+        Player.performAction(game, {
+          "move": {
+            "x": -1
+          }
+        });
+        models_App_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasUsedKeyboard = true;
+      }
+
+      if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("D", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<right>", delta.ms)) {
+        Player.performAction(game, {
+          "move": {
+            "x": +1
+          }
+        });
+        models_App_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasUsedKeyboard = true;
+      }
+
+      if (Dev.isInGodMode) {
+        if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("T", delta.ms)) {
+          Player.performAction(game, {
+            "move": {}
+          });
+        }
+      }
+    }
+  }, {
+    key: "performAction",
+    value: function performAction(game, action) {
+      var _this = this;
+
+      var player = game.world.entities["player"];
+      player.isAttacking = false;
+      action.move.x = action.move.x || 0;
+      action.move.y = action.move.y || 0;
+      this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none";
+      objdict__WEBPACK_IMPORTED_MODULE_1__["forEach"](game.world.entities, function (entity) {
+        if (entity != _this && entity.isDead != true && player.position.x + action.move.x == entity.position.x && player.position.y + action.move.y == entity.position.y) {
+          if (entity.key != player.key) {
+            player.isAttacking = true;
+
+            if (entity.beAttacked instanceof Function) {
+              entity.beAttacked(game);
+            }
+          }
+
+          action.move.x = 0;
+          action.move.y = 0;
+        }
+      });
+      var mx = player.position.x + action.move.x;
+      var my = player.position.y + action.move.y;
+      var tile = game.world.environment.tiles[mx + "x" + my];
+
+      if (tile != undefined && tile.collision == true) {
+        action.move.x = 0;
+        action.move.y = 0;
+      }
+
+      player.prevposition = {};
+      player.prevposition.x = player.position.x;
+      player.prevposition.y = player.position.y;
+      player.position.x += action.move.x;
+      player.position.y += action.move.y;
+      models_Game_js__WEBPACK_IMPORTED_MODULE_4__["default"].performReactions(game);
+    }
+  }, {
+    key: "isDead",
+    value: function isDead(game) {
+      var player = game.world.entities["player"];
+      return player == undefined || player.damage >= player.health;
+    } // beAttacked() {
+    //     if(this.game.isDemo) {
+    //         return
+    //     }
+    //     if(this.isDead !== true) {
+    //         this.damage += 1
+    //         this.isAttacked = shortid.generate()
+    //         if(this.isDead === true) {
+    //             this.deathtext = deathtext[0]
+    //             deathtext.push(deathtext.shift())
+    //             this.game.onEnd()
+    //         }
+    //     }
+    // }
+    // get image() {
+    //     if(this.isDead === true) {
+    //         return GRAVESTONE_IMAGE
+    //     } else {
+    //         return ADVENTURER_IMAGE
+    //     }
+    // }
+    // toState() {
+    //     return {
+    //         "damage": this.damage,
+    //         "position": this.position,
+    //         "prevposition": this.prevposition,
+    //         "isDead": this.isDead
+    //     }
+    // }
+
+  }]);
+
+  return Player;
+}();
+
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   "yellow": "#DEB74A",
   "red": "#A52F22",
@@ -5363,7 +5381,7 @@ __webpack_require__.r(__webpack_exports__);
 });
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5376,383 +5394,40 @@ __webpack_require__.r(__webpack_exports__);
 ]);
 
 /***/ }),
-/* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Monster; });
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(keyb__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(26);
-/* harmony import */ var data_colors_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(23);
-/* harmony import */ var models_Adventurer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
-/* harmony import */ var assets_images_monsters_slime_alpha_png__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(27);
-/* harmony import */ var assets_images_monsters_slime_alpha_png__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(assets_images_monsters_slime_alpha_png__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var assets_images_monsters_slime_omega_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(28);
-/* harmony import */ var assets_images_monsters_slime_omega_png__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(assets_images_monsters_slime_omega_png__WEBPACK_IMPORTED_MODULE_6__);
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-
-
-
-
-
-var DIRECTIONS = {
-  "-1x0": "west",
-  "1x0": "east",
-  "0x-1": "north",
-  "0x1": "south"
-};
-
-var Monster = /*#__PURE__*/function () {
-  function Monster() {
-    var parameters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, Monster);
-
-    this.key = "monster-" + shortid__WEBPACK_IMPORTED_MODULE_1___default.a.generate();
-    this.position = parameters.position || {
-      "x": 0,
-      "y": 0
-    };
-    this.flipflop = parameters.flipflop || false;
-    this.damage = parameters.damage || 0; // this.color = colors.red
-
-    this.title = "Red Slime";
-    this.description = "It looks gross.";
-    this.health = 1;
-    this.group = "monsters";
-    this.stack = 1;
-  }
-
-  _createClass(Monster, [{
-    key: "onReaction",
-    value: function onReaction() {
-      var _this = this;
-
-      if (this.isDead) {
-        return;
-      }
-
-      var action = {
-        "move": {
-          "x": 0,
-          "y": 0
-        }
-      };
-      this.isAttacking = false;
-
-      if (this.flipflop == false) {
-        this.flipflop = true;
-      } else if (this.flipflop = true) {
-        this.flipflop = false; // move towards the this.game.adventurer, prioritzing whichever vector has a longer magnitude.
-
-        if (Math.abs(this.position.y - (this.game.adventurer.position.y + this.game.adventurer.prevposition.y) / 2) >= Math.abs(this.position.x - (this.game.adventurer.position.x + this.game.adventurer.prevposition.x) / 2)) {
-          if (this.position.y > this.game.adventurer.position.y) {
-            action.move.y = -1;
-          } else if (this.position.y < this.game.adventurer.position.y) {
-            action.move.y = +1;
-          }
-        } else {
-          if (this.position.x > this.game.adventurer.position.x) {
-            action.move.x = -1;
-          } else if (this.position.x < this.game.adventurer.position.x) {
-            action.move.x = +1;
-          }
-        }
-
-        if (this.isOutOfRoom) {
-          if (this.position.x < 0) action.move = {
-            x: +1
-          };
-          if (this.position.x >= this.game.room.width) action.move = {
-            x: -1
-          };
-          if (this.position.y < 0) action.move = {
-            y: +1
-          };
-          if (this.position.y >= this.game.room.height) action.move = {
-            y: -1
-          };
-        }
-      } ///////////
-      // MOVE //
-      /////////
-
-
-      action.move.x = action.move.x || 0;
-      action.move.y = action.move.y || 0;
-      this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none";
-
-      if (this.isOutOfRoom !== true) {
-        if (this.position.x + action.move.x < 0 || this.position.y + action.move.y < 0 || this.position.x + action.move.x >= this.game.room.width || this.position.y + action.move.y >= this.game.room.height) {
-          action.move.x = 0;
-          action.move.y = 0;
-        }
-      }
-
-      this.game.entities.forEach(function (entity) {
-        if (entity !== _this && _this.position.x + action.move.x === entity.position.x && _this.position.y + action.move.y === entity.position.y) {
-          if (entity instanceof models_Adventurer_js__WEBPACK_IMPORTED_MODULE_4__["default"]) {
-            _this.isAttacking = true;
-            entity.beAttacked();
-          }
-
-          action.move.x = 0;
-          action.move.y = 0;
-        }
-      });
-      this.position.x += action.move.x;
-      this.position.y += action.move.y;
-    }
-  }, {
-    key: "beAttacked",
-    value: function beAttacked() {
-      this.damage += 1;
-
-      if (this.damage >= this.health) {
-        this.isDead = true;
-        this.game.score += 1;
-        this.game.wave.killcount -= 1;
-        this.game.remove(this); // if(Math.abs(this.position.x - altar.position.x) <= 1
-        // && Math.abs(this.position.y - altar.position.y) <= 1) {
-        //     this.game.score += 2
-        //     altar.isBloody = this.id
-        // }
-      }
-    }
-  }, {
-    key: "toState",
-    value: function toState() {
-      return {
-        "damage": this.damage,
-        "position": this.position,
-        "flipflop": this.flipflop
-      };
-    }
-  }, {
-    key: "image",
-    get: function get() {
-      if (this.flipflop === true) {
-        return assets_images_monsters_slime_omega_png__WEBPACK_IMPORTED_MODULE_6___default.a;
-      } else {
-        return assets_images_monsters_slime_alpha_png__WEBPACK_IMPORTED_MODULE_5___default.a;
-      }
-    }
-  }, {
-    key: "opacity",
-    get: function get() {
-      if (this.isOutOfRoom) {
-        return 0.5;
-      } else {
-        return 1;
-      }
-    }
-  }, {
-    key: "animation",
-    get: function get() {
-      if (this.isAttacking) {
-        return "strike" + " " + this.direction;
-      }
-
-      if (this.flipflop === true) {
-        return "shake";
-      }
-
-      return "ooze";
-    }
-  }, {
-    key: "isOutOfRoom",
-    get: function get() {
-      return this.position.x < 0 || this.position.y < 0 || this.position.x >= this.game.room.width || this.position.y >= this.game.room.height;
-    }
-  }]);
-
-  return Monster;
-}();
-
-
-
-/***/ }),
 /* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  "width": 9,
-  "height": 9
-});
+module.exports = __webpack_require__.p + "9edf8ad89007f07cd20bdce9b376fb46.png";
 
 /***/ }),
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "e1736d89cabb2b25dc5548e1d9d85fb5.png";
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
 module.exports = __webpack_require__.p + "df5169e48dff213ccfea80e266517db5.png";
 
 /***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MonsterWave; });
-/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
-/* harmony import */ var models_Monster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-// This class is responsible for spawning the
-// monsters to attack the adventurer. Each wave
-// is given a limit of how many monsters it can
-// spawn at any given time, how many monsters it
-// can spawn before the wave is done, and an
-// array of monsters to spawn.
-// Someday, if we decide to pivot away from
-// the arcade-like beat-em-up gameplay, we'll
-// rewrite the dungeons to be responsible for
-// instantiating the monsters. At that time,
-// we can deprecate this class. But until
-// then, enjoy the waves of monsters. :]
-
-
-
-var MonsterWave = /*#__PURE__*/function () {
-  function MonsterWave(parameters) {
-    _classCallCheck(this, MonsterWave);
-
-    this.game = parameters.game; // TODO: Change capacity from a variable
-    // to a function of how many monsters have
-    // already been killed, so the wave can
-    // become more difficult during the wave.
-
-    this.capacity = parameters.wave.capacity || 4;
-    this.killcount = parameters.wave.killcount || Infinity;
-    this.game.monsters = this.game.monsters || [];
-  }
-
-  _createClass(MonsterWave, [{
-    key: "onAction",
-    value: function onAction() {
-      // If attached to a game...
-      if (this.game != undefined) {
-        // If there are still monsters left to kill...
-        if (this.game.monsters.length < this.killcount) {
-          // If, at the moment, the number of monsters is
-          // less than the intended capacity of monsters...
-          while (this.game.monsters.length < this.capacity) {
-            // Then spawn a new monster in the game!
-            this.game.add(new models_Monster_js__WEBPACK_IMPORTED_MODULE_1__["default"]({
-              "position": this.getRandomValidPosition()
-            }));
-          }
-        }
-      }
-    } // Returns a random position to
-    // spawn a monster, which should
-    // generally be a position that
-    // is just off-screen.
-
-  }, {
-    key: "getRandomPosition",
-    value: function getRandomPosition() {
-      // TODO: Update this method to consult the
-      // bounds of either a DungeonRoom or Camera.
-      // TODO: Update this method to ensure it won't
-      // collide with an already existing monster.
-      if (Math.random() < 0.5) {
-        return {
-          x: Math.random() < 0.5 ? -1 : this.game.room.width,
-          y: Math.floor(Math.random() * this.game.room.height)
-        };
-      } else {
-        return {
-          x: Math.floor(Math.random() * this.game.room.width),
-          y: Math.random() < 0.5 ? -1 : this.game.room.height
-        };
-      }
-    }
-  }, {
-    key: "getRandomValidPosition",
-    value: function getRandomValidPosition() {
-      var position;
-
-      do {
-        position = this.getRandomPosition();
-      } while (this.game.monsters.some(function (monster) {
-        return monster.position.x === position.x && monster.position.y === position.y;
-      }));
-
-      return position;
-    }
-  }, {
-    key: "toState",
-    value: function toState() {
-      return {
-        "capacity": this.capacity,
-        "killcount": this.killcount
-      };
-    } // // Returns a random monster
-    // // to be spawned. It randomizes
-    // // from the static pool of monsters
-    // // that was given for this wave.
-    // getRandomMonster() {
-    //     // TODO: Update this method to optionally
-    //     // use weighted randomness if a weight is
-    //     // assigned to each monster in the wave.
-    //     var index = Math.floor(Math.random() * this.monsters.length)
-    //     return this.monsters[index]
-    // }
-
-  }]);
-
-  return MonsterWave;
-}();
-
-
-
-/***/ }),
-/* 32 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
-/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
-var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(33, 1);
-/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(34);
-var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_1___namespace = /*#__PURE__*/__webpack_require__.t(34, 1);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(29);
+var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3___namespace = /*#__PURE__*/__webpack_require__.t(29, 1);
+/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(30);
+var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4___namespace = /*#__PURE__*/__webpack_require__.t(30, 1);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
 
 
 
@@ -5765,13 +5440,13 @@ var contextualize = function contextualize(context) {
   return recontext;
 };
 
-var buildImagePaths = contextualize(__webpack_require__(35));
+var buildImagePaths = contextualize(__webpack_require__(31));
 
-if (data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__.tilesets.length != 1 || data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__.tilesets[0].source != "tileset.json") {
-  console.error("Unexpected tilesets", data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__.tilesets);
+if (data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.tilesets.length != 1 || data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.tilesets[0].source != "tileset.json") {
+  console.error("Unexpected tilesets", data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.tilesets);
 }
 
-console.log(data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__); // tilemap.renderorder == "right-down"
+console.log(data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__, data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__); // tilemap.renderorder == "right-down"
 // tilemap.orientation == "orthogonal"
 // tilemap.tiledversion == "1.4.2"
 // tilemap.version == 1.4
@@ -5781,104 +5456,316 @@ console.log(data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__); // tilemap.re
 // tilemap.tileheight == 16 // in pixels
 
 var FIRST_TILEGID = 1;
+var TILE_SIZE = 16;
+
+function iterateTileLayer(layer, func) {
+  layer.data.forEach(function (tilegid, index) {
+    var position = {};
+    position.x = index % layer.width;
+    position.y = Math.floor(index / layer.width);
+    position.key = position.x + "x" + position.y;
+    func({
+      tilegid: tilegid,
+      position: position,
+      index: index
+    });
+  });
+}
+
+function findPropertyValue(properties, name) {
+  if (properties == undefined) return;
+  var property = properties.find(function (property) {
+    if (property == undefined) return false;
+    if (property.name == undefined) return false;
+    if (property.name.toLowerCase() == name.toLowerCase()) return true;
+  });
+
+  if (property != undefined) {
+    return property.value;
+  }
+}
 
 var World = function World() {
   var _this = this;
 
   _classCallCheck(this, World);
 
-  this.width = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__.width;
-  this.height = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__.height;
-  this.tiles = {};
-  data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_0__.layers.forEach(function (layer) {
-    if (layer.type == "tilelayer" && layer.name == "collision") {
-      layer.data.forEach(function (tilegid, index) {
+  this.width = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.width;
+  this.height = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.height;
+  this.entities = {};
+  this.environment = {
+    "tiles": {}
+  };
+  data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.layers.forEach(function (layer) {
+    if (layer.name == "collision" && layer.type == "tilelayer") {
+      iterateTileLayer(layer, function (_ref) {
+        var tilegid = _ref.tilegid,
+            position = _ref.position;
         tilegid -= FIRST_TILEGID;
-        var x = index % layer.width;
-        var y = Math.floor(index / layer.width);
 
         if (tilegid > -1) {
-          _this.tiles[x + "x" + y] = _this.tiles[x + "x" + y] || {};
-          _this.tiles[x + "x" + y].collision = true;
+          _this.environment.tiles[position.key] = _this.environment.tiles[position.key] || {};
+          _this.environment.tiles[position.key].position = _this.environment.tiles[position.key].position || position;
+          _this.environment.tiles[position.key].collision = true;
         }
       });
     }
 
-    if (layer.type == "group" && layer.name == "images" && layer.visible == true) {
+    if (layer.name == "environment" && layer.type == "group" && layer.visible == true) {
       layer.layers.forEach(function (sublayer) {
-        if (sublayer.type == "group" && sublayer.name == "main" && sublayer.visible == true) {
-          sublayer.layers.forEach(function (subsublayer) {
-            if (subsublayer.type == "group" && subsublayer.visible == true) {
-              console.error("Don't yet support groups within the main images layer.");
-              return;
-            }
+        if (sublayer.type == "group" && sublayer.visible == true) {
+          console.error("Don't yet support groups within the main images layer.");
+          return;
+        }
 
-            if (subsublayer.type == "tilelayer" && subsublayer.visible == true) {
-              subsublayer.data.forEach(function (tilegid, index) {
-                tilegid -= FIRST_TILEGID;
-                var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_1__.tiles[tilegid];
+        var stack = 0;
 
-                if (tile == undefined) {
-                  return;
-                }
+        if (sublayer.properties != undefined) {
+          stack = findPropertyValue(sublayer.properties, "Stack");
+        }
 
-                var x = index % subsublayer.width;
-                var y = Math.floor(index / subsublayer.width);
-                _this.tiles[x + "x" + y] = _this.tiles[x + "x" + y] || {};
-                _this.tiles[x + "x" + y].position = _this.tiles[x + "x" + y].position || {
-                  x: x,
-                  y: y
-                };
-                _this.tiles[x + "x" + y].images = _this.tiles[x + "x" + y].images || []; // tile.imageheight == 16
-                // tile.imagewidth == 16
+        if (sublayer.type == "tilelayer" && sublayer.visible == true) {
+          iterateTileLayer(sublayer, function (_ref2) {
+            var tilegid = _ref2.tilegid,
+                position = _ref2.position;
+            tilegid -= FIRST_TILEGID;
+            var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__.tiles[tilegid];
+            if (tile == undefined) return;
+            _this.environment.tiles[position.key] = _this.environment.tiles[position.key] || {};
+            _this.environment.tiles[position.key].position = _this.environment.tiles[position.key].position || position;
+            _this.environment.tiles[position.key].images = _this.environment.tiles[position.key].images || []; // tile.imageheight == 16
+            // tile.imagewidth == 16
 
-                var sourceImagePath = tile.image.replace("../../assets/images/world/tiles/", "./");
-                var buildImagePath = buildImagePaths[sourceImagePath];
+            var sourceImagePath = tile.image.replace("../../assets/images/", "./");
+            var buildImagePath = buildImagePaths[sourceImagePath];
 
-                _this.tiles[x + "x" + y].images.push({
-                  "source": buildImagePath
-                });
-              });
-            }
+            _this.environment.tiles[position.key].images.push({
+              "source": buildImagePath,
+              "stack": stack
+            });
           });
         }
       });
     }
-  }); // this.tiles = {}
-  // for(let x = 0; x < this.width; x += 1) {
-  //     for(let y = 0; y < this.height; y += 1) {
-  //         this.tiles[x + "x" + y] = {
-  //             "position": {"x": x, "y": y},
-  //             "key": x + "x" + y,
-  //             "color": "#191923",
-  //             "stack": 0
-  //         }
-  //     }
-  // }
+
+    if (layer.name == "entities" && layer.type == "objectgroup") {
+      layer.objects.forEach(function (object) {
+        if (object.visible == false) return;
+        if (isNaN(object.gid)) return; // this filters out anything that isn't an image stamp.
+
+        object.key = findPropertyValue(object.properties, "Key");
+        object.gid -= FIRST_TILEGID;
+        object.entityType = findPropertyValue(object.properties, "EntityType");
+
+        if (object.entityType == undefined) {
+          var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__.tiles[object.gid];
+
+          if (tile != undefined) {
+            object.entityType = findPropertyValue(tile.properties, "DefaultEntityType");
+          }
+        }
+
+        if (object.entityType == undefined) {
+          console.error("Could not find entity of this type:", object);
+          return;
+        }
+
+        console.log(object);
+        var classedEntity = classedEntities[object.entityType] || {};
+        var instancedEntity = {
+          "key": object.key || object.id,
+          "type": object.entityType,
+          "position": {
+            "x": Math.floor(object.x / TILE_SIZE),
+            "y": Math.floor(object.y / TILE_SIZE) - 1,
+            // TODO: Why -1?
+            "z": 0
+          }
+        };
+        var entity = objdict__WEBPACK_IMPORTED_MODULE_0__["merge"](defaultEntity, classedEntity, instancedEntity);
+        _this.entities[entity.key] = entity;
+      });
+    }
+  });
 };
 
 
+var defaultEntity = {
+  "damage": 0,
+  "health": 1,
+  "beAttacked": function beAttacked(game) {
+    this.damage += 1;
+
+    if (this.damage >= this.health) {
+      this.isDead = true; // this.game.score += 1
+      // this.game.wave.killcount -= 1
+
+      delete game.world.entities[this.key];
+    }
+  }
+};
+
+var Entity = /*#__PURE__*/function () {
+  function Entity() {
+    _classCallCheck(this, Entity);
+  }
+
+  _createClass(Entity, null, [{
+    key: "isDead",
+    value: function isDead(entity) {
+      return entity.damage >= entity.health;
+    }
+  }, {
+    key: "isInCamera",
+    value: function isInCamera(game, entity) {
+      if (game.world.entities.player == undefined) return true;
+      var playerPosition = game.world.entities.player.prevposition || game.world.entities.player.position;
+      var CAMZONE_WIDTH = 10;
+      var CAMZONE_HEIGHT = 10;
+      var playerCamzonePosition = {
+        "x": Math.floor(playerPosition.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
+        "y": Math.floor(playerPosition.x / CAMZONE_HEIGHT) * CAMZONE_HEIGHT
+      };
+      var entityCamzonePosition = {
+        "x": Math.floor(entity.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
+        "y": Math.floor(entity.position.x / CAMZONE_HEIGHT) * CAMZONE_HEIGHT
+      };
+      return entityCamzonePosition.x == playerCamzonePosition.x && entityCamzonePosition.y == playerCamzonePosition.y;
+    }
+  }]);
+
+  return Entity;
+}();
+
+var classedEntities = {
+  "adventurer": {
+    "health": 3,
+    "image": __webpack_require__(27),
+    "title": "The Adventurer",
+    "description": "It you!!",
+    "beAttacked": function beAttacked(game) {
+      // if(this.game.isDemo) return
+      if (Entity.isDead(this)) return;
+      this.damage += 1;
+      this.isAttacked = shortid__WEBPACK_IMPORTED_MODULE_1___default.a.generate();
+
+      if (Entity.isDead(this)) {
+        // this.deathtext = deathtext[0]
+        // deathtext.push(deathtext.shift())
+        game.hasEnded = true;
+        models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].deathtime = 0;
+      }
+    }
+  },
+  "monster": {
+    "image": __webpack_require__(32),
+    "title": "Red Slime",
+    "description": "It looks gross.",
+    "flipflop": false,
+    "reaction": function reaction(game) {
+      var _this2 = this;
+
+      if (Entity.isDead(this)) return;
+      if (Entity.isInCamera(game, this) == false) return;
+      var action = {
+        "move": {
+          "x": 0,
+          "y": 0
+        }
+      };
+      this.isAttacking = false;
+
+      if (this.flipflop == false) {
+        this.flipflop = true;
+      } else if (this.flipflop = true) {
+        this.flipflop = false; // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
+
+        if (Math.abs(this.position.y - (game.world.entities["player"].position.y + game.world.entities["player"].prevposition.y) / 2) >= Math.abs(this.position.x - (game.world.entities["player"].position.x + game.world.entities["player"].prevposition.x) / 2)) {
+          if (this.position.y > game.world.entities["player"].position.y) {
+            action.move.y = -1;
+          } else if (this.position.y < game.world.entities["player"].position.y) {
+            action.move.y = +1;
+          }
+        } else {
+          if (this.position.x > game.world.entities["player"].position.x) {
+            action.move.x = -1;
+          } else if (this.position.x < game.world.entities["player"].position.x) {
+            action.move.x = +1;
+          }
+        }
+      } ///////////
+      // MOVE //
+      /////////
+
+
+      action.move.x = action.move.x || 0;
+      action.move.y = action.move.y || 0;
+      var DIRECTIONS = {
+        "-1x0": "west",
+        "1x0": "east",
+        "0x-1": "north",
+        "0x1": "south"
+      };
+      this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"; // COLLISION WITH OTHER ENTITIES
+
+      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.world.entities, function (entity) {
+        if (entity != _this2 && _this2.position.x + action.move.x == entity.position.x && _this2.position.y + action.move.y == entity.position.y) {
+          if (entity.key == "player") {
+            _this2.isAttacking = true;
+            entity.beAttacked(game);
+          }
+
+          action.move.x = 0;
+          action.move.y = 0;
+        }
+      }); // COLLISION WITH MAP
+
+      var x = this.position.x + action.move.x;
+      var y = this.position.y + action.move.y;
+      var tile = game.world.environment.tiles[x + "x" + y];
+
+      if (tile != undefined && tile.collision == true) {
+        action.move.x = 0;
+        action.move.y = 0;
+      }
+
+      this.position.x += action.move.x;
+      this.position.y += action.move.y;
+    }
+  }
+};
 
 /***/ }),
-/* 33 */
+/* 29 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"compressionlevel\":-1,\"editorsettings\":{\"export\":{\"target\":\".\"}},\"height\":10,\"infinite\":false,\"layers\":[{\"id\":2,\"layers\":[{\"id\":5,\"layers\":[{\"data\":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],\"height\":10,\"id\":6,\"name\":\"floor\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":true,\"width\":20,\"x\":0,\"y\":0},{\"data\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],\"height\":10,\"id\":1,\"name\":\"walls\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":true,\"width\":20,\"x\":0,\"y\":0}],\"name\":\"main\",\"opacity\":1,\"type\":\"group\",\"visible\":true,\"x\":0,\"y\":0}],\"name\":\"images\",\"opacity\":1,\"type\":\"group\",\"visible\":true,\"x\":0,\"y\":0},{\"data\":[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],\"height\":10,\"id\":4,\"name\":\"collision\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":false,\"width\":20,\"x\":0,\"y\":0}],\"nextlayerid\":7,\"nextobjectid\":1,\"orientation\":\"orthogonal\",\"renderorder\":\"right-down\",\"tiledversion\":\"1.4.2\",\"tileheight\":16,\"tilesets\":[{\"firstgid\":1,\"source\":\"tileset.json\"}],\"tilewidth\":16,\"type\":\"map\",\"version\":1.4,\"width\":20}");
+module.exports = JSON.parse("{\"compressionlevel\":-1,\"editorsettings\":{\"export\":{\"target\":\".\"}},\"height\":10,\"infinite\":false,\"layers\":[{\"id\":2,\"layers\":[{\"data\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],\"height\":10,\"id\":6,\"name\":\"floor1\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-2}],\"type\":\"tilelayer\",\"visible\":true,\"width\":20,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,4,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":10,\"id\":11,\"name\":\"floor2\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-1}],\"type\":\"tilelayer\",\"visible\":true,\"width\":20,\"x\":0,\"y\":0}],\"name\":\"environment\",\"opacity\":1,\"type\":\"group\",\"visible\":true,\"x\":0,\"y\":0},{\"data\":[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,1,0,0,0,2,2,0,1,0,1,0,1,0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],\"height\":10,\"id\":4,\"name\":\"collision\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":false,\"width\":20,\"x\":0,\"y\":0},{\"draworder\":\"topdown\",\"id\":15,\"name\":\"entities\",\"objects\":[{\"gid\":5,\"height\":18,\"id\":8,\"name\":\"adventurer\",\"properties\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"player\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":32,\"y\":128},{\"gid\":6,\"height\":18,\"id\":9,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":101.670103092784,\"y\":96.4536082474227},{\"gid\":6,\"height\":18,\"id\":12,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":70.3814432989691,\"y\":69.5670103092784},{\"gid\":6,\"height\":18,\"id\":17,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":219.60824742268,\"y\":54.8762886597938},{\"gid\":6,\"height\":18,\"id\":18,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":266.773195876289,\"y\":97.1443298969072},{\"gid\":6,\"height\":18,\"id\":19,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":207.752577319588,\"y\":145.082474226804}],\"opacity\":1,\"type\":\"objectgroup\",\"visible\":true,\"x\":0,\"y\":0}],\"nextlayerid\":17,\"nextobjectid\":20,\"orientation\":\"orthogonal\",\"renderorder\":\"right-down\",\"tiledversion\":\"1.4.2\",\"tileheight\":16,\"tilesets\":[{\"firstgid\":1,\"source\":\"tileset.json\"}],\"tilewidth\":16,\"type\":\"map\",\"version\":1.4,\"width\":20}");
 
 /***/ }),
-/* 34 */
+/* 30 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"tilecount\":3,\"tiledversion\":\"1.4.2\",\"tileheight\":16,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/world/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":1,\"image\":\"../../assets/images/world/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/world/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16}],\"tilewidth\":16,\"type\":\"tileset\",\"version\":1.4}");
+module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"tilecount\":7,\"tiledversion\":\"1.4.2\",\"tileheight\":18,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":1,\"image\":\"../../assets/images/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":3,\"image\":\"../../assets/images/gravestone.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":4,\"image\":\"../../assets/images/adventurer.png\",\"imageheight\":18,\"imagewidth\":18,\"properties\":[{\"name\":\"DefaultEntityType\",\"type\":\"string\",\"value\":\"adventurer\"}]},{\"id\":5,\"image\":\"../../assets/images/slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"properties\":[{\"name\":\"DefaultEntityType\",\"type\":\"string\",\"value\":\"monster\"}]},{\"id\":6,\"image\":\"../../assets/images/slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"properties\":[{\"name\":\"DefaultEntityType\",\"type\":\"string\",\"value\":\"monster\"}]}],\"tilewidth\":18,\"type\":\"tileset\",\"version\":1.4}");
 
 /***/ }),
-/* 35 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./0.png": 36,
-	"./1.png": 37,
-	"./2.png": 38
+	"./adventurer.png": 27,
+	"./gravestone.png": 26,
+	"./slime_alpha.png": 32,
+	"./slime_omega.png": 33,
+	"./tiles/0.png": 34,
+	"./tiles/1.png": 35,
+	"./tiles/2.png": 36,
+	"./ui/heart-full-white.png": 37,
+	"./ui/heart-full-yellow.png": 38,
+	"./ui/heart-half-white.png": 39,
+	"./ui/heart-half-yellow.png": 40,
+	"./ui/heart-none-white.png": 41,
+	"./ui/heart-none-yellow.png": 42,
+	"./ui/keyboard.png": 43
 };
 
 
@@ -5899,28 +5786,82 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 35;
+webpackContext.id = 31;
 
 /***/ }),
-/* 36 */
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "551cf609e3aa1f122aa760ce689e26b4.png";
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "aab047d0c2faa414f78f114bba6485cf.png";
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "f49270d0a276797c299d001c5782cf7f.png";
 
 /***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "c445b7f6374a437c5506eed7a5d2e473.png";
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "20ab7de870ebb2ed76b36048e392691d.png";
+
+/***/ }),
 /* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "79b27b5927cef6f02460a93f41f2aa84.png";
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "7aa435c534e74880dd30deb358b472c0.png";
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "dfef87f0bcb5ad87e0bafda937662040.png";
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "58a6382774d8a94cbd13ce1960976417.png";
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "07231bc69618323e334495f8e390947f.png";
+
+/***/ }),
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5936,25 +5877,34 @@ var CAMZONE_WIDTH = 10;
 var CAMZONE_HEIGHT = 10;
 
 var Camera = /*#__PURE__*/function () {
-  function Camera(_ref) {
-    var game = _ref.game;
-
+  function Camera(game) {
     _classCallCheck(this, Camera);
 
-    this.game = game;
+    this.position = {
+      "x": 0,
+      "y": 0
+    };
+    this.focusOn(game, game.world.entities["player"]);
   }
 
   _createClass(Camera, [{
-    key: "onReaction",
-    value: function onReaction() {
+    key: "reaction",
+    value: function reaction(game) {
+      this.focusOn(game, game.world.entities["player"]);
+    }
+  }, {
+    key: "focusOn",
+    value: function focusOn(game, player) {
       // this.position = {
       //     "x": this.game.adventurer.position.x + 0.5,
       //     "y": this.game.adventurer.position.y + 0.5
       // }
-      this.position = {
-        "x": Math.floor(this.game.adventurer.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
-        "y": Math.floor(this.game.adventurer.position.y / CAMZONE_HEIGHT) * CAMZONE_HEIGHT
-      };
+      if (player != undefined) {
+        this.position = {
+          "x": Math.floor(player.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
+          "y": Math.floor(player.position.y / CAMZONE_HEIGHT) * CAMZONE_HEIGHT
+        };
+      }
     }
   }]);
 
@@ -5964,16 +5914,16 @@ var Camera = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 40 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mount; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(42);
-/* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
+/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(47);
+/* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(67);
 /* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6011,26 +5961,26 @@ function Preload() {
   return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
     className: "Preload"
   }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(30)
-  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(29)
-  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
     src: __webpack_require__(27)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(28)
+    src: __webpack_require__(26)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(60)
+    src: __webpack_require__(32)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(62)
+    src: __webpack_require__(33)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(64)
+    src: __webpack_require__(37)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(65)
+    src: __webpack_require__(39)
+  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
+    src: __webpack_require__(41)
+  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
+    src: __webpack_require__(43)
   }));
 }
 
 /***/ }),
-/* 41 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6052,25 +6002,27 @@ var n,l,u,i,t,r,o={},f=[],e=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|z
 
 
 /***/ }),
-/* 42 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(43);
-/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(50);
-/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(53);
-/* harmony import */ var views_UI_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(56);
-/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(66);
-/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(views_Game_view_less__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(48);
+/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(55);
+/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(58);
+/* harmony import */ var views_UI_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(62);
+/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(65);
+/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -6090,18 +6042,18 @@ var Game = /*#__PURE__*/function () {
     value: function render() {
       return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: this.className
-      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_Camera_view_js__WEBPACK_IMPORTED_MODULE_4__["default"], null, preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_World_view_js__WEBPACK_IMPORTED_MODULE_2__["default"], null), this.entities), preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_UI_view_js__WEBPACK_IMPORTED_MODULE_5__["default"], null));
+      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__["default"], null, preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_World_view_js__WEBPACK_IMPORTED_MODULE_3__["default"], null), this.entities), preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_UI_view_js__WEBPACK_IMPORTED_MODULE_6__["default"], null));
     }
   }, {
     key: "className",
     get: function get() {
-      return ["Game", models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.isDone === true ? "isDone" : "", models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.isDemo === true ? "isDemo" : "", models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.isTutorial ? "isTutorial" : ""].join(" ");
+      return ["Game", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isDone === true ? "isDone" : "", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isDemo === true ? "isDemo" : "", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isTutorial ? "isTutorial" : ""].join(" ");
     }
   }, {
     key: "entities",
     get: function get() {
-      return models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.entities.map(function (entity) {
-        return preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_Entity_view_js__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      return Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.world.entities).map(function (entity) {
+        return preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__["default"], {
           entity: entity,
           key: entity.key
         });
@@ -6115,15 +6067,15 @@ var Game = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 43 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(44);
+/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(49);
 /* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_World_view_less__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6147,14 +6099,14 @@ var World = /*#__PURE__*/function () {
         "class": "World"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         "class": "Tiles"
-      }, Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.tiles).map(function (tile) {
+      }, Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.environment.tiles).map(function (tile) {
         return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
           "class": "Tile",
           style: {
             "left": tile.position.x + "em",
             "top": tile.position.y + "em"
           }
-        }, tile.images.map(function (image) {
+        }, tile.images && tile.images.map(function (image) {
           return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
             "class": "Image",
             style: {
@@ -6172,11 +6124,11 @@ var World = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 44 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(46);
+var api = __webpack_require__(50);
+            var content = __webpack_require__(51);
 
             content = content.__esModule ? content.default : content;
 
@@ -6196,7 +6148,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 45 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6471,13 +6423,13 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 46 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(47);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(48);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(49);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(52);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(53);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(54);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -6487,7 +6439,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 47 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6587,7 +6539,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 48 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6627,20 +6579,20 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 49 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "9167f1dbf5d8d9905aa5933a2fc45693.ttf";
 
 /***/ }),
-/* 50 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Entity; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
-/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(51);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
+/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(56);
 /* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6677,14 +6629,13 @@ var Entity = /*#__PURE__*/function () {
       if (this.props.entity.position) {
         style.top = this.props.entity.position.y + "em";
         style.left = this.props.entity.position.x + "em";
-      }
+      } // if(this.props.entity.stack) {
+      //     style.zIndex = (this.props.entity.stack * 100) + this.props.entity.position.y
+      // }
 
-      if (this.props.entity.stack) {
-        style.zIndex = this.props.entity.stack * 100 + this.props.entity.position.y;
-      }
 
       if (this.props.entity.image) {
-        style.backgroundImage = "url(".concat(this.props.entity.image, ")");
+        style.backgroundImage = "url(" + this.props.entity.image + ")";
       }
 
       if (this.props.entity.color) {
@@ -6705,11 +6656,11 @@ var Entity = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 51 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(52);
+var api = __webpack_require__(50);
+            var content = __webpack_require__(57);
 
             content = content.__esModule ? content.default : content;
 
@@ -6729,11 +6680,11 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 52 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(47);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(52);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".Entity {\n  width: 1em;\n  height: 1em;\n  position: absolute;\n  transition-duration: 0.1s;\n  transition-property: top left opacity;\n  background-size: 1em;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.Entity.shake {\n  animation-name: shake;\n  animation-duration: 0.1s;\n  animation-iteration-count: infinite;\n}\n.Entity.ooze {\n  animation-name: ooze;\n  animation-duration: 4s;\n  animation-iteration-count: infinite;\n}\n.Entity.strike {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n}\n.Entity.strike.east {\n  animation-name: strike-east;\n}\n.Entity.strike.west {\n  animation-name: strike-west;\n}\n.Entity.strike.north {\n  animation-name: strike-north;\n}\n.Entity.strike.south {\n  animation-name: strike-south;\n}\n@keyframes strike-east {\n  0% {\n    transform: translateX(-0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateX(0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-west {\n  0% {\n    transform: translateX(0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateX(-0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-south {\n  0% {\n    transform: translateY(-0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateY(0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes strike-north {\n  0% {\n    transform: translateY(0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateY(-0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes shake {\n  0% {\n    transform: translateX(-0.025em);\n  }\n  50% {\n    transform: translateX(0.025em);\n  }\n  100% {\n    transform: translateX(-0.025em);\n  }\n}\n@keyframes ooze {\n  0% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n  75% {\n    transform: scaleX(0.9) scaleY(1.1);\n  }\n  100% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n}\n", ""]);
@@ -6742,16 +6693,16 @@ module.exports = exports;
 
 
 /***/ }),
-/* 53 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
-/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
+/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(59);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(54);
+/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60);
 /* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_Camera_view_less__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6793,11 +6744,22 @@ var Camera = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 54 */
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "width": 9,
+  "height": 9
+});
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(55);
+var api = __webpack_require__(50);
+            var content = __webpack_require__(61);
 
             content = content.__esModule ? content.default : content;
 
@@ -6817,11 +6779,11 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 55 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(47);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(52);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".Camera {\n  position: absolute;\n  transition-property: top left;\n  transition-duration: 0.5s;\n}\n", ""]);
@@ -6830,15 +6792,15 @@ module.exports = exports;
 
 
 /***/ }),
-/* 56 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return UI; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(57);
+/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(63);
 /* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_UI_view_less__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6872,12 +6834,12 @@ var UI = /*#__PURE__*/function () {
         className: "play-prompt"
       }, "Click to play!")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "game-over-banner"
-      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.adventurer.deathtext)), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities["player"].deathtext || "Game Over")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "pause-banner"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "PAUSED")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "tutorial"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-        src: __webpack_require__(65)
+        src: __webpack_require__(43)
       }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "MOVE INTO MONSTERS TO SLAY THEM")));
     }
   }, {
@@ -6885,9 +6847,9 @@ var UI = /*#__PURE__*/function () {
     get: function get() {
       var hearts = new Array();
 
-      for (var i = models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.adventurer.health - 1; i >= 0; i -= 1) {
-        if (i >= models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.adventurer.damage) {
-          if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.adventurer.damage + 1 === models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.adventurer.health) {
+      for (var i = models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities["player"].health - 1; i >= 0; i -= 1) {
+        if (i >= models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities["player"].damage) {
+          if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities["player"].damage + 1 === models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities["player"].health) {
             hearts.push(preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", {
               className: "final full heart",
               key: i
@@ -6917,10 +6879,10 @@ var UI = /*#__PURE__*/function () {
   }, {
     key: "flash",
     get: function get() {
-      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.adventurer.isAttacked) {
+      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities["player"].isAttacked) {
         return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
           className: "blood",
-          key: models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.adventurer.isAttacked
+          key: models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities["player"].isAttacked
         });
       }
     }
@@ -6932,11 +6894,11 @@ var UI = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 57 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(58);
+var api = __webpack_require__(50);
+            var content = __webpack_require__(64);
 
             content = content.__esModule ? content.default : content;
 
@@ -6956,19 +6918,19 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 58 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(47);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(48);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(49);
-var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(59);
-var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(60);
-var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(61);
-var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(62);
-var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(63);
-var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(64);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(52);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(53);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(54);
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(38);
+var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(37);
+var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(40);
+var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(39);
+var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(42);
+var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(41);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
@@ -6984,53 +6946,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "20ab7de870ebb2ed76b36048e392691d.png";
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "c445b7f6374a437c5506eed7a5d2e473.png";
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "7aa435c534e74880dd30deb358b472c0.png";
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "79b27b5927cef6f02460a93f41f2aa84.png";
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "58a6382774d8a94cbd13ce1960976417.png";
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "dfef87f0bcb5ad87e0bafda937662040.png";
-
-/***/ }),
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "07231bc69618323e334495f8e390947f.png";
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var api = __webpack_require__(45);
-            var content = __webpack_require__(67);
+var api = __webpack_require__(50);
+            var content = __webpack_require__(66);
 
             content = content.__esModule ? content.default : content;
 
@@ -7050,13 +6970,13 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(47);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(48);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(49);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(52);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(53);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(54);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -7066,11 +6986,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(45);
-            var content = __webpack_require__(69);
+var api = __webpack_require__(50);
+            var content = __webpack_require__(68);
 
             content = content.__esModule ? content.default : content;
 
@@ -7090,13 +7010,13 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(47);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(48);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(49);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(52);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(53);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(54);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -7106,12 +7026,12 @@ module.exports = exports;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
 
 var dom = document.body;
 var view = undefined;
