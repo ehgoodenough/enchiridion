@@ -52,12 +52,10 @@ export default class UI {
         return hearts
     }
     get score() {
-        let score = App.game.score
+        let score = App.game.world.entities.player.score || 0
         return (
             <span>
-                {score < 100 ? <i>0</i> : undefined}
-                {score < 10 ? <i>0</i> : undefined}
-                {score === 0 ? <i>{score}</i> : score}
+                {score} of 2
             </span>
         )
     }

@@ -134,8 +134,6 @@ export default class World {
                         return
                     }
 
-                    console.log(object)
-
                     const classedEntity = classedEntities[object.entityType] || {}
                     const instancedEntity = {
                         "key": object.key || object.id,
@@ -199,6 +197,8 @@ const classedEntities = {
         "title": "The Adventurer",
         "description": "It you!!",
 
+        "score": 0,
+
         "beAttacked": function(game) {
             // if(this.game.isDemo) return
             if(Entity.isDead(this)) return
@@ -209,6 +209,18 @@ const classedEntities = {
                 // deathtext.push(deathtext.shift())
                 game.hasEnded = true
                 App.deathtime = 0
+            }
+        }
+    },
+    "collectible": {
+        "image": require("assets/images/collectible.png"),
+
+        "beAttacked": function(game) {
+            this.damage += 1
+            if(this.damage >= this.health) {
+                this.isDead = true
+                game.world.entities.player.score += 1
+                delete game.world.entities[this.key]
             }
         }
     },

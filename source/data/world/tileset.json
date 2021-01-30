@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":7,
+ "tilecount":8,
  "tiledversion":"1.4.2",
  "tileheight":18,
  "tiles":[
@@ -25,25 +25,25 @@
          "image":"..\/..\/assets\/images\/tiles\/0.png",
          "imageheight":16,
          "imagewidth":16
-        }, 
+        },
         {
          "id":1,
          "image":"..\/..\/assets\/images\/tiles\/1.png",
          "imageheight":16,
          "imagewidth":16
-        }, 
+        },
         {
          "id":2,
          "image":"..\/..\/assets\/images\/tiles\/2.png",
          "imageheight":16,
          "imagewidth":16
-        }, 
+        },
         {
          "id":3,
          "image":"..\/..\/assets\/images\/gravestone.png",
          "imageheight":16,
          "imagewidth":16
-        }, 
+        },
         {
          "id":4,
          "image":"..\/..\/assets\/images\/adventurer.png",
@@ -55,7 +55,7 @@
                  "type":"string",
                  "value":"adventurer"
                 }]
-        }, 
+        },
         {
          "id":5,
          "image":"..\/..\/assets\/images\/slime_alpha.png",
@@ -67,7 +67,7 @@
                  "type":"string",
                  "value":"monster"
                 }]
-        }, 
+        },
         {
          "id":6,
          "image":"..\/..\/assets\/images\/slime_omega.png",
@@ -78,6 +78,18 @@
                  "name":"DefaultEntityType",
                  "type":"string",
                  "value":"monster"
+                }]
+        },
+        {
+         "id":7,
+         "image":"..\/..\/assets\/images\/collectible.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "properties":[
+                {
+                 "name":"DefaultEntityType",
+                 "type":"string",
+                 "value":"collectible"
                 }]
         }],
  "tilewidth":18,
