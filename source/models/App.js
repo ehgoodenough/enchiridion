@@ -13,7 +13,7 @@ const NEW_GAME_STATE = {"adventurer": {"position": {"x": 2, "y": 2}}}
 
 const Dev = {"isInDevMode": true}
 
-export default new class Model {
+const App = new class {
     constructor() {
         if(Dev.isInDevMode == true) {
             window.app = this
@@ -60,4 +60,13 @@ export default new class Model {
 
         this.game.update(delta)
     }
+    static saveGame(game) {
+        window.localStorage.setJSON("state", {
+            "date": Date.now(),
+            "game": this.toState(),
+            "hasUsedKeyboard": App.hasUsedKeyboard
+        })
+    }
 }
+
+export default App

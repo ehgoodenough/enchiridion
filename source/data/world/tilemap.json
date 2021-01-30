@@ -96,10 +96,10 @@
                  "id":9,
                  "name":"",
                  "rotation":0,
-                 "type":"",
+                 "type":"monster",
                  "visible":true,
                  "width":18,
-                 "x":256,
+                 "x":96,
                  "y":48
                 }],
          "opacity":1,

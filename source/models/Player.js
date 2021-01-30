@@ -84,9 +84,11 @@ export default class Player {
             && entity.isDead != true
             && player.position.x + action.move.x == entity.position.x
             && player.position.y + action.move.y == entity.position.y) {
-                if(entity.class == "monster") {
+                if(entity.key != player.key) {
                     player.isAttacking = true
-                    // entity.beAttacked() // TODO: handle attacks
+                    if(entity.beAttacked instanceof Function) {
+                        entity.beAttacked(game)
+                    }
                 }
                 action.move.x = 0
                 action.move.y = 0
@@ -108,7 +110,7 @@ export default class Player {
         player.position.x += action.move.x
         player.position.y += action.move.y
 
-        // Game.performEnemyActions(game)
+        Game.performReactions(game)
     }
     static isDead(game) {
         const player = game.world.entities["player"]

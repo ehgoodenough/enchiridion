@@ -1,4 +1,4 @@
-import "local-json-storage"
+import * as Objdict from "objdict"
 import analytics from "library/analytics.js"
 
 import App from "models/App.js"
@@ -15,25 +15,18 @@ export default class Game {
     }
     update(delta) {
         Player.update(this, delta)
-        this.camera.update()
+        this.camera.reaction(this)
     }
-    static performEnemyActions(game) {
-        this.entities.forEach((entity) => {
-            if(entity.onReaction instanceof Function) {
-                entity.onReaction()
+    static performReactions(game) {
+        Objdict.forEach(game.world.entities, (entity) => {
+            if(entity.reaction instanceof Function) {
+                entity.reaction(game)
             }
         })
 
-        // this.wave.onAction()
-
-        // Save the state.
-        if(this.isDemo !== true) {
-            window.localStorage.setJSON("state", {
-                "date": Date.now(),
-                "game": this.toState(),
-                "hasUsedKeyboard": App.hasUsedKeyboard
-            })
-        }
+        // if(this.isDemo != true) {
+        //     // App.saveGame(game)
+        // }
     }
     onEnd() {
         if(this.hasEndeded !== true) {

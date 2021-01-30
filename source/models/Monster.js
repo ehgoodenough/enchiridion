@@ -137,20 +137,6 @@ export default class Monster {
         this.position.x += action.move.x
         this.position.y += action.move.y
     }
-    beAttacked() {
-        this.damage += 1
-        if(this.damage >= this.health) {
-            this.isDead = true
-            this.game.score += 1
-            this.game.wave.killcount -= 1
-            this.game.remove(this)
-            // if(Math.abs(this.position.x - altar.position.x) <= 1
-            // && Math.abs(this.position.y - altar.position.y) <= 1) {
-            //     this.game.score += 2
-            //     altar.isBloody = this.id
-            // }
-        }
-    }
     toState() {
         return {
             "damage": this.damage,

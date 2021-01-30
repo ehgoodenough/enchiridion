@@ -3,14 +3,17 @@ const CAMZONE_HEIGHT = 10
 
 export default class Camera {
     constructor(game) {
-        this.game = game
+        this.position = {"x": 0, "y": 0}
+        this.focusOn(game, game.world.entities["player"])
     }
-    update() {
+    reaction(game) {
+        this.focusOn(game, game.world.entities["player"])
+    }
+    focusOn(game, player) {
         // this.position = {
         //     "x": this.game.adventurer.position.x + 0.5,
         //     "y": this.game.adventurer.position.y + 0.5
         // }
-        const player = this.game.world.entities["player"]
         if(player != undefined) {
             this.position = {
                 "x": Math.floor(player.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,

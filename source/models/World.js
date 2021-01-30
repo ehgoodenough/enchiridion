@@ -131,9 +131,7 @@ export default class World {
                         }
                     }
 
-                    const entity = Objdict.merge(instancedEntity, classedEntity, defaultEntity)
-                    console.log(entity)
-
+                    const entity = Objdict.merge(defaultEntity, classedEntity, instancedEntity)
                     this.entities[entity.key] = entity
                 })
             }
@@ -144,6 +142,15 @@ export default class World {
 const defaultEntity = {
     "damage": 0,
     "health": 1,
+    "beAttacked": function(game) {
+        this.damage += 1
+        if(this.damage >= this.health) {
+            this.isDead = true
+            // this.game.score += 1
+            // this.game.wave.killcount -= 1
+            delete game.world.entities[this.key]
+        }
+    }
 }
 
 const classedEntities = {
@@ -153,5 +160,8 @@ const classedEntities = {
 
         "title": "The Adventurer",
         "description": "It you!!",
+    },
+    "monster": {
+        "image": require("assets/images/slime_alpha.png"),
     }
 }
