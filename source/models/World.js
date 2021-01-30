@@ -1,3 +1,5 @@
+import * as Objdict from "objdict"
+
 import tilemap from "data/world/tilemap.json"
 import tileset from "data/world/tileset.json"
 
@@ -25,28 +27,48 @@ if(tilemap.tilesets.length != 1
 // tilemap.tileheight == 16 // in pixels
 
 const FIRST_TILEGID = 1
+const TILE_SIZE = 16
+
+console.log(tilemap, tileset)
+
+function iterateTileLayer(layer, func) {
+    layer.data.forEach((tilegid, index) => {
+        const position = {}
+        position.x = index % layer.width
+        position.y = Math.floor(index / layer.width)
+        position.key = position.x + "x" + position.y
+        func({tilegid, position, index})
+    })
+}
+function findPropertyValue(properties, name) {
+    if(properties == undefined) return
+    const property = properties.find((property) => {
+        if(property == undefined) return false
+        if(property.name == undefined) return false
+        if(property.name.toLowerCase() == name.toLowerCase()) return true
+    })
+    if(property != undefined) {
+        return property.value
+    }
+}
 
 export default class World {
     constructor() {
         this.width = tilemap.width
         this.height = tilemap.height
 
-        this.tiles = {}
+        this.entities = []
+        this.environment = {"tiles": {}}
 
         tilemap.layers.forEach((layer) => {
             if(layer.name == "collision"
             && layer.type == "tilelayer") {
-                layer.data.forEach((tilegid, index) => {
+                iterateTileLayer(layer, ({tilegid, position}) => {
                     tilegid -= FIRST_TILEGID
-
-                    const x = index % layer.width
-                    const y = Math.floor(index / layer.width)
-                    const xy = x + "x" + y
-
                     if(tilegid > -1) {
-                        this.tiles[xy] = this.tiles[xy] || {}
-                        this.tiles[xy].position = this.tiles[xy].position || {x, y}
-                        this.tiles[xy].collision = true
+                        this.environment.tiles[position.key] = this.environment.tiles[position.key] || {}
+                        this.environment.tiles[position.key].position = this.environment.tiles[position.key].position || position
+                        this.environment.tiles[position.key].collision = true
                     }
                 })
             }
@@ -62,41 +84,71 @@ export default class World {
 
                     let stack = 0
                     if(sublayer.properties != undefined) {
-                        const stackProperty = sublayer.properties.find((property) => property.name == "z")
-                        if(stackProperty != undefined) {
-                            stack = stackProperty.value
-                        }
+                        stack = findPropertyValue(sublayer.properties, "Stack")
                     }
 
                     if(sublayer.type == "tilelayer"
                     && sublayer.visible == true) {
-                        sublayer.data.forEach((tilegid, index) => {
+                        iterateTileLayer(sublayer, ({tilegid, position}) => {
                             tilegid -= FIRST_TILEGID
-
                             const tile = tileset.tiles[tilegid]
+                            if(tile == undefined) return
 
-                            if(tile == undefined) {
-                                return
-                            }
-
-                            const x = index % sublayer.width
-                            const y = Math.floor(index / sublayer.width)
-                            const xy = x + "x" + y
-
-                            this.tiles[xy] = this.tiles[xy] || {}
-                            this.tiles[xy].position = this.tiles[xy].position || {x, y}
-                            this.tiles[xy].images = this.tiles[xy].images || []
+                            this.environment.tiles[position.key] = this.environment.tiles[position.key] || {}
+                            this.environment.tiles[position.key].position = this.environment.tiles[position.key].position || position
+                            this.environment.tiles[position.key].images = this.environment.tiles[position.key].images || []
 
                             // tile.imageheight == 16
                             // tile.imagewidth == 16
 
                             const sourceImagePath = tile.image.replace("../../assets/images/", "./")
                             const buildImagePath = buildImagePaths[sourceImagePath]
-                            this.tiles[xy].images.push({"source": buildImagePath, "stack": stack})
+                            this.environment.tiles[position.key].images.push({"source": buildImagePath, "stack": stack})
                         })
                     }
                 })
             }
+
+            if(layer.name == "entities"
+            && layer.type == "objectgroup") {
+                layer.objects.forEach((object) => {
+                    if(object.visible == false) return
+                    object.key = findPropertyValue(object.properties, "Key")
+
+                    object.gid -= FIRST_TILEGID
+                    // if(object.type == undefined) {
+                    //     tileset.tiles[object.gid] // TODO: READ DEFAULT OBJECT TYPE FROM TILESET!!
+                    // }
+
+                    const classedEntity = classedEntities[object.type] || {}
+                    const instancedEntity = {
+                        "key": object.key || object.id,
+                        "type": object.type,
+                        "position": {
+                            "x": Math.floor(object.x / TILE_SIZE),
+                            "y": Math.floor(object.y / TILE_SIZE),
+                            "z": 0
+                        }
+                    }
+
+                    const entity = Objdict.merge(instancedEntity, classedEntity, defaultEntity)
+                    console.log(entity)
+
+                    this.entities.push(entity)
+                })
+            }
         })
+    }
+}
+
+const defaultEntity = {
+    "damage": 0,
+    "health": 1,
+}
+
+const classedEntities = {
+    "adventurer": {
+        "health": 3,
+        "image": require("assets/images/adventurer.png")
     }
 }
