@@ -5,11 +5,13 @@ import "views/Entity.view.less"
 export default class Entity {
     render() {
         return (
-            <div className={this.className} style={this.style}/>
+            <div className="Entity" animation={this.animation} style={this.style}/>
         )
     }
-    get className() {
-        return `Entity ${this.props.entity.animation}`
+    get animation() {
+        if(this.props.entity.getAnimation instanceof Function) {
+            return this.props.entity.getAnimation()
+        }
     }
     get style() {
         let style = {}
@@ -19,12 +21,12 @@ export default class Entity {
             style.left = this.props.entity.position.x + "em"
         }
 
-        // if(this.props.entity.stack) {
-        //     style.zIndex = (this.props.entity.stack * 100) + this.props.entity.position.y
-        // }
-
-        if(this.props.entity.image) {
-            style.backgroundImage = "url(" + this.props.entity.image + ")"
+        if(this.props.entity.images) {
+            if(this.props.entity.getImage instanceof Function) {
+                style.backgroundImage = "url(" + this.props.entity.getImage() + ")"
+            } else {
+                style.backgroundImage = "url(" + this.props.entity.images.standard + ")"
+            }
         }
 
         if(this.props.entity.color) {

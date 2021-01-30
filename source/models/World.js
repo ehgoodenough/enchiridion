@@ -197,7 +197,9 @@ class Entity {
 const classedEntities = {
     "adventurer": {
         "health": 3,
-        "image": require("assets/images/adventurer.png"),
+        "images": {
+            "standard": require("assets/images/adventurer.png"),
+        },
 
         "title": "The Adventurer",
         "description": "It you!!",
@@ -218,7 +220,9 @@ const classedEntities = {
         }
     },
     "collectible": {
-        "image": require("assets/images/collectible.png"),
+        "images": {
+            "standard": require("assets/images/collectible.png"),
+        },
 
         "beAttacked": function(game) {
             this.damage += 1
@@ -230,10 +234,31 @@ const classedEntities = {
         }
     },
     "monster": {
-        "image": require("assets/images/slime_alpha.png"),
         "title": "Red Slime",
         "description": "It looks gross.",
+        "images": {
+            "standard": require("assets/images/slime_alpha.png"),
+            "threatening": require("assets/images/slime_omega.png"),
+        },
         "flipflop": false,
+        "getAnimation": function() {
+            if(this.isAttacking) {
+                return "strike" + "-" + this.direction
+            }
+
+            if(this.flipflop === true) {
+                return "shake"
+            } else {
+                return "ooze"
+            }
+        },
+        "getImage": function() {
+            if(this.flipflop === true) {
+                return this.images.threatening
+            } else {
+                return this.images.standard
+            }
+        },
         "reaction": function(game) {
             if(Entity.isDead(this)) return
             if(Entity.isInCamera(game, this) == false) return
