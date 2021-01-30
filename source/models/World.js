@@ -121,18 +121,25 @@ export default class World {
                     object.key = findPropertyValue(object.properties, "Key")
                     object.gid -= FIRST_TILEGID
 
-                    if(object.type == undefined) {
+                    object.entityType = findPropertyValue(object.properties, "EntityType")
+                    if(object.entityType == undefined) {
                         const tile = tileset.tiles[object.gid]
                         if(tile != undefined) {
-                            object.type = findPropertyValue(tile.properties, "DefaultEntityType")
+                            object.entityType = findPropertyValue(tile.properties, "DefaultEntityType")
                         }
-                        object.type = findPropertyValue(object.properties, "EntityType") || object.type
                     }
 
-                    const classedEntity = classedEntities[object.type] || {}
+                    if(object.entityType == undefined) {
+                        console.error("Could not find entity of this type:", object)
+                        return
+                    }
+
+                    console.log(object)
+
+                    const classedEntity = classedEntities[object.entityType] || {}
                     const instancedEntity = {
                         "key": object.key || object.id,
-                        "type": object.type,
+                        "type": object.entityType,
                         "position": {
                             "x": Math.floor(object.x / TILE_SIZE),
                             "y": Math.floor(object.y / TILE_SIZE) - 1, // TODO: Why -1?
@@ -268,6 +275,15 @@ const classedEntities = {
                     action.move.y = 0
                 }
             })
+
+            // COLLISION WITH MAP
+            const x = this.position.x + action.move.x
+            const y = this.position.y + action.move.y
+            const tile = game.world.environment.tiles[x + "x" + y]
+            if(tile != undefined && tile.collision == true) {
+                action.move.x = 0
+                action.move.y = 0
+            }
 
             this.position.x += action.move.x
             this.position.y += action.move.y
