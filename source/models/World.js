@@ -196,15 +196,29 @@ class Entity {
 
 const classedEntities = {
     "adventurer": {
-        "health": 3,
-        "images": {
-            "standard": require("assets/images/adventurer.png"),
-        },
-
         "title": "The Adventurer",
         "description": "It you!!",
 
+        "health": 3,
         "score": 0,
+
+        "images": {
+            "standard": require("assets/images/adventurer.png"),
+            "dead": require("assets/images/gravestone.png"),
+        },
+        "getImage": function() {
+            if(Entity.isDead(this)) {
+                return this.images.dead
+            } else {
+                return this.images.standard
+            }
+        },
+        "getAnimation": function() {
+            if(this.isAttacking) {
+                return "strike" + "-" + this.direction
+            }
+        },
+
 
         "beAttacked": function(game) {
             // if(this.game.isDemo) return

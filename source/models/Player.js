@@ -30,19 +30,6 @@ export default class Player {
             return
         }
 
-        // if(this.game.isDemo) {
-        //     this.clock = (this.clock || 0) + delta.s
-        //     if(this.clock > DEMO_CLOCK) {
-        //         this.clock -= DEMO_CLOCK
-        //         let move = Math.random()
-        //         Player.performAction(game, {"move": {
-        //             "x": move < 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.x !== 0 ? -1 : +1) : (this.position.x !== 5 - 1 ? +1 : -1)),
-        //             "y": move >= 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.y !== 0 ? -1 : +1) : (this.position.y !== 5 - 1 ? +1 : -1)),
-        //         }})
-        //     }
-        //     return
-        // }
-
         if(Keyb.isJustDown("W", delta.ms)
         || Keyb.isJustDown("<up>", delta.ms)) {
             Player.performAction(game, {"move": {"y": -1}})
@@ -77,7 +64,7 @@ export default class Player {
 
         action.move.x = action.move.x || 0
         action.move.y = action.move.y || 0
-        this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
+        player.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
 
         Objdict.forEach(game.world.entities, (entity) => {
             if(entity != this
@@ -109,7 +96,7 @@ export default class Player {
 
         player.position.x += action.move.x
         player.position.y += action.move.y
-        
+
         Game.performReactions(game)
     }
     static isDead(game) {
@@ -117,27 +104,6 @@ export default class Player {
         return player == undefined
             || player.damage >= player.health
     }
-    // beAttacked() {
-    //     if(this.game.isDemo) {
-    //         return
-    //     }
-    //     if(this.isDead !== true) {
-    //         this.damage += 1
-    //         this.isAttacked = shortid.generate()
-    //         if(this.isDead === true) {
-    //             this.deathtext = deathtext[0]
-    //             deathtext.push(deathtext.shift())
-    //             this.game.onEnd()
-    //         }
-    //     }
-    // }
-    // get image() {
-    //     if(this.isDead === true) {
-    //         return GRAVESTONE_IMAGE
-    //     } else {
-    //         return ADVENTURER_IMAGE
-    //     }
-    // }
     // toState() {
     //     return {
     //         "damage": this.damage,
