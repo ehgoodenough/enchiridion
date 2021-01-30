@@ -109,7 +109,7 @@ export default class Player {
 
         player.position.x += action.move.x
         player.position.y += action.move.y
-
+        
         Game.performReactions(game)
     }
     static isDead(game) {

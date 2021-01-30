@@ -147,6 +147,11 @@ export default class World {
 
                     const entity = Objdict.merge(defaultEntity, classedEntity, instancedEntity)
                     this.entities[entity.key] = entity
+
+                    if(entity.type == "collectible") {
+                        window.totalCollectibles = window.totalCollectibles || 0
+                        window.totalCollectibles += 1
+                    }
                 })
             }
         })
@@ -178,11 +183,11 @@ class Entity {
         const CAMZONE_HEIGHT = 10
         const playerCamzonePosition = {
             "x": Math.floor(playerPosition.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
-            "y": Math.floor(playerPosition.x / CAMZONE_HEIGHT) * CAMZONE_HEIGHT,
+            "y": Math.floor(playerPosition.y / CAMZONE_HEIGHT) * CAMZONE_HEIGHT,
         }
         const entityCamzonePosition = {
             "x": Math.floor(entity.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
-            "y": Math.floor(entity.position.x / CAMZONE_HEIGHT) * CAMZONE_HEIGHT,
+            "y": Math.floor(entity.position.y / CAMZONE_HEIGHT) * CAMZONE_HEIGHT,
         }
         return entityCamzonePosition.x == playerCamzonePosition.x
             && entityCamzonePosition.y == playerCamzonePosition.y

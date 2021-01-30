@@ -55,7 +55,7 @@ export default class UI {
         let score = App.game.world.entities.player.score || 0
         return (
             <span>
-                {score} of 2
+                {score} of {window.totalCollectibles || 0}
             </span>
         )
     }
