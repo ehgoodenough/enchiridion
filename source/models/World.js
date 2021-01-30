@@ -8,7 +8,7 @@ const contextualize = (context) => {
     })
     return recontext
 }
-const buildImagePaths = contextualize(require.context("assets/images/world/tiles/", true))
+const buildImagePaths = contextualize(require.context("assets/images/", true))
 
 if(tilemap.tilesets.length != 1
 || tilemap.tilesets[0].source != "tileset.json") {
@@ -41,15 +41,16 @@ export default class World {
 
                     const x = index % layer.width
                     const y = Math.floor(index / layer.width)
+                    const xy = x + "x" + y
 
                     if(tilegid > -1) {
-                        this.tiles[x + "x" + y] = this.tiles[x + "x" + y] || {}
-                        this.tiles[x + "x" + y].position = this.tiles[x + "x" + y].position || {x, y}
-                        this.tiles[x + "x" + y].collision = true
+                        this.tiles[xy] = this.tiles[xy] || {}
+                        this.tiles[xy].position = this.tiles[xy].position || {x, y}
+                        this.tiles[xy].collision = true
                     }
                 })
             }
-            if(layer.name == "tile layers"
+            if(layer.name == "environment"
             && layer.type == "group"
             && layer.visible == true) {
                 layer.layers.forEach((sublayer) => {
@@ -58,6 +59,15 @@ export default class World {
                         console.error("Don't yet support groups within the main images layer.")
                         return
                     }
+
+                    let stack = 0
+                    if(sublayer.properties != undefined) {
+                        const stackProperty = sublayer.properties.find((property) => property.name == "z")
+                        if(stackProperty != undefined) {
+                            stack = stackProperty.value
+                        }
+                    }
+
                     if(sublayer.type == "tilelayer"
                     && sublayer.visible == true) {
                         sublayer.data.forEach((tilegid, index) => {
@@ -71,17 +81,18 @@ export default class World {
 
                             const x = index % sublayer.width
                             const y = Math.floor(index / sublayer.width)
+                            const xy = x + "x" + y
 
-                            this.tiles[x + "x" + y] = this.tiles[x + "x" + y] || {}
-                            this.tiles[x + "x" + y].position = this.tiles[x + "x" + y].position || {x, y}
-                            this.tiles[x + "x" + y].images = this.tiles[x + "x" + y].images || []
+                            this.tiles[xy] = this.tiles[xy] || {}
+                            this.tiles[xy].position = this.tiles[xy].position || {x, y}
+                            this.tiles[xy].images = this.tiles[xy].images || []
 
                             // tile.imageheight == 16
                             // tile.imagewidth == 16
 
-                            const sourceImagePath = tile.image.replace("../../assets/images/world/tiles/", "./")
+                            const sourceImagePath = tile.image.replace("../../assets/images/", "./")
                             const buildImagePath = buildImagePaths[sourceImagePath]
-                            this.tiles[x + "x" + y].images.push({"source": buildImagePath})
+                            this.tiles[xy].images.push({"source": buildImagePath, "stack": stack})
                         })
                     }
                 })

@@ -6,8 +6,8 @@ import colors from "data/colors.js"
 
 import Adventurer from "models/Adventurer.js"
 
-import SLIME_ALPHA_IMAGE from "assets/images/monsters/slime_alpha.png"
-import SLIME_OMEGA_IMAGE from "assets/images/monsters/slime_omega.png"
+import SLIME_ALPHA_IMAGE from "assets/images/slime_alpha.png"
+import SLIME_OMEGA_IMAGE from "assets/images/slime_omega.png"
 
 const DIRECTIONS = {
     "-1x0": "west",

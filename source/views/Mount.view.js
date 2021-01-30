@@ -22,10 +22,10 @@ export default class Mount {
 function Preload() {
     return (
         <div className="Preload">
-            <img src={require("assets/images/monsters/adventurer.png")}/>
-            <img src={require("assets/images/monsters/gravestone.png")}/>
-            <img src={require("assets/images/monsters/slime_alpha.png")}/>
-            <img src={require("assets/images/monsters/slime_omega.png")}/>
+            <img src={require("assets/images/adventurer.png")}/>
+            <img src={require("assets/images/gravestone.png")}/>
+            <img src={require("assets/images/slime_alpha.png")}/>
+            <img src={require("assets/images/slime_omega.png")}/>
             <img src={require("assets/images/ui/heart-full-white.png")}/>
             <img src={require("assets/images/ui/heart-half-white.png")}/>
             <img src={require("assets/images/ui/heart-none-white.png")}/>

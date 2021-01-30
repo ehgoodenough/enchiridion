@@ -16,29 +16,53 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":3,
+ "tilecount":7,
  "tiledversion":"1.4.2",
- "tileheight":16,
+ "tileheight":18,
  "tiles":[
         {
          "id":0,
-         "image":"..\/..\/assets\/images\/world\/tiles\/0.png",
+         "image":"..\/..\/assets\/images\/tiles\/0.png",
          "imageheight":16,
          "imagewidth":16
         },
-           {
-            "id":1,
-            "image":"..\/..\/assets\/images\/world\/tiles\/1.png",
-            "imageheight":16,
-            "imagewidth":16
-           },
         {
-         "id":2,
-         "image":"..\/..\/assets\/images\/world\/tiles\/2.png",
+         "id":1,
+         "image":"..\/..\/assets\/images\/tiles\/1.png",
          "imageheight":16,
          "imagewidth":16
+        },
+        {
+         "id":2,
+         "image":"..\/..\/assets\/images\/tiles\/2.png",
+         "imageheight":16,
+         "imagewidth":16
+        },
+        {
+         "id":3,
+         "image":"..\/..\/assets\/images\/gravestone.png",
+         "imageheight":16,
+         "imagewidth":16
+        },
+        {
+         "id":4,
+         "image":"..\/..\/assets\/images\/adventurer.png",
+         "imageheight":18,
+         "imagewidth":18
+        },
+        {
+         "id":5,
+         "image":"..\/..\/assets\/images\/slime_alpha.png",
+         "imageheight":18,
+         "imagewidth":18
+        },
+        {
+         "id":6,
+         "image":"..\/..\/assets\/images\/slime_omega.png",
+         "imageheight":18,
+         "imagewidth":18
         }],
- "tilewidth":16,
+ "tilewidth":18,
  "type":"tileset",
  "version":1.4
 }
