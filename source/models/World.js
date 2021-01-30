@@ -64,7 +64,7 @@ export default class World {
         this.environment = {"tiles": {}}
 
         tilemap.layers.forEach((layer) => {
-            if(layer.name == "collision"
+            if(layer.name == "data:collision"
             && layer.type == "tilelayer") {
                 iterateTileLayer(layer, ({tilegid, position}) => {
                     tilegid -= FIRST_TILEGID
@@ -74,45 +74,10 @@ export default class World {
                         this.environment.tiles[position.key].collision = true
                     }
                 })
-            }
-            if(layer.name == "environment"
-            && layer.type == "group"
-            && layer.visible == true) {
-                layer.layers.forEach((sublayer) => {
-                    if(sublayer.type == "group"
-                    && sublayer.visible == true) {
-                        console.error("Don't yet support groups within the main images layer.")
-                        return
-                    }
-
-                    let stack = 0
-                    if(sublayer.properties != undefined) {
-                        stack = findPropertyValue(sublayer.properties, "Stack")
-                    }
-
-                    if(sublayer.type == "tilelayer"
-                    && sublayer.visible == true) {
-                        iterateTileLayer(sublayer, ({tilegid, position}) => {
-                            tilegid -= FIRST_TILEGID
-                            const tile = tileset.tiles[tilegid]
-                            if(tile == undefined) return
-
-                            this.environment.tiles[position.key] = this.environment.tiles[position.key] || {}
-                            this.environment.tiles[position.key].position = this.environment.tiles[position.key].position || position
-                            this.environment.tiles[position.key].images = this.environment.tiles[position.key].images || []
-
-                            // tile.imageheight == 16
-                            // tile.imagewidth == 16
-
-                            const sourceImagePath = tile.image.replace("../../assets/images/", "./")
-                            const buildImagePath = buildImagePaths[sourceImagePath]
-                            this.environment.tiles[position.key].images.push({"source": buildImagePath, "stack": stack})
-                        })
-                    }
-                })
+                return
             }
 
-            if(layer.name == "entities"
+            if(layer.name == "data:entities"
             && layer.type == "objectgroup") {
                 layer.objects.forEach((object) => {
                     if(object.visible == false) return
@@ -121,23 +86,28 @@ export default class World {
                     object.key = findPropertyValue(object.properties, "Key")
                     object.gid -= FIRST_TILEGID
 
-                    object.entityType = findPropertyValue(object.properties, "EntityType")
-                    if(object.entityType == undefined) {
-                        const tile = tileset.tiles[object.gid]
-                        if(tile != undefined) {
-                            object.entityType = findPropertyValue(tile.properties, "DefaultEntityType")
+                    if(object.type == undefined || object.type == "") {
+                        object.type = findPropertyValue(object.properties, "EntityType")
+                        if(object.type == undefined || object.type == "") {
+                            const tile = tileset.tiles[object.gid]
+                            if(tile != undefined) {
+                                object.type = tile.type
+                                if(object.type == undefined || object.type == "") {
+                                    object.type = findPropertyValue(tile.properties, "DefaultEntityType")
+                                }
+                            }
                         }
                     }
 
-                    if(object.entityType == undefined) {
+                    if(object.type == undefined) {
                         console.error("Could not find entity of this type:", object)
                         return
                     }
 
-                    const classedEntity = classedEntities[object.entityType] || {}
+                    const classedEntity = classedEntities[object.type] || {}
                     const instancedEntity = {
                         "key": object.key || object.id,
-                        "type": object.entityType,
+                        "type": object.type,
                         "position": {
                             "x": Math.floor(object.x / TILE_SIZE),
                             "y": Math.floor(object.y / TILE_SIZE) - 1, // TODO: Why -1?
@@ -149,9 +119,35 @@ export default class World {
                     this.entities[entity.key] = entity
 
                     if(entity.type == "collectible") {
-                        window.totalCollectibles = window.totalCollectibles || 0
-                        window.totalCollectibles += 1
+                        this.totalCollectibles = this.totalCollectibles || 0
+                        this.totalCollectibles += 1
                     }
+                })
+                return
+            }
+
+            if(layer.type == "tilelayer"
+            && layer.visible == true) {
+                let stack = 0
+                if(layer.properties != undefined) {
+                    stack = findPropertyValue(layer.properties, "Stack")
+                }
+
+                iterateTileLayer(layer, ({tilegid, position}) => {
+                    tilegid -= FIRST_TILEGID
+                    const tile = tileset.tiles[tilegid]
+                    if(tile == undefined) return
+
+                    this.environment.tiles[position.key] = this.environment.tiles[position.key] || {}
+                    this.environment.tiles[position.key].position = this.environment.tiles[position.key].position || position
+                    this.environment.tiles[position.key].images = this.environment.tiles[position.key].images || []
+
+                    // tile.imageheight == 16
+                    // tile.imagewidth == 16
+
+                    const sourceImagePath = tile.image.replace("../../assets/images/", "./")
+                    const buildImagePath = buildImagePaths[sourceImagePath]
+                    this.environment.tiles[position.key].images.push({"source": buildImagePath, "stack": stack})
                 })
             }
         })

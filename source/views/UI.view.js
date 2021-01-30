@@ -6,6 +6,7 @@ import "views/UI.view.less"
 
 export default class UI {
     render() {
+        if(App.game.world.entities.player == undefined) return
         return (
             <div className="UI">
                 <div className="hearts">
@@ -24,7 +25,7 @@ export default class UI {
                     </span>
                 </div>
                 <div className="game-over-banner">
-                    <span>{App.game.world.entities["player"].deathtext || "Game Over"}</span>
+                    <span>{App.game.world.entities.player.deathtext || "Game Over"}</span>
                 </div>
                 <div className="pause-banner">
                     <span>PAUSED</span>
@@ -38,9 +39,9 @@ export default class UI {
     }
     get hearts() {
         var hearts = new Array()
-        for(var i = App.game.world.entities["player"].health - 1; i >= 0; i -= 1) {
-            if(i >= App.game.world.entities["player"].damage) {
-                if(App.game.world.entities["player"].damage + 1 === App.game.world.entities["player"].health) {
+        for(var i = App.game.world.entities.player.health - 1; i >= 0; i -= 1) {
+            if(i >= App.game.world.entities.player.damage) {
+                if(App.game.world.entities.player.damage + 1 === App.game.world.entities.player.health) {
                     hearts.push(<span className="final full heart" key={i}/>)
                 } else {
                     hearts.push(<span className="full heart" key={i}/>)
@@ -55,14 +56,14 @@ export default class UI {
         let score = App.game.world.entities.player.score || 0
         return (
             <span>
-                {score} of {window.totalCollectibles || 0}
+                {score} of {App.game.world.totalCollectibles || 0}
             </span>
         )
     }
     get flash() {
-        if(App.game.world.entities["player"].isAttacked) {
+        if(App.game.world.entities.player.isAttacked) {
             return (
-                <div className="blood" key={App.game.world.entities["player"].isAttacked}/>
+                <div className="blood" key={App.game.world.entities.player.isAttacked}/>
             )
         }
     }
