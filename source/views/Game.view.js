@@ -1,10 +1,11 @@
 import * as Preact from "preact"
 
-import Entity from "views/Entity.view.js"
-import UI from "views/UI.view.js"
-import Camera from "views/Camera.view.js"
-
 import App from "models/App.js"
+
+import World from "views/World.view.js"
+import Entity from "views/Entity.view.js"
+import Camera from "views/Camera.view.js"
+import UI from "views/UI.view.js"
 
 import "views/Game.view.less"
 
@@ -12,12 +13,10 @@ export default class Game {
     render() {
         return (
             <div className={this.className}>
-                <div className="Scene">
-                    <Camera>
-                        <div className="Room"/>
-                        {this.entities}
-                    </Camera>
-                </div>
+                <Camera>
+                    <World/>
+                    {this.entities}
+                </Camera>
                 <UI/>
             </div>
         )

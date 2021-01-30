@@ -21,17 +21,21 @@ export default new class Model {
 
         const state = window.localStorage.getJSON("state")
 
-        if(state !== null
-        && Date.now() - state.date < STATE_EXPIRATION
-        && state.game.adventurer.isDead !== true) {
+        if(state != null
+        && state.game.adventurer.isDead !== true
+        && Date.now() - state.date < STATE_EXPIRATION) {
             this.hasUsedKeyboard = state.hasUsedKeyboard
-            this.game = new Game({"model": this, "game": state.game})
+            this.game = new Game({"game": state.game})
         } else {
-            this.game = new Game({"model": this, "game": DEMO_GAME_STATE})
+            if(Dev.isInDevMode == true) {
+                this.game = new Game({"game": NEW_GAME_STATE})
+            } else {
+                this.game = new Game({"game": DEMO_GAME_STATE})
+            }
         }
     }
     startNewGame() {
-        this.game = new Game({"model": this, "game": NEW_GAME_STATE})
+        this.game = new Game({"game": NEW_GAME_STATE})
     }
     update(delta) {
         if(this.game.isDemo === true

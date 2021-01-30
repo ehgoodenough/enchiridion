@@ -4,6 +4,8 @@ const GA_SECRET_KEY = "41653dad84e4f8df3671cafb2fe0d9117d47dddf"
 const GameAnalytics = require("gameanalytics")
 GameAnalytics._ = GameAnalytics.GameAnalytics
 
+const Dev = {"isInDevMode": true}
+
 const analytics = module.exports = {}
 analytics.isInitialized = false
 
@@ -18,17 +20,20 @@ analytics.initialize = function() {
 }
 
 analytics.reportError = function(error) {
+    if(Dev.isInDevMode) return
     if(analytics.isInitialized === true) {
         GameAnalytics._.addErrorEvent(GameAnalytics.EGAErrorSeverity.Error, error.message)
     }
 }
 
 analytics.reportStartGame = function() {
+    if(Dev.isInDevMode) return
     if(analytics.isInitialized === false) analytics.initialize()
     GameAnalytics._.addProgressionEvent(GameAnalytics.EGAProgressionStatus.Start, "game")
 }
 
 analytics.reportEndGame = function() {
+    if(Dev.isInDevMode) return
     if(analytics.isInitialized === false) analytics.initialize()
     GameAnalytics._.addProgressionEvent(GameAnalytics.EGAProgressionStatus.Complete, "game")
 }

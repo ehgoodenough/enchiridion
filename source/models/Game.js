@@ -1,33 +1,32 @@
 import "local-json-storage"
-
 import analytics from "library/analytics.js"
 
-import activity from "data/activity.js"
-
+import App from "models/App.js"
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
 import MonsterWave from "models/MonsterWave.js"
 import Room from "models/Room.js"
+import World from "models/World.js"
 
 export default class Game {
-    constructor(parameters) {
-        this.model = parameters.model
-
+    constructor({game}) {
         analytics.reportStartGame()
 
-        parameters.game = parameters.game || {}
-        parameters.game.monsters = parameters.game.monsters || []
-        parameters.game.adventurer = parameters.game.adventurer || {}
+        game = game || {}
+        game.monsters = game.monsters || []
+        game.adventurer = game.adventurer || {}
 
-        this.score = parameters.game.score || 0
-        this.add(this.adventurer = new Adventurer(parameters.game.adventurer))
-        parameters.game.monsters.forEach((monster) => this.add(new Monster(monster)))
+        this.score = game.score || 0
+        this.add(this.adventurer = new Adventurer(game.adventurer))
+        game.monsters.forEach((monster) => this.add(new Monster(monster)))
 
+        this.world = new World()
+        this.camera = {"position": {"x": 2.5, "y": 2.5}}
+        
         this.room = new Room({"width": 5, "height": 5})
-        this.camera = {"position": {"x": 2.5, "y": 2.5}} // new Camera()
         this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
 
-        this.isDemo = parameters.game.isDemo
+        this.isDemo = game.isDemo
     }
     add(entity) {
         entity.game = this
@@ -66,7 +65,7 @@ export default class Game {
             window.localStorage.setJSON("state", {
                 "date": Date.now(),
                 "game": this.toState(),
-                "hasUsedKeyboard": this.model.hasUsedKeyboard
+                "hasUsedKeyboard": App.hasUsedKeyboard
             })
         }
     }
@@ -74,7 +73,7 @@ export default class Game {
         if(this.hasEndeded !== true) {
             this.hasEnded = true
             analytics.reportEndGame()
-            this.model.deathtime = 0
+            App.deathtime = 0
         }
     }
     get isDone() {
@@ -84,7 +83,7 @@ export default class Game {
         if(this.isDemo) {
             return false
         }
-        if(this.model.hasUsedKeyboard) {
+        if(App.hasUsedKeyboard) {
             return false
         }
         return true
@@ -96,7 +95,6 @@ export default class Game {
             "monsters": this.monsters.map((monster) => monster.toState()),
             // "camera": this.camera,
             // "wave": this.wave.toState(),
-            // "room": this.room.toState(),
         }
     }
 }

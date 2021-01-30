@@ -9,12 +9,10 @@ import "views/Mount.view.less"
 export default class Mount {
     render() {
         return (
-            <div className="Mount" id="mounted-as-none">
-                <div className="Frame"
-                    onMouseUp={this.onMouseUp}
-                    onMouseDown={this.onMouseDown}>
+            <div className="Mount">
+                <div className="Frame">
                     <Preload/>
-                        <Game/>
+                    <Game/>
                 </div>
             </div>
         )
