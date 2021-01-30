@@ -64,19 +64,6 @@ export default class World {
         this.environment = {"tiles": {}}
 
         tilemap.layers.forEach((layer) => {
-            if(layer.name == "data:collision"
-            && layer.type == "tilelayer") {
-                iterateTileLayer(layer, ({tilegid, position}) => {
-                    tilegid -= FIRST_TILEGID
-                    if(tilegid > -1) {
-                        this.environment.tiles[position.key] = this.environment.tiles[position.key] || {}
-                        this.environment.tiles[position.key].position = this.environment.tiles[position.key].position || position
-                        this.environment.tiles[position.key].collision = true
-                    }
-                })
-                return
-            }
-
             if(layer.name == "data:entities"
             && layer.type == "objectgroup") {
                 layer.objects.forEach((object) => {
@@ -126,6 +113,19 @@ export default class World {
                 return
             }
 
+            if(layer.name == "data:collision"
+            && layer.type == "tilelayer") {
+                iterateTileLayer(layer, ({tilegid, position}) => {
+                    tilegid -= FIRST_TILEGID
+                    if(tilegid > -1) {
+                        this.environment.tiles[position.key] = this.environment.tiles[position.key] || {}
+                        this.environment.tiles[position.key].position = this.environment.tiles[position.key].position || position
+                        this.environment.tiles[position.key].collision = true
+                    }
+                })
+                return
+            }
+
             if(layer.type == "tilelayer"
             && layer.visible == true) {
                 let stack = 0
@@ -141,6 +141,10 @@ export default class World {
                     this.environment.tiles[position.key] = this.environment.tiles[position.key] || {}
                     this.environment.tiles[position.key].position = this.environment.tiles[position.key].position || position
                     this.environment.tiles[position.key].images = this.environment.tiles[position.key].images || []
+
+                    if(tile.type == "collision") {
+                        this.environment.tiles[position.key].collision = true
+                    }
 
                     // tile.imageheight == 16
                     // tile.imagewidth == 16
