@@ -13,16 +13,10 @@ export default class Camera {
             </div>
         )
     }
-    // get style() {
-    //     return {
-    //         "left": (frame.width / 2) - (App.game.camera.position.x) + "em",
-    //         "top": (frame.height / 2) - (App.game.camera.position.y) + "em",
-    //     }
-    // }
     get style() {
         return {
-            "marginLeft": -1 * App.game.camera.position.x + "em",
-            "marginTop": -1 * App.game.camera.position.y + "em",
+            "left": -1 * App.game.camera.position.x + "em",
+            "top": -1 * App.game.camera.position.y + "em",
         }
     }
 }

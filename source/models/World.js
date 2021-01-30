@@ -70,7 +70,7 @@ export default class World {
 
                                     const sourceImagePath = tile.image.replace("../../assets/images/world/", "./")
                                     const buildImagePath = buildImagePaths[sourceImagePath]
-                                    this.tiles[x + "x" + y].images.unshift({"source": buildImagePath})
+                                    this.tiles[x + "x" + y].images.push({"source": buildImagePath})
                                 })
                             }
                         })
