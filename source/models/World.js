@@ -57,7 +57,7 @@ export default class World {
         this.width = tilemap.width
         this.height = tilemap.height
 
-        this.entities = []
+        this.entities = {}
         this.environment = {"tiles": {}}
 
         tilemap.layers.forEach((layer) => {
@@ -126,7 +126,7 @@ export default class World {
                         "type": object.type,
                         "position": {
                             "x": Math.floor(object.x / TILE_SIZE),
-                            "y": Math.floor(object.y / TILE_SIZE),
+                            "y": Math.floor(object.y / TILE_SIZE) - 1, // TODO: Why -1?
                             "z": 0
                         }
                     }
@@ -134,7 +134,7 @@ export default class World {
                     const entity = Objdict.merge(instancedEntity, classedEntity, defaultEntity)
                     console.log(entity)
 
-                    this.entities.push(entity)
+                    this.entities[entity.key] = entity
                 })
             }
         })
@@ -149,6 +149,9 @@ const defaultEntity = {
 const classedEntities = {
     "adventurer": {
         "health": 3,
-        "image": require("assets/images/adventurer.png")
+        "image": require("assets/images/adventurer.png"),
+
+        "title": "The Adventurer",
+        "description": "It you!!",
     }
 }

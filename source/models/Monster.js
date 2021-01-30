@@ -4,7 +4,7 @@ import shortid from "shortid"
 import frame from "data/frame.js"
 import colors from "data/colors.js"
 
-import Adventurer from "models/Adventurer.js"
+// import Adventurer from "models/Adventurer.js"
 
 import SLIME_ALPHA_IMAGE from "assets/images/slime_alpha.png"
 import SLIME_OMEGA_IMAGE from "assets/images/slime_omega.png"

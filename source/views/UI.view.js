@@ -24,7 +24,7 @@ export default class UI {
                     </span>
                 </div>
                 <div className="game-over-banner">
-                    <span>{App.game.adventurer.deathtext}</span>
+                    <span>{App.game.world.entities["player"].deathtext}</span>
                 </div>
                 <div className="pause-banner">
                     <span>PAUSED</span>
@@ -38,9 +38,9 @@ export default class UI {
     }
     get hearts() {
         var hearts = new Array()
-        for(var i = App.game.adventurer.health - 1; i >= 0; i -= 1) {
-            if(i >= App.game.adventurer.damage) {
-                if(App.game.adventurer.damage + 1 === App.game.adventurer.health) {
+        for(var i = App.game.world.entities["player"].health - 1; i >= 0; i -= 1) {
+            if(i >= App.game.world.entities["player"].damage) {
+                if(App.game.world.entities["player"].damage + 1 === App.game.world.entities["player"].health) {
                     hearts.push(<span className="final full heart" key={i}/>)
                 } else {
                     hearts.push(<span className="full heart" key={i}/>)
@@ -62,9 +62,9 @@ export default class UI {
         )
     }
     get flash() {
-        if(App.game.adventurer.isAttacked) {
+        if(App.game.world.entities["player"].isAttacked) {
             return (
-                <div className="blood" key={App.game.adventurer.isAttacked}/>
+                <div className="blood" key={App.game.world.entities["player"].isAttacked}/>
             )
         }
     }

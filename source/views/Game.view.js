@@ -1,4 +1,5 @@
 import * as Preact from "preact"
+import * as Objdict from "objdict"
 
 import App from "models/App.js"
 
@@ -30,7 +31,7 @@ export default class Game {
         ].join(" ")
     }
     get entities() {
-        return App.game.entities.map((entity) => (
+        return Object.values(App.game.world.entities).map((entity) => (
             <Entity entity={entity} key={entity.key}/>
         ))
     }
