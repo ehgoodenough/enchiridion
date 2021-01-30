@@ -5,8 +5,8 @@ import App from "models/App.js"
 import Adventurer from "models/Adventurer.js"
 import Monster from "models/Monster.js"
 import MonsterWave from "models/MonsterWave.js"
-import Room from "models/Room.js"
 import World from "models/World.js"
+import Camera from "models/Camera.js"
 
 export default class Game {
     constructor({game}) {
@@ -21,10 +21,10 @@ export default class Game {
         game.monsters.forEach((monster) => this.add(new Monster(monster)))
 
         this.world = new World()
-        this.camera = {"position": {"x": 2.5, "y": 2.5}}
-        
-        this.room = new Room({"width": 5, "height": 5})
-        this.wave = new MonsterWave({"game": this, "wave": {"capacity": 4}})
+        this.camera = new Camera({"game": this})
+        this.camera.onReaction()
+
+        this.monsters = []
 
         this.isDemo = game.isDemo
     }
@@ -53,12 +53,15 @@ export default class Game {
         this.adventurer.update(delta)
     }
     onReaction() {
+        this.camera.onReaction()
+
         this.entities.forEach((entity) => {
             if(entity.onReaction instanceof Function) {
                 entity.onReaction()
             }
         })
-        this.wave.onAction()
+
+        // this.wave.onAction()
 
         // Save the state.
         if(this.isDemo !== true) {

@@ -52,8 +52,8 @@ export default class Adventurer {
                 this.clock -= DEMO_CLOCK
                 let move = Math.random()
                 this.onAction({"move": {
-                    "x": move < 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.x !== 0 ? -1 : +1) : (this.position.x !== this.game.room.width - 1 ? +1 : -1)),
-                    "y": move >= 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.y !== 0 ? -1 : +1) : (this.position.y !== this.game.room.height - 1 ? +1 : -1)),
+                    "x": move < 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.x !== 0 ? -1 : +1) : (this.position.x !== 5 - 1 ? +1 : -1)),
+                    "y": move >= 0.5 ? 0 : (Math.random() < 0.25 ? (this.position.y !== 0 ? -1 : +1) : (this.position.y !== 5 - 1 ? +1 : -1)),
                 }})
             }
             return
@@ -108,14 +108,14 @@ export default class Adventurer {
             }
         })
 
-        if(this.position.x + action.move.x < 0
-        || this.position.y + action.move.y < 0
-        || this.position.x + action.move.x >= this.game.room.width
-        || this.position.y + action.move.y >= this.game.room.height) {
-            action.move.x = 0
-            action.move.y = 0
-            return
-        }
+        // if(this.position.x + action.move.x < 0
+        // || this.position.y + action.move.y < 0
+        // || this.position.x + action.move.x >= this.game.room.width
+        // || this.position.y + action.move.y >= this.game.room.height) {
+        //     action.move.x = 0
+        //     action.move.y = 0
+        //     return
+        // }
 
         // if(action.move.x === 0
         // && action.move.y === 0) {

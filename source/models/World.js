@@ -65,11 +65,11 @@ export default class World {
                                     this.tiles[x + "x" + y].position = this.tiles[x + "x" + y].position || {x, y}
                                     this.tiles[x + "x" + y].images = this.tiles[x + "x" + y].images || []
 
-                                    // tile.imageheight
-                                    // tile.imagewidth
+                                    // tile.imageheight == 16
+                                    // tile.imagewidth == 16
+
                                     const sourceImagePath = tile.image.replace("../../assets/images/world/", "./")
                                     const buildImagePath = buildImagePaths[sourceImagePath]
-                                    console.log(sourceImagePath, buildImagePath, buildImagePaths)
                                     this.tiles[x + "x" + y].images.unshift({"source": buildImagePath})
                                 })
                             }
