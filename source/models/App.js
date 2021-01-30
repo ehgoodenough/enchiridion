@@ -39,7 +39,7 @@ const App = new class {
     }
     update(delta) {
         if(this.game.isDemo === true
-        || this.game.isDone === true) {
+        || this.game.hasEnded === true) {
             this.deathtime = this.deathtime || 0
             this.deathtime += delta.s
             if(this.deathtime > MINIMUM_DEATH_TIME) {

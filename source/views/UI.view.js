@@ -24,7 +24,7 @@ export default class UI {
                     </span>
                 </div>
                 <div className="game-over-banner">
-                    <span>{App.game.world.entities["player"].deathtext}</span>
+                    <span>{App.game.world.entities["player"].deathtext || "Game Over"}</span>
                 </div>
                 <div className="pause-banner">
                     <span>PAUSED</span>

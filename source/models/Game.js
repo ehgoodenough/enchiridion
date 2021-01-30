@@ -14,6 +14,9 @@ export default class Game {
         this.camera = new Camera(this)
     }
     update(delta) {
+        if(this.hasEnded) {
+            return
+        }
         Player.update(this, delta)
         this.camera.reaction(this)
     }
@@ -28,15 +31,11 @@ export default class Game {
         //     // App.saveGame(game)
         // }
     }
-    onEnd() {
-        if(this.hasEndeded !== true) {
-            this.hasEnded = true
-            analytics.reportEndGame()
-            App.deathtime = 0
-        }
+    end() {
+        analytics.reportEndGame()
     }
     get isDone() {
-        return Player.isDead(this)
+        return this.hasEnded
     }
     get isTutorial() {
         if(this.isDemo) {

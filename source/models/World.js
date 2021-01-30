@@ -20,6 +20,8 @@ if(tilemap.tilesets.length != 1
     console.error("Unexpected tilesets", tilemap.tilesets)
 }
 
+console.log(tilemap, tileset)
+
 // tilemap.renderorder == "right-down"
 // tilemap.orientation == "orthogonal"
 // tilemap.tiledversion == "1.4.2"
@@ -31,8 +33,6 @@ if(tilemap.tilesets.length != 1
 
 const FIRST_TILEGID = 1
 const TILE_SIZE = 16
-
-console.log(tilemap, tileset)
 
 function iterateTileLayer(layer, func) {
     layer.data.forEach((tilegid, index) => {
@@ -116,12 +116,18 @@ export default class World {
             && layer.type == "objectgroup") {
                 layer.objects.forEach((object) => {
                     if(object.visible == false) return
-                    object.key = findPropertyValue(object.properties, "Key")
+                    if(isNaN(object.gid)) return // this filters out anything that isn't an image stamp.
 
+                    object.key = findPropertyValue(object.properties, "Key")
                     object.gid -= FIRST_TILEGID
-                    // if(object.type == undefined) {
-                    //     tileset.tiles[object.gid] // TODO: READ DEFAULT OBJECT TYPE FROM TILESET!!
-                    // }
+
+                    if(object.type == undefined) {
+                        const tile = tileset.tiles[object.gid]
+                        if(tile != undefined) {
+                            object.type = findPropertyValue(tile.properties, "DefaultEntityType")
+                        }
+                        object.type = findPropertyValue(object.properties, "EntityType") || object.type
+                    }
 
                     const classedEntity = classedEntities[object.type] || {}
                     const instancedEntity = {
@@ -160,6 +166,22 @@ class Entity {
     static isDead(entity) {
         return entity.damage >= entity.health
     }
+    static isInCamera(game, entity) {
+        if(game.world.entities.player == undefined) return true
+        const playerPosition = game.world.entities.player.prevposition || game.world.entities.player.position
+        const CAMZONE_WIDTH = 10
+        const CAMZONE_HEIGHT = 10
+        const playerCamzonePosition = {
+            "x": Math.floor(playerPosition.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
+            "y": Math.floor(playerPosition.x / CAMZONE_HEIGHT) * CAMZONE_HEIGHT,
+        }
+        const entityCamzonePosition = {
+            "x": Math.floor(entity.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
+            "y": Math.floor(entity.position.x / CAMZONE_HEIGHT) * CAMZONE_HEIGHT,
+        }
+        return entityCamzonePosition.x == playerCamzonePosition.x
+            && entityCamzonePosition.y == playerCamzonePosition.y
+    }
 }
 
 const classedEntities = {
@@ -176,8 +198,8 @@ const classedEntities = {
             this.damage += 1
             this.isAttacked = shortid.generate()
             if(Entity.isDead(this)) {
-                this.deathtext = deathtext[0]
-                deathtext.push(deathtext.shift())
+                // this.deathtext = deathtext[0]
+                // deathtext.push(deathtext.shift())
                 game.hasEnded = true
                 App.deathtime = 0
             }
@@ -189,9 +211,8 @@ const classedEntities = {
         "description": "It looks gross.",
         "flipflop": false,
         "reaction": function(game) {
-            if(this.isDead) {
-                return
-            }
+            if(Entity.isDead(this)) return
+            if(Entity.isInCamera(game, this) == false) return
 
             const action = {"move": {"x": 0, "y": 0}}
 
@@ -241,7 +262,7 @@ const classedEntities = {
                 && this.position.y + action.move.y == entity.position.y) {
                     if(entity.key == "player") {
                         this.isAttacking = true
-                        entity.beAttacked()
+                        entity.beAttacked(game)
                     }
                     action.move.x = 0
                     action.move.y = 0
