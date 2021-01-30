@@ -71,14 +71,18 @@ export default class Player {
             && entity.isDead != true
             && player.position.x + action.move.x == entity.position.x
             && player.position.y + action.move.y == entity.position.y) {
-                if(entity.key != player.key) {
-                    player.isAttacking = true
-                    if(entity.beAttacked instanceof Function) {
-                        entity.beAttacked(game)
+                if(entity.hasCollision == true) {
+                    if(entity.key != player.key) {
+                        player.isAttacking = true
+                        if(entity.handleAttacked instanceof Function) {
+                            entity.handleAttacked(game)
+                        }
                     }
+                    action.move.x = 0
+                    action.move.y = 0
+                } else if(entity.hasCollision == false) {
+                    entity.handleSquished(game)
                 }
-                action.move.x = 0
-                action.move.y = 0
             }
         })
 

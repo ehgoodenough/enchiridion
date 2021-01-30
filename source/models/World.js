@@ -104,11 +104,6 @@ export default class World {
 
                     const entity = Objdict.merge(defaultEntity, classedEntity, instancedEntity)
                     this.entities[entity.key] = entity
-
-                    if(entity.type == "collectible") {
-                        this.totalCollectibles = this.totalCollectibles || 0
-                        this.totalCollectibles += 1
-                    }
                 })
                 return
             }
@@ -161,7 +156,7 @@ export default class World {
 const defaultEntity = {
     "damage": 0,
     "health": 1,
-    "beAttacked": function(game) {
+    "handleAttacked": function(game) {
         this.damage += 1
         if(this.damage >= this.health) {
             this.isDead = true
@@ -198,9 +193,9 @@ const classedEntities = {
     "adventurer": {
         "title": "The Adventurer",
         "description": "It you!!",
+        "hasCollision": true,
 
         "health": 3,
-        "score": 0,
 
         "images": {
             "standard": require("assets/images/adventurer.png"),
@@ -220,7 +215,7 @@ const classedEntities = {
         },
 
 
-        "beAttacked": function(game) {
+        "handleAttacked": function(game) {
             // if(this.game.isDemo) return
             if(Entity.isDead(this)) return
             this.damage += 1
@@ -234,22 +229,29 @@ const classedEntities = {
         }
     },
     "collectible": {
+        "hasCollision": false,
         "images": {
             "standard": require("assets/images/collectible.png"),
         },
+        "getOpacity": function() {
+            if(this.status == "collected") {
+                return 0.5
+            } else {
+                return 1
+            }
+        },
 
-        "beAttacked": function(game) {
-            this.damage += 1
-            if(this.damage >= this.health) {
-                this.isDead = true
-                game.world.entities.player.score += 1
-                delete game.world.entities[this.key]
+        "handleSquished": function(game) {
+            if(this.status != "collected") {
+                this.status = "collected"
+                // delete game.world.entities[this.key]
             }
         }
     },
     "monster": {
         "title": "Red Slime",
         "description": "It looks gross.",
+        "hasCollision": true,
         "images": {
             "standard": require("assets/images/slime_alpha.png"),
             "threatening": require("assets/images/slime_omega.png"),
@@ -321,11 +323,13 @@ const classedEntities = {
             // COLLISION WITH OTHER ENTITIES
             Objdict.forEach(game.world.entities, (entity) => {
                 if(entity != this
+                && entity.isDead != true
+                && entity.hasCollision == true
                 && this.position.x + action.move.x == entity.position.x
                 && this.position.y + action.move.y == entity.position.y) {
                     if(entity.key == "player") {
                         this.isAttacking = true
-                        entity.beAttacked(game)
+                        entity.handleAttacked(game)
                     }
                     action.move.x = 0
                     action.move.y = 0

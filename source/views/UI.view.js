@@ -53,10 +53,11 @@ export default class UI {
         return hearts
     }
     get score() {
-        let score = App.game.world.entities.player.score || 0
+        const totalCollectibles = Object.values(App.game.world.entities).filter((entity) => entity.type == "collectible")
+        const currentCollectibles = totalCollectibles.filter((entity) => entity.status == "collected")
         return (
             <span>
-                {score} of {App.game.world.totalCollectibles || 0}
+                {currentCollectibles.length} of {totalCollectibles.length}
             </span>
         )
     }

@@ -53,7 +53,8 @@ const App = new class {
                 || keyb.isJustDown("<right>", delta.ms)
                 || keyb.isJustDown("<space>", delta.ms)
                 || poin.wasJustPressed("primary", delta.ms)) {
-                    return this.startNewGame()
+                    // Game.pruneProgress(this.game)
+                    // return this.startNewGame()
                 }
             }
         }

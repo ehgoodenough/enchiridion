@@ -29,6 +29,10 @@ export default class Entity {
             }
         }
 
+        if(this.props.entity.getOpacity instanceof Function) {
+            style.opacity = this.props.entity.getOpacity()
+        }
+
         if(this.props.entity.color) {
             style.backgroundColor = this.props.entity.color
         }
