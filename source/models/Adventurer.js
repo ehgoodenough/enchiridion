@@ -108,6 +108,15 @@ export default class Adventurer {
             }
         })
 
+        const mx = this.position.x + action.move.x
+        const my = this.position.y + action.move.y
+        const tile = this.game.world.tiles[mx + "x" + my]
+        if(tile != undefined
+        && tile.collision == true) {
+            action.move.x = 0
+            action.move.y = 0
+        }
+
         // if(this.position.x + action.move.x < 0
         // || this.position.y + action.move.y < 0
         // || this.position.x + action.move.x >= this.game.room.width

@@ -15,6 +15,8 @@ if(tilemap.tilesets.length != 1
     console.error("Unexpected tilesets", tilemap.tilesets)
 }
 
+console.log(tilemap)
+
 // tilemap.renderorder == "right-down"
 // tilemap.orientation == "orthogonal"
 // tilemap.tiledversion == "1.4.2"
@@ -34,6 +36,20 @@ export default class World {
         this.tiles = {}
 
         tilemap.layers.forEach((layer) => {
+            if(layer.type == "tilelayer"
+            && layer.name == "collision") {
+                layer.data.forEach((tilegid, index) => {
+                    tilegid -= FIRST_TILEGID
+
+                    const x = index % layer.width
+                    const y = Math.floor(index / layer.width)
+
+                    if(tilegid > -1) {
+                        this.tiles[x + "x" + y] = this.tiles[x + "x" + y] || {}
+                        this.tiles[x + "x" + y].collision = true
+                    }
+                })
+            }
             if(layer.type == "group"
             && layer.name == "images"
             && layer.visible == true) {
@@ -68,7 +84,7 @@ export default class World {
                                     // tile.imageheight == 16
                                     // tile.imagewidth == 16
 
-                                    const sourceImagePath = tile.image.replace("../../assets/images/world/", "./")
+                                    const sourceImagePath = tile.image.replace("../../assets/images/world/tiles/", "./")
                                     const buildImagePath = buildImagePaths[sourceImagePath]
                                     this.tiles[x + "x" + y].images.push({"source": buildImagePath})
                                 })
