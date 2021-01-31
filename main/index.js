@@ -94,11 +94,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(library_analytics_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var frem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var frem__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(frem__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
-/* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(yaafloop__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
-/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(46);
-/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(70);
+/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
+/* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(yaafloop__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7);
+/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(47);
+/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(70);
 ////////////////
 // Analytics //
 //////////////
@@ -107,10 +108,8 @@ __webpack_require__.r(__webpack_exports__);
 //////////
 
 
-frem__WEBPACK_IMPORTED_MODULE_1___default()({
-  "width": 10,
-  "height": 10
-}); ///////////
+
+frem__WEBPACK_IMPORTED_MODULE_1___default()(data_frame_js__WEBPACK_IMPORTED_MODULE_2__["default"]); ///////////
 // Loop //
 /////////
 
@@ -118,9 +117,9 @@ frem__WEBPACK_IMPORTED_MODULE_1___default()({
 
 
 
-var loop = new yaafloop__WEBPACK_IMPORTED_MODULE_2___default.a(function (delta) {
-  models_App_js__WEBPACK_IMPORTED_MODULE_3__["default"].update(delta);
-  Object(library_render_js__WEBPACK_IMPORTED_MODULE_5__["default"])(views_Mount_view_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
+var loop = new yaafloop__WEBPACK_IMPORTED_MODULE_3___default.a(function (delta) {
+  models_App_js__WEBPACK_IMPORTED_MODULE_4__["default"].update(delta);
+  Object(library_render_js__WEBPACK_IMPORTED_MODULE_6__["default"])(views_Mount_view_js__WEBPACK_IMPORTED_MODULE_5__["default"]);
 });
 
 /***/ }),
@@ -4117,9 +4116,20 @@ window.addEventListener("resize", resize)
 
 /***/ }),
 /* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "width": 10,
+  "height": 10
+});
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Afloop = __webpack_require__(5)
+var Afloop = __webpack_require__(6)
 
 module.exports = function(func) {
     this.func = func
@@ -4149,7 +4159,7 @@ module.exports = function(func) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 function Afloop(func) {
@@ -4163,18 +4173,18 @@ module.exports = Afloop
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
 /* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(local_json_storage__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(keyb__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var poin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+/* harmony import */ var poin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
 /* harmony import */ var poin__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(poin__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11);
+/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -4189,23 +4199,6 @@ var MINIMUM_DEATH_TIME = 1.5; // in seconds
 
 var STATE_EXPIRATION = 10 * 1000; // in milliseconds
 
-var DEMO_GAME_STATE = {
-  "isDemo": true,
-  "adventurer": {
-    "position": {
-      "x": 2,
-      "y": 2
-    }
-  }
-};
-var NEW_GAME_STATE = {
-  "adventurer": {
-    "position": {
-      "x": 2,
-      "y": 2
-    }
-  }
-};
 var Dev = {
   "isInDevMode": true
 };
@@ -4225,15 +4218,7 @@ var App = new ( /*#__PURE__*/function () {
         "game": state.game
       });
     } else {
-      if (Dev.isInDevMode == true) {
-        this.game = new models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"]({
-          "game": NEW_GAME_STATE
-        });
-      } else {
-        this.game = new models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"]({
-          "game": DEMO_GAME_STATE
-        });
-      }
+      this.game = new models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
     }
   }
 
@@ -4253,7 +4238,11 @@ var App = new ( /*#__PURE__*/function () {
 
         if (this.deathtime > MINIMUM_DEATH_TIME) {
           if (keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("W", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("S", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("A", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("D", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<up>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<down>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<left>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<right>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<space>", delta.ms) || poin__WEBPACK_IMPORTED_MODULE_2___default.a.wasJustPressed("primary", delta.ms)) {
-            return this.startNewGame();
+            var savestate = models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"].pruneProgress(this.game);
+            console.log(savestate);
+            this.game = new models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"]({
+              savestate: savestate
+            });
           }
         }
       }
@@ -4276,7 +4265,7 @@ var App = new ( /*#__PURE__*/function () {
 /* harmony default export */ __webpack_exports__["default"] = (App);
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4293,10 +4282,10 @@ localJSONStorage.__proto__.getJSON = function(key) {
 module.exports = localJSONStorage;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const vkey = __webpack_require__(9)
+const vkey = __webpack_require__(10)
 
 const DEFAULT_DELTA = 1000 / 60
 
@@ -4348,7 +4337,7 @@ module.exports = Keyb
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4492,7 +4481,7 @@ for(i = 112; i < 136; ++i) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 const BUTTON_NAMES = {
@@ -4553,19 +4542,18 @@ module.exports = Poin
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
 /* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(library_analytics_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var models_Player_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(23);
-/* harmony import */ var models_World_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(28);
-/* harmony import */ var models_Camera_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(45);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+/* harmony import */ var models_Player_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
+/* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -4578,25 +4566,31 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
 var Game = /*#__PURE__*/function () {
   function Game() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        savestate = _ref.savestate;
+
     _classCallCheck(this, Game);
 
-    library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default.a.reportStartGame();
-    this.world = new models_World_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
-    this.camera = new models_Camera_js__WEBPACK_IMPORTED_MODULE_5__["default"](this);
+    this.start();
+    this.state = models_State_js__WEBPACK_IMPORTED_MODULE_4__["default"].generate();
+
+    if (savestate != undefined) {
+      this.state = models_State_js__WEBPACK_IMPORTED_MODULE_4__["default"].merge(this.state, savestate);
+    }
   }
 
   _createClass(Game, [{
     key: "update",
     value: function update(delta) {
-      if (this.hasEnded) {
-        return;
-      }
-
+      if (this.hasEnded) return;
       models_Player_js__WEBPACK_IMPORTED_MODULE_3__["default"].update(this, delta);
-      this.camera.reaction(this);
+    }
+  }, {
+    key: "start",
+    value: function start() {
+      library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default.a.reportStartGame();
     }
   }, {
     key: "end",
@@ -4624,13 +4618,28 @@ var Game = /*#__PURE__*/function () {
   }], [{
     key: "performReactions",
     value: function performReactions(game) {
-      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.world.entities, function (entity) {
+      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.state.entities, function (entity) {
         if (entity.reaction instanceof Function) {
           entity.reaction(game);
         }
       }); // if(this.isDemo != true) {
       //     // App.saveGame(game)
       // }
+    }
+  }, {
+    key: "pruneProgress",
+    value: function pruneProgress(game) {
+      var collectibles = Object.values(game.state.entities).filter(function (entity) {
+        return entity.type == "collectible" && entity.status == "collected";
+      });
+      return {
+        "entities": collectibles.map(function (collectible) {
+          return {
+            "key": collectible.key,
+            "status": collectible.status
+          };
+        })
+      };
     }
   }]);
 
@@ -4640,7 +4649,7 @@ var Game = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4651,7 +4660,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convert", function() { return convert; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "from", function() { return from; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "forEach", function() { return forEach; });
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
 /* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_0__);
 // What is an object-based dictionary? It's any object with key-value pairs!
 // This is just a more primitive version of the ES2015 Maps.
@@ -4747,30 +4756,30 @@ function forEach(dict, iterator) {
 
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = __webpack_require__(14);
-
-
-/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+module.exports = __webpack_require__(15);
 
-var alphabet = __webpack_require__(15);
-var build = __webpack_require__(17);
-var isValid = __webpack_require__(21);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var alphabet = __webpack_require__(16);
+var build = __webpack_require__(18);
+var isValid = __webpack_require__(22);
 
 // if you are using cluster or multiple servers use this to make each instance
 // has a unique value for worker
 // Note: I don't know if this is automatically set when using third
 // party cluster solutions such as pm2.
-var clusterWorkerId = __webpack_require__(22) || 0;
+var clusterWorkerId = __webpack_require__(23) || 0;
 
 /**
  * Set the seed.
@@ -4825,13 +4834,13 @@ module.exports.isValid = isValid;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var randomFromSeed = __webpack_require__(16);
+var randomFromSeed = __webpack_require__(17);
 
 var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 var alphabet;
@@ -4935,7 +4944,7 @@ module.exports = {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4967,14 +4976,14 @@ module.exports = {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var generate = __webpack_require__(18);
-var alphabet = __webpack_require__(15);
+var generate = __webpack_require__(19);
+var alphabet = __webpack_require__(16);
 
 // Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 // This number should be updated every year or so to keep the generated id short.
@@ -5020,15 +5029,15 @@ module.exports = build;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var alphabet = __webpack_require__(15);
-var random = __webpack_require__(19);
-var format = __webpack_require__(20);
+var alphabet = __webpack_require__(16);
+var random = __webpack_require__(20);
+var format = __webpack_require__(21);
 
 function generate(number) {
     var loopCounter = 0;
@@ -5048,7 +5057,7 @@ module.exports = generate;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5076,7 +5085,7 @@ module.exports = randomByte;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 // This file replaces `format.js` in bundlers like webpack or Rollup,
@@ -5122,12 +5131,12 @@ module.exports = function (random, alphabet, size) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var alphabet = __webpack_require__(15);
+var alphabet = __webpack_require__(16);
 
 function isShortId(id) {
     if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -5144,7 +5153,7 @@ module.exports = isShortId;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5154,24 +5163,24 @@ module.exports = 0;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Player; });
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 /* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(keyb__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
 /* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
-/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
-/* harmony import */ var data_colors_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(24);
-/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(25);
-/* harmony import */ var assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(26);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
+/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
+/* harmony import */ var data_colors_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(25);
+/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(26);
+/* harmony import */ var assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(27);
 /* harmony import */ var assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(27);
+/* harmony import */ var assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(28);
 /* harmony import */ var assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5278,32 +5287,37 @@ var Player = /*#__PURE__*/function () {
     value: function performAction(game, action) {
       var _this = this;
 
-      var player = game.world.entities["player"];
+      var player = game.state.entities.player;
       player.isAttacking = false;
       action.move.x = action.move.x || 0;
       action.move.y = action.move.y || 0;
       player.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none";
-      objdict__WEBPACK_IMPORTED_MODULE_1__["forEach"](game.world.entities, function (entity) {
+      objdict__WEBPACK_IMPORTED_MODULE_1__["forEach"](game.state.entities, function (entity) {
         if (entity != _this && entity.isDead != true && player.position.x + action.move.x == entity.position.x && player.position.y + action.move.y == entity.position.y) {
-          if (entity.key != player.key) {
-            player.isAttacking = true;
+          if (entity.hasCollision == true) {
+            if (entity.key != player.key) {
+              player.isAttacking = true;
 
-            if (entity.beAttacked instanceof Function) {
-              entity.beAttacked(game);
+              if (entity.handleAttacked instanceof Function) {
+                entity.handleAttacked(game);
+              }
             }
-          }
 
-          action.move.x = 0;
-          action.move.y = 0;
+            action.move.x = 0;
+            action.move.y = 0;
+          } else if (entity.hasCollision == false) {
+            entity.handleSquished(game);
+          }
         }
       });
       var mx = player.position.x + action.move.x;
       var my = player.position.y + action.move.y;
-      var tile = game.world.environment.tiles[mx + "x" + my];
+      var tile = game.state.world.tiles[mx + "x" + my];
 
       if (tile != undefined && tile.collision == true) {
         action.move.x = 0;
         action.move.y = 0;
+        return;
       }
 
       player.prevposition = {};
@@ -5316,7 +5330,7 @@ var Player = /*#__PURE__*/function () {
   }, {
     key: "isDead",
     value: function isDead(game) {
-      var player = game.world.entities["player"];
+      var player = game.state.entities.player;
       return player == undefined || player.damage >= player.health;
     } // toState() {
     //     return {
@@ -5335,7 +5349,7 @@ var Player = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5348,7 +5362,7 @@ __webpack_require__.r(__webpack_exports__);
 });
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5361,37 +5375,39 @@ __webpack_require__.r(__webpack_exports__);
 ]);
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "9edf8ad89007f07cd20bdce9b376fb46.png";
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "df5169e48dff213ccfea80e266517db5.png";
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return State; });
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
 /* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(29);
-var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3___namespace = /*#__PURE__*/__webpack_require__.t(29, 1);
-/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(30);
-var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4___namespace = /*#__PURE__*/__webpack_require__.t(30, 1);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+/* harmony import */ var models_Entity_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
+/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(34);
+var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4___namespace = /*#__PURE__*/__webpack_require__.t(34, 1);
+/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(35);
+var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(35, 1);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
 
@@ -5407,13 +5423,13 @@ var contextualize = function contextualize(context) {
   return recontext;
 };
 
-var buildImagePaths = contextualize(__webpack_require__(31));
+var buildImagePaths = contextualize(__webpack_require__(36));
 
-if (data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.tilesets.length != 1 || data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.tilesets[0].source != "tileset.json") {
-  console.error("Unexpected tilesets", data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.tilesets);
+if (data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.tilesets.length != 1 || data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.tilesets[0].source != "tileset.json") {
+  console.error("Unexpected tilesets", data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.tilesets);
 }
 
-console.log(data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__, data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__); // tilemap.renderorder == "right-down"
+console.log(data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__, data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__); // tilemap.renderorder == "right-down"
 // tilemap.orientation == "orthogonal"
 // tilemap.tiledversion == "1.4.2"
 // tilemap.version == 1.4
@@ -5452,134 +5468,166 @@ function findPropertyValue(properties, name) {
   }
 }
 
-var World = function World() {
-  var _this = this;
+var State = /*#__PURE__*/function () {
+  function State() {
+    _classCallCheck(this, State);
+  }
 
-  _classCallCheck(this, World);
+  _createClass(State, null, [{
+    key: "generate",
+    value: function generate() {
+      this.width = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.width;
+      this.height = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.height;
+      var state = {};
+      state.entities = {};
+      state.world = {
+        "tiles": {}
+      };
+      data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.layers.forEach(function (layer) {
+        if (layer.name == "data:entities" && layer.type == "objectgroup") {
+          return layer.objects.forEach(function (object) {
+            if (object.visible == false) return;
+            if (isNaN(object.gid)) return; // this filters out anything that isn't an image stamp.
 
-  this.width = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.width;
-  this.height = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.height;
-  this.entities = {};
-  this.environment = {
-    "tiles": {}
-  };
-  data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_3__.layers.forEach(function (layer) {
-    if (layer.name == "data:entities" && layer.type == "objectgroup") {
-      layer.objects.forEach(function (object) {
-        if (object.visible == false) return;
-        if (isNaN(object.gid)) return; // this filters out anything that isn't an image stamp.
+            object.key = findPropertyValue(object.properties, "Key");
+            object.gid -= FIRST_TILEGID;
 
-        object.key = findPropertyValue(object.properties, "Key");
-        object.gid -= FIRST_TILEGID;
-
-        if (object.type == undefined || object.type == "") {
-          object.type = findPropertyValue(object.properties, "EntityType");
-
-          if (object.type == undefined || object.type == "") {
-            var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__.tiles[object.gid];
-
-            if (tile != undefined) {
-              object.type = tile.type;
+            if (object.type == undefined || object.type == "") {
+              object.type = findPropertyValue(object.properties, "EntityType");
 
               if (object.type == undefined || object.type == "") {
-                object.type = findPropertyValue(tile.properties, "DefaultEntityType");
+                var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__.tiles[object.gid];
+
+                if (tile != undefined) {
+                  object.type = tile.type;
+
+                  if (object.type == undefined || object.type == "") {
+                    object.type = findPropertyValue(tile.properties, "DefaultEntityType");
+                  }
+                }
               }
             }
+
+            if (object.type == undefined) {
+              console.error("Could not find entity of this type:", object);
+              return;
+            }
+
+            var entity = models_Entity_js__WEBPACK_IMPORTED_MODULE_3__["default"].generate({
+              "key": object.key || object.id,
+              "type": object.type,
+              "position": {
+                "x": Math.floor(object.x / TILE_SIZE),
+                "y": Math.floor(object.y / TILE_SIZE) - 1,
+                // TODO: Why -1?
+                "z": 0
+              }
+            });
+            state.entities[entity.key] = entity;
+          });
+        }
+
+        if (layer.name == "data:collision" && layer.type == "tilelayer") {
+          return iterateTileLayer(layer, function (_ref) {
+            var tilegid = _ref.tilegid,
+                position = _ref.position;
+            tilegid -= FIRST_TILEGID;
+
+            if (tilegid > -1) {
+              state.world.tiles[position.key] = state.world.tiles[position.key] || {};
+              state.world.tiles[position.key].position = state.world.tiles[position.key].position || position;
+              state.world.tiles[position.key].collision = true;
+            }
+          });
+        }
+
+        if (layer.type == "tilelayer" && layer.visible == true) {
+          var stack = 0;
+
+          if (layer.properties != undefined) {
+            stack = findPropertyValue(layer.properties, "Stack");
           }
-        }
 
-        if (object.type == undefined) {
-          console.error("Could not find entity of this type:", object);
-          return;
-        }
+          iterateTileLayer(layer, function (_ref2) {
+            var tilegid = _ref2.tilegid,
+                position = _ref2.position;
+            tilegid -= FIRST_TILEGID;
+            var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__.tiles[tilegid];
+            if (tile == undefined) return;
+            state.world.tiles[position.key] = state.world.tiles[position.key] || {};
+            state.world.tiles[position.key].position = state.world.tiles[position.key].position || position;
+            state.world.tiles[position.key].images = state.world.tiles[position.key].images || [];
 
-        var classedEntity = classedEntities[object.type] || {};
-        var instancedEntity = {
-          "key": object.key || object.id,
-          "type": object.type,
-          "position": {
-            "x": Math.floor(object.x / TILE_SIZE),
-            "y": Math.floor(object.y / TILE_SIZE) - 1,
-            // TODO: Why -1?
-            "z": 0
-          }
-        };
-        var entity = objdict__WEBPACK_IMPORTED_MODULE_0__["merge"](defaultEntity, classedEntity, instancedEntity);
-        _this.entities[entity.key] = entity;
+            if (tile.type == "collision") {
+              state.world.tiles[position.key].collision = true;
+            } // tile.imageheight == 16
+            // tile.imagewidth == 16
 
-        if (entity.type == "collectible") {
-          _this.totalCollectibles = _this.totalCollectibles || 0;
-          _this.totalCollectibles += 1;
-        }
-      });
-      return;
-    }
 
-    if (layer.name == "data:collision" && layer.type == "tilelayer") {
-      iterateTileLayer(layer, function (_ref) {
-        var tilegid = _ref.tilegid,
-            position = _ref.position;
-        tilegid -= FIRST_TILEGID;
-
-        if (tilegid > -1) {
-          _this.environment.tiles[position.key] = _this.environment.tiles[position.key] || {};
-          _this.environment.tiles[position.key].position = _this.environment.tiles[position.key].position || position;
-          _this.environment.tiles[position.key].collision = true;
+            var sourceImagePath = tile.image.replace("../../assets/images/", "./");
+            var buildImagePath = buildImagePaths[sourceImagePath];
+            state.world.tiles[position.key].images.push({
+              "source": buildImagePath,
+              "stack": stack
+            });
+          });
         }
       });
-      return;
-    }
+      return state;
+    } // does not mutate either!!
 
-    if (layer.type == "tilelayer" && layer.visible == true) {
-      var stack = 0;
+  }, {
+    key: "merge",
+    value: function merge() {
+      var state = {
+        "world": {},
+        "entities": {}
+      };
+      Array.from(arguments).forEach(function (substate) {
+        if (substate.world != undefined) {
+          state.world = substate.world;
+        }
 
-      if (layer.properties != undefined) {
-        stack = findPropertyValue(layer.properties, "Stack");
-      }
-
-      iterateTileLayer(layer, function (_ref2) {
-        var tilegid = _ref2.tilegid,
-            position = _ref2.position;
-        tilegid -= FIRST_TILEGID;
-        var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_4__.tiles[tilegid];
-        if (tile == undefined) return;
-        _this.environment.tiles[position.key] = _this.environment.tiles[position.key] || {};
-        _this.environment.tiles[position.key].position = _this.environment.tiles[position.key].position || position;
-        _this.environment.tiles[position.key].images = _this.environment.tiles[position.key].images || [];
-
-        if (tile.type == "collision") {
-          _this.environment.tiles[position.key].collision = true;
-        } // tile.imageheight == 16
-        // tile.imagewidth == 16
-
-
-        var sourceImagePath = tile.image.replace("../../assets/images/", "./");
-        var buildImagePath = buildImagePaths[sourceImagePath];
-
-        _this.environment.tiles[position.key].images.push({
-          "source": buildImagePath,
-          "stack": stack
-        });
+        if (substate.entities != undefined) {
+          substate.entities = objdict__WEBPACK_IMPORTED_MODULE_0__["convert"](substate.entities);
+          objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](substate.entities, function (entity) {
+            if (state.entities[entity.key] == undefined) {
+              state.entities[entity.key] = entity;
+            } else {
+              state.entities[entity.key] = objdict__WEBPACK_IMPORTED_MODULE_0__["merge"](state.entities[entity.key], entity);
+            }
+          });
+        }
       });
+      return state;
     }
-  });
-};
+  }]);
+
+  return State;
+}();
 
 
-var defaultEntity = {
-  "damage": 0,
-  "health": 1,
-  "beAttacked": function beAttacked(game) {
-    this.damage += 1;
 
-    if (this.damage >= this.health) {
-      this.isDead = true; // this.game.score += 1
-      // this.game.wave.killcount -= 1
+/***/ }),
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-      delete game.world.entities[this.key];
-    }
-  }
-};
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Entity; });
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
 
 var Entity = /*#__PURE__*/function () {
   function Entity() {
@@ -5587,6 +5635,13 @@ var Entity = /*#__PURE__*/function () {
   }
 
   _createClass(Entity, null, [{
+    key: "generate",
+    value: function generate() {
+      var instancedEntity = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var classedEntity = classedEntities[instancedEntity.type] || {};
+      return objdict__WEBPACK_IMPORTED_MODULE_0__["merge"](defaultEntity, classedEntity, instancedEntity);
+    }
+  }, {
     key: "isDead",
     value: function isDead(entity) {
       return entity.damage >= entity.health;
@@ -5594,8 +5649,8 @@ var Entity = /*#__PURE__*/function () {
   }, {
     key: "isInCamera",
     value: function isInCamera(game, entity) {
-      if (game.world.entities.player == undefined) return true;
-      var playerPosition = game.world.entities.player.prevposition || game.world.entities.player.position;
+      if (game.state.entities.player == undefined) return true;
+      var playerPosition = game.state.entities.player.prevposition || game.state.entities.player.position;
       var CAMZONE_WIDTH = 10;
       var CAMZONE_HEIGHT = 10;
       var playerCamzonePosition = {
@@ -5613,15 +5668,30 @@ var Entity = /*#__PURE__*/function () {
   return Entity;
 }();
 
+
+var defaultEntity = {
+  "damage": 0,
+  "health": 1,
+  "handleAttacked": function handleAttacked(game) {
+    this.damage += 1;
+
+    if (this.damage >= this.health) {
+      this.isDead = true; // this.game.score += 1
+      // this.game.wave.killcount -= 1
+
+      delete game.state.entities[this.key];
+    }
+  }
+};
 var classedEntities = {
   "adventurer": {
     "title": "The Adventurer",
     "description": "It you!!",
+    "hasCollision": true,
     "health": 3,
-    "score": 0,
     "images": {
-      "standard": __webpack_require__(27),
-      "dead": __webpack_require__(26)
+      "standard": __webpack_require__(28),
+      "dead": __webpack_require__(27)
     },
     "getImage": function getImage() {
       if (Entity.isDead(this)) {
@@ -5635,7 +5705,7 @@ var classedEntities = {
         return "strike" + "-" + this.direction;
       }
     },
-    "beAttacked": function beAttacked(game) {
+    "handleAttacked": function handleAttacked(game) {
       // if(this.game.isDemo) return
       if (Entity.isDead(this)) return;
       this.damage += 1;
@@ -5650,25 +5720,30 @@ var classedEntities = {
     }
   },
   "collectible": {
+    "hasCollision": false,
     "images": {
-      "standard": __webpack_require__(32)
+      "standard": __webpack_require__(31)
     },
-    "beAttacked": function beAttacked(game) {
-      this.damage += 1;
-
-      if (this.damage >= this.health) {
-        this.isDead = true;
-        game.world.entities.player.score += 1;
-        delete game.world.entities[this.key];
+    "getOpacity": function getOpacity() {
+      if (this.status == "collected") {
+        return 0.5;
+      } else {
+        return 1;
+      }
+    },
+    "handleSquished": function handleSquished(game) {
+      if (this.status != "collected") {
+        this.status = "collected"; // delete game.state.entities[this.key]
       }
     }
   },
   "monster": {
     "title": "Red Slime",
     "description": "It looks gross.",
+    "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(33),
-      "threatening": __webpack_require__(34)
+      "standard": __webpack_require__(32),
+      "threatening": __webpack_require__(33)
     },
     "flipflop": false,
     "getAnimation": function getAnimation() {
@@ -5690,7 +5765,7 @@ var classedEntities = {
       }
     },
     "reaction": function reaction(game) {
-      var _this2 = this;
+      var _this = this;
 
       if (Entity.isDead(this)) return;
       if (Entity.isInCamera(game, this) == false) return;
@@ -5707,16 +5782,16 @@ var classedEntities = {
       } else if (this.flipflop = true) {
         this.flipflop = false; // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
 
-        if (Math.abs(this.position.y - (game.world.entities["player"].position.y + game.world.entities["player"].prevposition.y) / 2) >= Math.abs(this.position.x - (game.world.entities["player"].position.x + game.world.entities["player"].prevposition.x) / 2)) {
-          if (this.position.y > game.world.entities["player"].position.y) {
+        if (Math.abs(this.position.y - (game.state.entities.player.position.y + game.state.entities.player.prevposition.y) / 2) >= Math.abs(this.position.x - (game.state.entities.player.position.x + game.state.entities.player.prevposition.x) / 2)) {
+          if (this.position.y > game.state.entities.player.position.y) {
             action.move.y = -1;
-          } else if (this.position.y < game.world.entities["player"].position.y) {
+          } else if (this.position.y < game.state.entities.player.position.y) {
             action.move.y = +1;
           }
         } else {
-          if (this.position.x > game.world.entities["player"].position.x) {
+          if (this.position.x > game.state.entities.player.position.x) {
             action.move.x = -1;
-          } else if (this.position.x < game.world.entities["player"].position.x) {
+          } else if (this.position.x < game.state.entities.player.position.x) {
             action.move.x = +1;
           }
         }
@@ -5735,11 +5810,11 @@ var classedEntities = {
       };
       this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"; // COLLISION WITH OTHER ENTITIES
 
-      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.world.entities, function (entity) {
-        if (entity != _this2 && _this2.position.x + action.move.x == entity.position.x && _this2.position.y + action.move.y == entity.position.y) {
+      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.state.entities, function (entity) {
+        if (entity != _this && entity.isDead != true && entity.hasCollision == true && _this.position.x + action.move.x == entity.position.x && _this.position.y + action.move.y == entity.position.y) {
           if (entity.key == "player") {
-            _this2.isAttacking = true;
-            entity.beAttacked(game);
+            _this.isAttacking = true;
+            entity.handleAttacked(game);
           }
 
           action.move.x = 0;
@@ -5749,7 +5824,7 @@ var classedEntities = {
 
       var x = this.position.x + action.move.x;
       var y = this.position.y + action.move.y;
-      var tile = game.world.environment.tiles[x + "x" + y];
+      var tile = game.state.world.tiles[x + "x" + y];
 
       if (tile != undefined && tile.collision == true) {
         action.move.x = 0;
@@ -5763,37 +5838,55 @@ var classedEntities = {
 };
 
 /***/ }),
-/* 29 */
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "9fedbeeb5e578fb9806c615ffb10ac91.png";
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
+
+/***/ }),
+/* 34 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"compressionlevel\":-1,\"editorsettings\":{\"export\":{\"target\":\".\"}},\"height\":50,\"infinite\":false,\"layers\":[{\"data\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,3,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,3,2,2,3,3,2,1,1,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,3,3,3,3,3,3,3,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,3,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1],\"height\":50,\"id\":6,\"name\":\"layer1\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-2}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,4,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":50,\"id\":11,\"name\":\"layer2\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-1}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":50,\"id\":4,\"name\":\"data:collision\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":false,\"width\":50,\"x\":0,\"y\":0},{\"draworder\":\"topdown\",\"id\":15,\"name\":\"data:entities\",\"objects\":[{\"gid\":5,\"height\":18,\"id\":8,\"name\":\"adventurer\",\"properties\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"player\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":416,\"y\":752},{\"gid\":6,\"height\":18,\"id\":9,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":96,\"y\":128},{\"gid\":6,\"height\":18,\"id\":12,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":112,\"y\":64},{\"gid\":6,\"height\":18,\"id\":17,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":192,\"y\":48},{\"gid\":6,\"height\":18,\"id\":18,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":96},{\"gid\":6,\"height\":18,\"id\":19,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":208,\"y\":144},{\"gid\":8,\"height\":16,\"id\":20,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":48,\"y\":48},{\"gid\":8,\"height\":16,\"id\":21,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":256,\"y\":64},{\"gid\":8,\"height\":16,\"id\":22,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":368,\"y\":704},{\"gid\":8,\"height\":16,\"id\":23,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":592,\"y\":768},{\"gid\":8,\"height\":16,\"id\":24,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":688,\"y\":400},{\"gid\":8,\"height\":16,\"id\":25,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":592,\"y\":608},{\"gid\":8,\"height\":16,\"id\":26,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":32,\"y\":384},{\"gid\":8,\"height\":16,\"id\":28,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":192,\"y\":384},{\"gid\":8,\"height\":16,\"id\":29,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":272,\"y\":448},{\"gid\":8,\"height\":16,\"id\":31,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":512,\"y\":128},{\"gid\":8,\"height\":16,\"id\":32,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":32,\"y\":768},{\"gid\":6,\"height\":18,\"id\":33,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":704},{\"gid\":6,\"height\":18,\"id\":34,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":128,\"y\":768},{\"gid\":6,\"height\":18,\"id\":35,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":720},{\"gid\":6,\"height\":18,\"id\":36,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":768},{\"gid\":6,\"height\":18,\"id\":37,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":704},{\"gid\":6,\"height\":18,\"id\":38,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":592},{\"gid\":6,\"height\":18,\"id\":39,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":592,\"y\":528},{\"gid\":6,\"height\":18,\"id\":40,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":192,\"y\":560},{\"gid\":6,\"height\":18,\"id\":41,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":608},{\"gid\":6,\"height\":18,\"id\":42,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":560},{\"gid\":6,\"height\":18,\"id\":43,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":48,\"y\":544},{\"gid\":6,\"height\":18,\"id\":44,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":96,\"y\":592},{\"gid\":6,\"height\":18,\"id\":45,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":80,\"y\":384},{\"gid\":6,\"height\":18,\"id\":46,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":32,\"y\":240},{\"gid\":6,\"height\":18,\"id\":47,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":112,\"y\":288},{\"gid\":6,\"height\":18,\"id\":48,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":240,\"y\":208},{\"gid\":6,\"height\":18,\"id\":49,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":96},{\"gid\":6,\"height\":18,\"id\":50,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":400,\"y\":128},{\"gid\":6,\"height\":18,\"id\":51,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":112},{\"gid\":6,\"height\":18,\"id\":52,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":704,\"y\":576},{\"gid\":6,\"height\":18,\"id\":53,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":704,\"y\":256},{\"gid\":6,\"height\":18,\"id\":54,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":288},{\"gid\":6,\"height\":18,\"id\":55,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":208},{\"gid\":6,\"height\":18,\"id\":56,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":464},{\"gid\":6,\"height\":18,\"id\":57,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":432},{\"gid\":6,\"height\":18,\"id\":58,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":474,\"y\":1013},{\"gid\":6,\"height\":18,\"id\":59,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":72,\"y\":820},{\"gid\":6,\"height\":18,\"id\":62,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":354,\"y\":612},{\"gid\":6,\"height\":18,\"id\":63,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":432,\"y\":581},{\"gid\":6,\"height\":18,\"id\":64,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":768}],\"opacity\":1,\"type\":\"objectgroup\",\"visible\":true,\"x\":0,\"y\":0}],\"nextlayerid\":18,\"nextobjectid\":65,\"orientation\":\"orthogonal\",\"renderorder\":\"right-down\",\"tiledversion\":\"1.4.2\",\"tileheight\":16,\"tilesets\":[{\"firstgid\":1,\"source\":\"tileset.json\"}],\"tilewidth\":16,\"type\":\"map\",\"version\":1.4,\"width\":50}");
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"tilecount\":8,\"tiledversion\":\"1.4.2\",\"tileheight\":18,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":1,\"image\":\"../../assets/images/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":3,\"image\":\"../../assets/images/gravestone.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":4,\"image\":\"../../assets/images/adventurer.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"adventurer\"},{\"id\":5,\"image\":\"../../assets/images/slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"monster\"},{\"id\":6,\"image\":\"../../assets/images/slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"monster\"},{\"id\":7,\"image\":\"../../assets/images/collectible.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collectible\"}],\"tilewidth\":18,\"type\":\"tileset\",\"version\":1.4}");
+module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"tilecount\":8,\"tiledversion\":\"1.4.2\",\"tileheight\":18,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":1,\"image\":\"../../assets/images/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":3,\"image\":\"../../assets/images/gravestone.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":4,\"image\":\"../../assets/images/adventurer.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"adventurer\"},{\"id\":5,\"image\":\"../../assets/images/slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"monster\"},{\"id\":6,\"image\":\"../../assets/images/slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"monster\"},{\"id\":7,\"image\":\"../../assets/images/collectible.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collectible\"}],\"tilewidth\":18,\"type\":\"tileset\",\"version\":1.4}");
 
 /***/ }),
-/* 31 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./adventurer.png": 27,
-	"./collectible.png": 32,
-	"./gravestone.png": 26,
-	"./slime_alpha.png": 33,
-	"./slime_omega.png": 34,
-	"./tiles/0.png": 35,
-	"./tiles/1.png": 36,
-	"./tiles/2.png": 37,
-	"./ui/heart-full-white.png": 38,
-	"./ui/heart-full-yellow.png": 39,
-	"./ui/heart-half-white.png": 40,
-	"./ui/heart-half-yellow.png": 41,
-	"./ui/heart-none-white.png": 42,
-	"./ui/heart-none-yellow.png": 43,
-	"./ui/keyboard.png": 44
+	"./adventurer.png": 28,
+	"./collectible.png": 31,
+	"./gravestone.png": 27,
+	"./slime_alpha.png": 32,
+	"./slime_omega.png": 33,
+	"./tiles/0.png": 37,
+	"./tiles/1.png": 38,
+	"./tiles/2.png": 39,
+	"./ui/heart-full-white.png": 40,
+	"./ui/heart-full-yellow.png": 41,
+	"./ui/heart-half-white.png": 42,
+	"./ui/heart-half-yellow.png": 43,
+	"./ui/heart-none-white.png": 44,
+	"./ui/heart-none-yellow.png": 45,
+	"./ui/keyboard.png": 46
 };
 
 
@@ -5814,149 +5907,78 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 31;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "9fedbeeb5e578fb9806c615ffb10ac91.png";
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "551cf609e3aa1f122aa760ce689e26b4.png";
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "aab047d0c2faa414f78f114bba6485cf.png";
+webpackContext.id = 36;
 
 /***/ }),
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "f49270d0a276797c299d001c5782cf7f.png";
+module.exports = __webpack_require__.p + "551cf609e3aa1f122aa760ce689e26b4.png";
 
 /***/ }),
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "c445b7f6374a437c5506eed7a5d2e473.png";
+module.exports = __webpack_require__.p + "aab047d0c2faa414f78f114bba6485cf.png";
 
 /***/ }),
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "20ab7de870ebb2ed76b36048e392691d.png";
+module.exports = __webpack_require__.p + "f49270d0a276797c299d001c5782cf7f.png";
 
 /***/ }),
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "79b27b5927cef6f02460a93f41f2aa84.png";
+module.exports = __webpack_require__.p + "c445b7f6374a437c5506eed7a5d2e473.png";
 
 /***/ }),
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "7aa435c534e74880dd30deb358b472c0.png";
+module.exports = __webpack_require__.p + "20ab7de870ebb2ed76b36048e392691d.png";
 
 /***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "dfef87f0bcb5ad87e0bafda937662040.png";
+module.exports = __webpack_require__.p + "79b27b5927cef6f02460a93f41f2aa84.png";
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "58a6382774d8a94cbd13ce1960976417.png";
+module.exports = __webpack_require__.p + "7aa435c534e74880dd30deb358b472c0.png";
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "07231bc69618323e334495f8e390947f.png";
+module.exports = __webpack_require__.p + "dfef87f0bcb5ad87e0bafda937662040.png";
 
 /***/ }),
 /* 45 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var CAMZONE_WIDTH = 10;
-var CAMZONE_HEIGHT = 10;
-
-var Camera = /*#__PURE__*/function () {
-  function Camera(game) {
-    _classCallCheck(this, Camera);
-
-    this.position = {
-      "x": 0,
-      "y": 0
-    };
-    this.focusOn(game, game.world.entities["player"]);
-  }
-
-  _createClass(Camera, [{
-    key: "reaction",
-    value: function reaction(game) {
-      this.focusOn(game, game.world.entities["player"]);
-    }
-  }, {
-    key: "focusOn",
-    value: function focusOn(game, player) {
-      // this.position = {
-      //     "x": this.game.adventurer.position.x + 0.5,
-      //     "y": this.game.adventurer.position.y + 0.5
-      // }
-      if (player != undefined) {
-        this.position = {
-          "x": Math.floor(player.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH,
-          "y": Math.floor(player.position.y / CAMZONE_HEIGHT) * CAMZONE_HEIGHT
-        };
-      }
-    }
-  }]);
-
-  return Camera;
-}();
-
-
+module.exports = __webpack_require__.p + "58a6382774d8a94cbd13ce1960976417.png";
 
 /***/ }),
 /* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "07231bc69618323e334495f8e390947f.png";
+
+/***/ }),
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mount; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(49);
 /* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
 /* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5995,26 +6017,26 @@ function Preload() {
   return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
     className: "Preload"
   }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
+    src: __webpack_require__(28)
+  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
     src: __webpack_require__(27)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(26)
+    src: __webpack_require__(32)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
     src: __webpack_require__(33)
-  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(34)
-  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(38)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
     src: __webpack_require__(40)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
     src: __webpack_require__(42)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
     src: __webpack_require__(44)
+  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
+    src: __webpack_require__(46)
   }));
 }
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6036,18 +6058,18 @@ var n,l,u,i,t,r,o={},f=[],e=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|z
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(49);
-/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(56);
-/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(59);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(50);
+/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(57);
+/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(60);
 /* harmony import */ var views_UI_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(63);
 /* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(66);
 /* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__);
@@ -6086,7 +6108,7 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "entities",
     get: function get() {
-      return Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.world.entities).map(function (entity) {
+      return Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.state.entities).map(function (entity) {
         return preact__WEBPACK_IMPORTED_MODULE_0__["h"](views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__["default"], {
           entity: entity,
           key: entity.key
@@ -6101,15 +6123,15 @@ var Game = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(50);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
 /* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_World_view_less__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6133,7 +6155,7 @@ var World = /*#__PURE__*/function () {
         "class": "World"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         "class": "Tiles"
-      }, Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.environment.tiles).map(function (tile) {
+      }, Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.world.tiles).map(function (tile) {
         return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
           "class": "Tile",
           style: {
@@ -6158,11 +6180,11 @@ var World = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(51);
-            var content = __webpack_require__(52);
+var api = __webpack_require__(52);
+            var content = __webpack_require__(53);
 
             content = content.__esModule ? content.default : content;
 
@@ -6182,7 +6204,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6457,13 +6479,13 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(53);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(55);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -6473,7 +6495,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6573,7 +6595,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6613,20 +6635,20 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "9167f1dbf5d8d9905aa5933a2fc45693.ttf";
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Entity; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
-/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(58);
 /* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6676,6 +6698,10 @@ var Entity = /*#__PURE__*/function () {
         }
       }
 
+      if (this.props.entity.getOpacity instanceof Function) {
+        style.opacity = this.props.entity.getOpacity();
+      }
+
       if (this.props.entity.color) {
         style.backgroundColor = this.props.entity.color;
       }
@@ -6694,11 +6720,11 @@ var Entity = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(51);
-            var content = __webpack_require__(58);
+var api = __webpack_require__(52);
+            var content = __webpack_require__(59);
 
             content = content.__esModule ? content.default : content;
 
@@ -6718,11 +6744,11 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(53);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".Entity {\n  width: 1em;\n  height: 1em;\n  position: absolute;\n  transition-duration: 0.1s;\n  transition-property: top left opacity;\n  background-size: 1em;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.Entity[animation=shake] {\n  animation-name: shake;\n  animation-duration: 0.1s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=ooze] {\n  animation-name: ooze;\n  animation-duration: 4s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=strike-east] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-east;\n}\n.Entity[animation=strike-west] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-west;\n}\n.Entity[animation=strike-north] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-north;\n}\n.Entity[animation=strike-south] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-south;\n}\n@keyframes strike-east {\n  0% {\n    transform: translateX(-0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateX(0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-west {\n  0% {\n    transform: translateX(0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateX(-0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-south {\n  0% {\n    transform: translateY(-0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateY(0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes strike-north {\n  0% {\n    transform: translateY(0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateY(-0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes shake {\n  0% {\n    transform: translateX(-0.025em);\n  }\n  50% {\n    transform: translateX(0.025em);\n  }\n  100% {\n    transform: translateX(-0.025em);\n  }\n}\n@keyframes ooze {\n  0% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n  75% {\n    transform: scaleX(0.9) scaleY(1.1);\n  }\n  100% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n}\n", ""]);
@@ -6731,17 +6757,17 @@ module.exports = exports;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
-/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(60);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(61);
-/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_Camera_view_less__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(61);
+/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -6752,6 +6778,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+var CAMZONE_WIDTH = 10;
+var CAMZONE_HEIGHT = 10;
 
 var Camera = /*#__PURE__*/function () {
   function Camera() {
@@ -6769,9 +6797,13 @@ var Camera = /*#__PURE__*/function () {
   }, {
     key: "style",
     get: function get() {
+      var player = models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player;
+      if (player == undefined) return;
+      var x = Math.floor(player.position.x / CAMZONE_WIDTH) * CAMZONE_WIDTH;
+      var y = Math.floor(player.position.y / CAMZONE_HEIGHT) * CAMZONE_HEIGHT;
       return {
-        "left": -1 * models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.camera.position.x + "em",
-        "top": -1 * models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.camera.position.y + "em"
+        "left": -1 * x + "em",
+        "top": -1 * y + "em"
       };
     }
   }]);
@@ -6782,21 +6814,10 @@ var Camera = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 60 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  "width": 9,
-  "height": 9
-});
-
-/***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(51);
+var api = __webpack_require__(52);
             var content = __webpack_require__(62);
 
             content = content.__esModule ? content.default : content;
@@ -6821,7 +6842,7 @@ module.exports = content.locals || {};
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(53);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".Camera {\n  position: absolute;\n  transition-property: top left;\n  transition-duration: 0.5s;\n}\n", ""]);
@@ -6836,8 +6857,8 @@ module.exports = exports;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return UI; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
 /* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(64);
 /* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_UI_view_less__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6858,7 +6879,7 @@ var UI = /*#__PURE__*/function () {
   _createClass(UI, [{
     key: "render",
     value: function render() {
-      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player == undefined) return;
+      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player == undefined) return;
       return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "UI"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
@@ -6873,12 +6894,12 @@ var UI = /*#__PURE__*/function () {
         className: "play-prompt"
       }, "Click to play!")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "game-over-banner"
-      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.deathtext || "Game Over")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.deathtext || "Game Over")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "pause-banner"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "PAUSED")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "tutorial"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-        src: __webpack_require__(44)
+        src: __webpack_require__(46)
       }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "MOVE INTO MONSTERS TO SLAY THEM")));
     }
   }, {
@@ -6886,9 +6907,9 @@ var UI = /*#__PURE__*/function () {
     get: function get() {
       var hearts = new Array();
 
-      for (var i = models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.health - 1; i >= 0; i -= 1) {
-        if (i >= models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.damage) {
-          if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.damage + 1 === models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.health) {
+      for (var i = models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.health - 1; i >= 0; i -= 1) {
+        if (i >= models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.damage) {
+          if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.damage + 1 === models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.health) {
             hearts.push(preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", {
               className: "final full heart",
               key: i
@@ -6912,16 +6933,21 @@ var UI = /*#__PURE__*/function () {
   }, {
     key: "score",
     get: function get() {
-      var score = models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.score || 0;
-      return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, score, " of ", models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.totalCollectibles || 0);
+      var totalCollectibles = Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities).filter(function (entity) {
+        return entity.type == "collectible";
+      });
+      var currentCollectibles = totalCollectibles.filter(function (entity) {
+        return entity.status == "collected";
+      });
+      return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, currentCollectibles.length, " of ", totalCollectibles.length);
     }
   }, {
     key: "flash",
     get: function get() {
-      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.isAttacked) {
+      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.isAttacked) {
         return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
           className: "blood",
-          key: models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.world.entities.player.isAttacked
+          key: models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.isAttacked
         });
       }
     }
@@ -6936,7 +6962,7 @@ var UI = /*#__PURE__*/function () {
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(51);
+var api = __webpack_require__(52);
             var content = __webpack_require__(65);
 
             content = content.__esModule ? content.default : content;
@@ -6961,15 +6987,15 @@ module.exports = content.locals || {};
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(53);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(55);
-var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(39);
-var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(38);
-var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(41);
-var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(40);
-var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(43);
-var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(42);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(41);
+var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(40);
+var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(43);
+var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(42);
+var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(45);
+var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(44);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
@@ -6988,7 +7014,7 @@ module.exports = exports;
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(51);
+var api = __webpack_require__(52);
             var content = __webpack_require__(67);
 
             content = content.__esModule ? content.default : content;
@@ -7013,9 +7039,9 @@ module.exports = content.locals || {};
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(53);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(55);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -7028,7 +7054,7 @@ module.exports = exports;
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(51);
+var api = __webpack_require__(52);
             var content = __webpack_require__(69);
 
             content = content.__esModule ? content.default : content;
@@ -7053,9 +7079,9 @@ module.exports = content.locals || {};
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(53);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(55);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -7070,7 +7096,7 @@ module.exports = exports;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
 
 var dom = document.body;
 var view = undefined;
