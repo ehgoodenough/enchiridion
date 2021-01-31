@@ -158,7 +158,16 @@ const classedEntities = {
     "goal": {
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/goal.png"),
+            "standard": require("assets/images/tiles/pedestal_withsword.png"),
+            "empty": require("assets/images/tiles/pedestal.png"),
+        },
+        "getImage": function(state) {
+            if(scripts["sword1"].hasBeenTriggered == true
+            && scripts["sword2"].hasBeenTriggered != true) {
+                return this.images.empty
+            } else {
+                return this.images.standard
+            }
         },
         "handleAttacked": function(state) {
             const collectibles = State.getCollectibleProgress(state)
