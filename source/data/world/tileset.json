@@ -16,8 +16,17 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":90,
- "tiledversion":"2021.01.13",
+ "terrains":[
+        {
+         "name":"grass",
+         "tile":54
+        }, 
+        {
+         "name":"rockwall",
+         "tile":54
+        }],
+ "tilecount":91,
+ "tiledversion":"1.4.2",
  "tileheight":64,
  "tiles":[
         {
@@ -241,7 +250,9 @@
          "id":33,
          "image":"..\/..\/assets\/images\/tiles\/grass.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "terrain":[0, 0, 0, 0],
+         "type":"collision"
         }, 
         {
          "id":34,
@@ -372,6 +383,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_bottom.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[0, 0, -1, -1],
          "type":"collision"
         }, 
         {
@@ -379,6 +391,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_bottomleft.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[-1, 0, -1, -1],
          "type":"collision"
         }, 
         {
@@ -386,6 +399,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_bottomleft_in.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[0, 0, -1, 0],
          "type":"collision"
         }, 
         {
@@ -393,6 +407,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_bottomright.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[0, -1, -1, -1],
          "type":"collision"
         }, 
         {
@@ -400,6 +415,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_bottomright_in.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[0, 0, 0, -1],
          "type":"collision"
         }, 
         {
@@ -407,6 +423,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_left.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[-1, 0, -1, 0],
          "type":"collision"
         }, 
         {
@@ -414,6 +431,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_right.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[0, -1, 0, -1],
          "type":"collision"
         }, 
         {
@@ -421,6 +439,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_top.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[-1, -1, 0, 0],
          "type":"collision"
         }, 
         {
@@ -428,6 +447,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_topleft.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[-1, -1, -1, 0],
          "type":"collision"
         }, 
         {
@@ -435,6 +455,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_topleft_in.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[-1, 0, 0, 0],
          "type":"collision"
         }, 
         {
@@ -442,6 +463,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_topright.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[-1, -1, 0, -1],
          "type":"collision"
         }, 
         {
@@ -449,6 +471,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockplatform_topright_in.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[0, -1, 0, 0],
          "type":"collision"
         }, 
         {
@@ -463,6 +486,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockwall_bottom.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[1, 1, 1, 1],
          "type":"collision"
         }, 
         {
@@ -470,6 +494,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockwall_bottomleft.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[-1, 1, -1, 1],
          "type":"collision"
         }, 
         {
@@ -477,6 +502,7 @@
          "image":"..\/..\/assets\/images\/tiles\/rockwall_bottomright.png",
          "imageheight":32,
          "imagewidth":32,
+         "terrain":[1, -1, 1, -1],
          "type":"collision"
         }, 
         {
@@ -497,107 +523,131 @@
          "id":72,
          "image":"..\/..\/assets\/images\/tiles\/sea.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":73,
          "image":"..\/..\/assets\/images\/tiles\/sea_coral.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":74,
          "image":"..\/..\/assets\/images\/tiles\/sea_lilypads.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":75,
          "image":"..\/..\/assets\/images\/tiles\/seashore_bottom.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":76,
          "image":"..\/..\/assets\/images\/tiles\/seashore_bottomleft.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":77,
          "image":"..\/..\/assets\/images\/tiles\/seashore_bottomleft_out.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":78,
          "image":"..\/..\/assets\/images\/tiles\/seashore_bottomright.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":79,
          "image":"..\/..\/assets\/images\/tiles\/seashore_bottomright_out.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":80,
          "image":"..\/..\/assets\/images\/tiles\/seashore_left.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":81,
          "image":"..\/..\/assets\/images\/tiles\/seashore_right.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":82,
          "image":"..\/..\/assets\/images\/tiles\/seashore_top.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":83,
          "image":"..\/..\/assets\/images\/tiles\/seashore_topleft.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":84,
          "image":"..\/..\/assets\/images\/tiles\/seashore_topleft_out.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":85,
          "image":"..\/..\/assets\/images\/tiles\/seashore_topright.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":86,
          "image":"..\/..\/assets\/images\/tiles\/seashore_topright_out.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":87,
          "image":"..\/..\/assets\/images\/tiles\/woodplanks.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":88,
          "image":"..\/..\/assets\/images\/tiles\/woodplanks_left.png",
          "imageheight":32,
-         "imagewidth":32
+         "imagewidth":32,
+         "type":"collision"
         }, 
         {
          "id":89,
          "image":"..\/..\/assets\/images\/tiles\/woodplanks_right.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "type":"collision"
+        }, 
+        {
+         "id":90,
+         "image":"..\/..\/assets\/images\/tiles\/sand.png",
          "imageheight":32,
          "imagewidth":32
         }],
