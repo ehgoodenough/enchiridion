@@ -12,9 +12,36 @@ import scripts from "data/scripts.js"
 import directions from "data/directions.js"
 import deathtext from "data/deathtext.js"
 
+const MIN_DIALOGUE_TIME = 500 // in ms
+
 export default class Player {
     static update(state, delta) {
         if(Entity.isDead(state, state.entities.player)) {
+            return
+        }
+
+        if(state.script != undefined) {
+            if(Date.now() - state.script.time > MIN_DIALOGUE_TIME) {
+                if(Keyb.isJustDown("W", delta.ms)
+                || Keyb.isJustDown("S", delta.ms)
+                || Keyb.isJustDown("A", delta.ms)
+                || Keyb.isJustDown("D", delta.ms)
+                || Keyb.isJustDown("<up>", delta.ms)
+                || Keyb.isJustDown("<down>", delta.ms)
+                || Keyb.isJustDown("<left>", delta.ms)
+                || Keyb.isJustDown("<right>", delta.ms)) {
+                    state.script.time = Date.now()
+                    state.script.dialogue.shift() // this mutates the source!!
+
+                    if(state.script.dialogue[0] == undefined) {
+                        if(state.script.goto != undefined) {
+                            App.screen = state.script.goto // THIS WILL TELEPORT YOU TO THIS SCREEN AFTER THE DIALOGUE FINISHES
+                        }
+                        delete state.script
+                        return
+                    }
+                }
+            }
             return
         }
 

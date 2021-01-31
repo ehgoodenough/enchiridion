@@ -1,7 +1,11 @@
 export default {
     "welcome": {
         "dialogue": [
-            ["Come closer.", "Take hold of me, and wield true power!"]
+            [
+                "Come closer.",
+                "Take hold of me",
+                "and wield true power!"
+            ]
         ],
     },
     "sword1": {
@@ -36,6 +40,7 @@ export default {
             // {"type": "pause"},
             ["Thank you, brave wanderer."]
         ],
-        "goto": "CreditsScreen" // THIS SHOULD BE ANOTHER SCRIPT NODE
+        "goto": "CreditsScreen" // THIS SHOULD BE ANOTHER SCRIPT NODE?? LIKE PAUSE
+        // THIS WILL TELEPORT YOU TO THIS SCREEN AFTER THE DIALOGUE FINISHES
     },
 }

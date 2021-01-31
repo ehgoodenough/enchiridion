@@ -66,12 +66,12 @@ function FlipFlopImage() {
 
 import scripts from "data/scripts.js"
 
-function performScript(script) {
-    script.dialogue.forEach((text) => {
-        window.alert(text)
-    })
-    if(script.goto != undefined) {
-        App.screen = script.goto
+function performScript(state, script) {
+    script.time = Date.now()
+    state.script = {
+        "time": Date.now() + 1000,
+        "dialogue": script.dialogue.slice(), // shallow copy
+        "goto": script.goto,
     }
 }
 
@@ -88,7 +88,7 @@ const classedEntities = {
             if(scripts[this.scriptKey] != undefined
             && scripts[this.scriptKey].hasBeenTriggered != true) {
                 scripts[this.scriptKey].hasBeenTriggered = true
-                performScript(scripts[this.scriptKey])
+                performScript(state, scripts[this.scriptKey])
             }
         }
     },
@@ -143,7 +143,7 @@ const classedEntities = {
                     if(scripts["finalshard"] != undefined
                     && scripts["finalshard"].hasBeenTriggered != true) {
                         scripts["finalshard"].hasBeenTriggered = true
-                        performScript(scripts["finalshard"])
+                        performScript(state, scripts["finalshard"])
                     }
                 }
             }
@@ -175,14 +175,14 @@ const classedEntities = {
                 if(scripts["sword2"] != undefined
                 && scripts["sword2"].hasBeenTriggered != true) {
                     scripts["sword2"].hasBeenTriggered = true
-                    performScript(scripts["sword2"])
+                    performScript(state, scripts["sword2"])
                 }
             } else if(scripts["sword1"] != undefined
             && scripts["sword1"].hasBeenTriggered != true) {
                 scripts["sword1"].hasBeenTriggered = true
-                performScript(scripts["sword1"])
+                performScript(state, scripts["sword1"])
             } else {
-                performScript(scripts["..."])
+                performScript(state, scripts["..."])
             }
         }
     },

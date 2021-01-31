@@ -9,46 +9,51 @@ export default class UI {
     render() {
         if(App.game.state.entities.player == undefined) return
         return (
-            <div className="UI">
-                <div className="hearts">
+            <div class="UI">
+                <div class="hearts">
                     {this.hearts}
                 </div>
-                <div className="score">
+                <div class="score">
                     {this.score}
                 </div>
-                <div className="flash">
+                <div class="flash">
                     {this.flash}
                 </div>
-                <div className="title-banner">
+                <div class="title-banner">
                     <span>Enchiridion</span>
-                    <span className="play-prompt">
+                    <span class="play-prompt">
                         Click to play!
                     </span>
                 </div>
-                <div className="game-over-banner">
-                    <span>{App.game.state.entities.player.deathtext || "Game Over"}</span>
+                <div class="game-over-banner">
+                    <span>{App.game.state.entities.player.deathtext || "YOU HAVE PERISHED"}</span>
                 </div>
-                <div className="pause-banner">
-                    <span>PAUSED</span>
-                </div>
-                <div className="tutorial">
-                    <img src={require("assets/images/ui/keyboard.png")}/>
-                    <span>MOVE INTO MONSTERS TO SLAY THEM</span>
-                </div>
+                {this.dialogue}
             </div>
         )
+    }
+    get dialogue() {
+        if(App.game.state.script != undefined) {
+            return (
+                <div class="Dialogue">
+                    {App.game.state.script.dialogue[0].map((text) => (
+                        <div class="Text">{text}</div>
+                    ))}
+                </div>
+            )
+        }
     }
     get hearts() {
         var hearts = new Array()
         for(var i = App.game.state.entities.player.health - 1; i >= 0; i -= 1) {
             if(i >= App.game.state.entities.player.damage) {
                 if(App.game.state.entities.player.damage + 1 === App.game.state.entities.player.health) {
-                    hearts.push(<span className="final full heart" key={i}/>)
+                    hearts.push(<span class="final full heart" key={i}/>)
                 } else {
-                    hearts.push(<span className="full heart" key={i}/>)
+                    hearts.push(<span class="full heart" key={i}/>)
                 }
             } else {
-                hearts.push(<span className="none heart" key={i}/>)
+                hearts.push(<span class="none heart" key={i}/>)
             }
         }
         return hearts
@@ -64,7 +69,7 @@ export default class UI {
     get flash() {
         if(App.game.state.entities.player.isAttacked) {
             return (
-                <div className="blood" key={App.game.state.entities.player.isAttacked}/>
+                <div class="blood" key={App.game.state.entities.player.isAttacked}/>
             )
         }
     }
