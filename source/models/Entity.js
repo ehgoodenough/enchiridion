@@ -143,74 +143,34 @@ const classedEntities = {
             }
         },
         "getImage": FlipFlopImage,
-        "flipflop": false,
         "reaction": function(state) {
-            if(Entity.isDead(this)) return
-            if(Entity.isInCamera(state, this) == false) return
+            StandardReaction(state, this, () => {
+                const action = {"move": {"x": 0, "y": 0}}
 
-            const action = {"move": {"x": 0, "y": 0}}
+                if(this.flipflop == false) {
+                    this.flipflop = true
+                } else if(this.flipflop = true) {
+                    this.flipflop = false
 
-            this.isAttacking = false
-
-            if(this.flipflop == false) {
-                this.flipflop = true
-            } else if(this.flipflop = true) {
-                this.flipflop = false
-
-                // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
-                if(Math.abs(this.position.y - ((state.entities.player.position.y + state.entities.player.prevposition.y) / 2))
-                >= Math.abs(this.position.x - ((state.entities.player.position.x + state.entities.player.prevposition.x) / 2))) {
-                    if(this.position.y > state.entities.player.position.y) {
-                        action.move.y = -1
-                    } else if(this.position.y < state.entities.player.position.y) {
-                        action.move.y = +1
-                    }
-                } else {
-                    if(this.position.x > state.entities.player.position.x) {
-                        action.move.x = -1
-                    } else if(this.position.x < state.entities.player.position.x) {
-                        action.move.x = +1
+                    // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
+                    if(Math.abs(this.position.y - ((state.entities.player.position.y + state.entities.player.prevposition.y) / 2))
+                    >= Math.abs(this.position.x - ((state.entities.player.position.x + state.entities.player.prevposition.x) / 2))) {
+                        if(this.position.y > state.entities.player.position.y) {
+                            action.move.y = -1
+                        } else if(this.position.y < state.entities.player.position.y) {
+                            action.move.y = +1
+                        }
+                    } else {
+                        if(this.position.x > state.entities.player.position.x) {
+                            action.move.x = -1
+                        } else if(this.position.x < state.entities.player.position.x) {
+                            action.move.x = +1
+                        }
                     }
                 }
-            }
-
-            ///////////
-            // MOVE //
-            /////////
-
-            action.move.x = action.move.x || 0
-            action.move.y = action.move.y || 0
-
-            this.direction = directions[action.move.x + "x" + action.move.y] || "none"
-
-            // COLLISION WITH OTHER ENTITIES
-            Objdict.forEach(state.entities, (entity) => {
-                if(entity != this
-                && entity.isDead != true
-                && entity.hasCollision == true
-                && this.position.x + action.move.x == entity.position.x
-                && this.position.y + action.move.y == entity.position.y) {
-                    if(entity.key == "player") {
-                        this.isAttacking = true
-                        entity.handleAttacked(state)
-                    }
-                    action.move.x = 0
-                    action.move.y = 0
-                }
+                return action
             })
-
-            // COLLISION WITH MAP
-            const x = this.position.x + action.move.x
-            const y = this.position.y + action.move.y
-            const tile = state.world.tiles[x + "x" + y]
-            if(tile != undefined && tile.collision == true) {
-                action.move.x = 0
-                action.move.y = 0
-            }
-
-            this.position.x += action.move.x
-            this.position.y += action.move.y
-        },
+        }
     },
     "white_bat": {
         "title": "White Bat",
@@ -222,77 +182,79 @@ const classedEntities = {
         },
         "getAnimation": StrikingAnimation,
         "getImage": FlipFlopImage,
-        "flipflop": false,
         "reaction": function(state) {
-            if(Entity.isDead(this)) return
-            if(Entity.isInCamera(state, this) == false) return
+            StandardReaction(state, this, () => {
+                const action = {"move": {"x": 0, "y": 0}}
 
-            const action = {"move": {"x": 0, "y": 0}}
+                if(this.flipflop != true) {
+                    this.flipflop = true
+                } else if(this.flipflop = true) {
+                    this.flipflop = false
 
-            this.isAttacking = false
+                    let moves = [{x: -1}, {x: +1}, {y: -1}, {y: +1}]
+                    // moves.forEach((move) => {
+                    //     const x = this.position.x + (move.x || 0)
+                    //     const y = this.position.y + (move.y || 0)
+                    //     if(state.entities.player.position.x == x
+                    //     && state.entities.player.position.y == y) {
+                    //         moves = [move]
+                    //     }
+                    // })
 
-            if(this.flipflop == false) {
-                this.flipflop = true
-            } else if(this.flipflop = true) {
-                this.flipflop = false
-
-                let moves = [{x: -1}, {x: +1}, {y: -1}, {y: +1}]
-                // moves.forEach((move) => {
-                //     const x = this.position.x + (move.x || 0)
-                //     const y = this.position.y + (move.y || 0)
-                //     if(state.entities.player.position.x == x
-                //     && state.entities.player.position.y == y) {
-                //         moves = [move]
-                //     }
-                // })
-
-                if(moves.length > 1) {
-                    moves = filterInvalidMovements(state, this, moves)
-                }
-
-                if(moves.length > 0) {
-                    action.move = moves[Math.floor((Math.random() * moves.length))]
-                }
-            }
-
-            ///////////
-            // MOVE //
-            /////////
-
-            action.move.x = action.move.x || 0
-            action.move.y = action.move.y || 0
-
-            this.direction = directions[action.move.x + "x" + action.move.y] || "none"
-
-            // COLLISION WITH OTHER ENTITIES
-            Objdict.forEach(state.entities, (entity) => {
-                if(entity != this
-                && entity.isDead != true
-                && entity.hasCollision == true
-                && this.position.x + action.move.x == entity.position.x
-                && this.position.y + action.move.y == entity.position.y) {
-                    if(entity.key == "player") {
-                        this.isAttacking = true
-                        entity.handleAttacked(state)
+                    if(moves.length > 1) {
+                        moves = filterInvalidMovements(state, this, moves)
                     }
-                    action.move.x = 0
-                    action.move.y = 0
+
+                    if(moves.length > 0) {
+                        action.move = moves[Math.floor((Math.random() * moves.length))]
+                    }
                 }
+
+                return action
             })
-
-            // COLLISION WITH MAP
-            const x = this.position.x + action.move.x
-            const y = this.position.y + action.move.y
-            const tile = state.world.tiles[x + "x" + y]
-            if(tile != undefined && tile.collision == true) {
-                action.move.x = 0
-                action.move.y = 0
-            }
-
-            this.position.x += action.move.x
-            this.position.y += action.move.y
         }
     }
+}
+
+function StandardReaction(state, entity, getActionFromAI) {
+    if(Entity.isDead(entity)) return
+    if(Entity.isInCamera(state, entity) == false) return
+
+    const action = getActionFromAI() || {}
+    action.move = action.move || {}
+    action.move.x = action.move.x || 0
+    action.move.y = action.move.y || 0
+
+    entity.isAttacking = false
+    entity.direction = directions[action.move.x + "x" + action.move.y] || "none"
+
+    // COLLISION WITH OTHER ENTITIES
+    Objdict.forEach(state.entities, (otherEntity) => {
+        if(entity != otherEntity
+        && otherEntity.isDead != true
+        && otherEntity.hasCollision == true
+        && entity.position.x + action.move.x == otherEntity.position.x
+        && entity.position.y + action.move.y == otherEntity.position.y) {
+            if(otherEntity.key == "player") {
+                entity.isAttacking = true
+                otherEntity.handleAttacked(state)
+            }
+            action.move.x = 0
+            action.move.y = 0
+        }
+    })
+
+    // COLLISION WITH MAP
+    const x = entity.position.x + action.move.x
+    const y = entity.position.y + action.move.y
+    const tile = state.world.tiles[x + "x" + y]
+    if(tile != undefined && tile.collision == true) {
+        action.move.x = 0
+        action.move.y = 0
+    }
+
+    entity.position.x += action.move.x
+    entity.position.y += action.move.y
 }
 
 function filterInvalidMovements(state, entity, moves) {
@@ -300,22 +262,19 @@ function filterInvalidMovements(state, entity, moves) {
         const x = entity.position.x + (move.x || 0)
         const y = entity.position.y + (move.y || 0)
 
-        // COLLISION WITH OTHER ENTITIES
-        Objdict.forEach(state.entities, (entity) => {
-            if(entity != this
-            && entity.isDead != true
-            && entity.hasCollision == true
-            && entity.type == "adventurer" // THE ONLY ENTITY IT'LL RUN INTO
-            && x == entity.position.x
-            && y == entity.position.y) {
+        Objdict.forEach(state.entities, (otherEntity) => {
+            if(entity != otherEntity
+            && otherEntity.isDead != true
+            && otherEntity.hasCollision == true
+            && otherEntity.type == "adventurer" // THE ONLY ENTITY IT'LL RUN INTO
+            && x == otherEntity.position.x
+            && y == otherEntity.position.y) {
                 return false
             }
         })
 
-        // COLLISION WITH MAP
         const tile = state.world.tiles[x + "x" + y]
-        if(tile != undefined
-        && tile.collision == true) {
+        if(tile != undefined && tile.collision == true) {
             return false
         }
 
