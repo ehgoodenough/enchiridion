@@ -61,7 +61,7 @@ export default class Player {
             && player.position.y + action.move.y == entity.position.y) {
                 if(entity.hasCollision == true) {
                     if(entity.key != player.key) {
-                        player.isAttacking = true
+                        // player.isAttacking = true // REMOVED CUZ IT BAD
                         if((entity.type == "goal" || scripts["sword1"].hasBeenTriggered == true)
                         && entity.handleAttacked instanceof Function) {
                             entity.handleAttacked(state)

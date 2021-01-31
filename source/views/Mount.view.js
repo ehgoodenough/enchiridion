@@ -45,8 +45,19 @@ function Preload() {
 function CreditsScreen() {
     return (
         <div class="CreditsScreen">
-            The world will remember your stewardship.
-            (Thanks for playing!!)
+            <div class="Fade"/>
+            <h1>The world will remember<br/>your stewardship.</h1>
+            <h2>(Thanks for playing!!)</h2>
+            <div class="Credits">
+                <div class="Credit">
+                    <div class="Name">Nick Amlag</div>
+                    <div class="Stuff">Art, Writing</div>
+                </div>
+                <div class="Credit">
+                    <div class="Name">Andrew Goodenough</div>
+                    <div class="Stuff">Code, Design</div>
+                </div>
+            </div>
         </div>
     )
 }
