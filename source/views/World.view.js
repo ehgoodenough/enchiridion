@@ -6,6 +6,7 @@ import "views/World.view.less"
 
 export default class World {
     render() {
+        if(App.game.state.entities.player == undefined) return
         return (
             <div class="World">
                 <div class="Tiles">

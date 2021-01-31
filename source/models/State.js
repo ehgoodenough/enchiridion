@@ -99,14 +99,15 @@ export default class State {
                         return
                     }
 
-                    if(object.direction != undefined && object.direction != "") {
+                    object.direction = findPropertyValue(object.properties, "Direction")
+                    if(object.direction != undefined) {
                         object.direction = directionsByLabel[object.direction]
                     }
 
                     const entity = Entity.generate({
                         "key": object.key || object.id,
                         "type": object.type,
-                        // "direction": object.direction,
+                        "direction": object.direction,
                         "position": {
                             "x": Math.floor(object.x / TILE_SIZE),
                             "y": Math.floor(object.y / TILE_SIZE) - 1, // TODO: Why -1?
