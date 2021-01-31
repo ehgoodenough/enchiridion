@@ -184,8 +184,60 @@ const classedEntities = {
             })
         }
     },
-    "white_bat": {
-        "title": "White Bat",
+    "blue_slime": {
+        "title": "Red Slime",
+        "description": "It looks gross.",
+        "hasCollision": true,
+        "images": {
+            "standard": require("assets/images/blue_slime_alpha.png"),
+            "threatening": require("assets/images/blue_slime_omega.png"),
+        },
+        "getAnimation": function() {
+            if(this.isAttacking) {
+                return "strike" + "-" + getDirectionLabel(this.direction)
+            }
+
+            if(this.flipflop === true) {
+                return "shake"
+            } else {
+                return "ooze"
+            }
+        },
+        "health": 2,
+        "getImage": FlipFlopImage,
+        "reaction": function(state) {
+            StandardReaction(state, this, () => {
+                const action = {"move": {"x": 0, "y": 0}}
+
+                if(this.flipflop == false) {
+                    this.flipflop = true
+                } else if(this.flipflop = true) {
+                    this.flipflop = false
+
+                    // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
+                    if(Math.abs(this.position.y - ((state.entities.player.position.y + state.entities.player.prevposition.y) / 2))
+                    >= Math.abs(this.position.x - ((state.entities.player.position.x + state.entities.player.prevposition.x) / 2))) {
+                        if(this.position.y > state.entities.player.position.y) {
+                            action.move.y = -1
+                        } else if(this.position.y < state.entities.player.position.y) {
+                            action.move.y = +1
+                        }
+                    } else {
+                        if(this.position.x > state.entities.player.position.x) {
+                            action.move.x = -1
+                        } else if(this.position.x < state.entities.player.position.x) {
+                            action.move.x = +1
+                        }
+                    }
+
+                    this.direction = {"x": action.move.x, "y": action.move.y}
+                }
+                return action
+            })
+        }
+    },
+    "red_bat": {
+        "title": "Red Bat",
         "description": "Yikes, where is it going??",
         "hasCollision": true,
         "images": {
@@ -228,6 +280,44 @@ const classedEntities = {
             })
         }
     },
+    "blue_bat": {
+        "title": "Blue Bat",
+        "description": "Yikes, where is it going??",
+        "hasCollision": true,
+        "images": {
+            "standard": require("assets/images/blue_bat_alpha.png"),
+            "threatening": require("assets/images/blue_bat_omega.png"),
+        },
+        "getAnimation": StrikingAnimation,
+        "getImage": FlipFlopImage,
+        "reaction": function(state) {
+            StandardReaction(state, this, () => {
+                const action = {"move": {"x": 0, "y": 0}}
+
+                let moves = [{x: -1}, {x: +1}, {y: -1}, {y: +1}]
+                // moves.forEach((move) => {
+                //     const x = this.position.x + (move.x || 0)
+                //     const y = this.position.y + (move.y || 0)
+                //     if(state.entities.player.position.x == x
+                //     && state.entities.player.position.y == y) {
+                //         moves = [move]
+                //     }
+                // })
+
+                if(moves.length > 1) {
+                    moves = filterInvalidMovements(state, this, moves)
+                }
+
+                if(moves.length > 0) {
+                    action.move = moves[Math.floor((Math.random() * moves.length))]
+                }
+
+                this.direction = {"x": action.move.x, "y": action.move.y}
+
+                return action
+            })
+        }
+    },
     "red_snake": {
         "title": "Red Snake",
         "description": "Ssssss",
@@ -235,6 +325,51 @@ const classedEntities = {
         "images": {
             "standard": require("assets/images/snake.png"),
         },
+        "reaction": function(state) {
+            const entity = this
+            StandardReaction(state, entity, () => {
+                const action = {"move": {"x": 0, "y": 0}}
+
+                if(entity.direction == undefined) {
+                    entity.direction = Object.keys(directions)
+                    entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)]
+                    entity.direction = entity.direction.split("x")
+                    entity.direction = {"x": parseInt(entity.direction[0]), "y": parseInt(entity.direction[1])}
+                }
+                action.move.x = entity.direction.x // * entity.speed
+                action.move.y = entity.direction.y // * entity.speed
+
+                const x = entity.position.x + action.move.x
+                const y = entity.position.y + action.move.y
+                Objdict.forEach(state.entities, (otherEntity) => {
+                    if(entity != otherEntity
+                    && otherEntity.isDead != true
+                    && otherEntity.hasCollision == true
+                    && x == otherEntity.position.x
+                    && y == otherEntity.position.y) {
+                        entity.direction.x *= -1
+                        entity.direction.y *= -1
+                    }
+                })
+
+                const tile = state.world.tiles[x + "x" + y]
+                if(tile != undefined && tile.collision == true) {
+                    this.direction.x *= -1
+                    this.direction.y *= -1
+                }
+
+                return action
+            })
+        }
+    },
+    "blue_snake": {
+        "title": "Blue Snake",
+        "description": "Ssssss",
+        "hasCollision": true,
+        "images": {
+            "standard": require("assets/images/blue_snake.png"),
+        },
+        "health": 2,
         "reaction": function(state) {
             const entity = this
             StandardReaction(state, entity, () => {

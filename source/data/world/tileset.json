@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":12,
+ "tilecount":17,
  "tiledversion":"1.4.2",
  "tileheight":18,
  "tiles":[
@@ -87,7 +87,7 @@
          "image":"..\/..\/assets\/images\/bat_alpha.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"white_bat"
+         "type":"red_bat"
         }, 
         {
          "id":10,
@@ -102,6 +102,41 @@
          "imageheight":18,
          "imagewidth":18,
          "type":"red_snake"
+        }, 
+        {
+         "id":12,
+         "image":"..\/..\/assets\/images\/blue_bat_alpha.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"blue_bat"
+        }, 
+        {
+         "id":13,
+         "image":"..\/..\/assets\/images\/blue_bat_omega.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"blue_bat"
+        }, 
+        {
+         "id":14,
+         "image":"..\/..\/assets\/images\/blue_snake.png",
+         "imageheight":18,
+         "imagewidth":18,
+         "type":"blue_snake"
+        }, 
+        {
+         "id":15,
+         "image":"..\/..\/assets\/images\/blue_slime_omega.png",
+         "imageheight":18,
+         "imagewidth":18,
+         "type":"blue_slime"
+        }, 
+        {
+         "id":16,
+         "image":"..\/..\/assets\/images\/blue_slime_alpha.png",
+         "imageheight":18,
+         "imagewidth":18,
+         "type":"blue_slime"
         }],
  "tilewidth":18,
  "type":"tileset",
