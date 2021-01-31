@@ -46,8 +46,7 @@ function CreditsScreen() {
     return (
         <div class="CreditsScreen">
             <div class="Fade"/>
-            <h1>The world will remember<br/>your stewardship.</h1>
-            <h2>(Thanks for playing!!)</h2>
+            <h1>Thanks for playing!!</h1>
             <div class="Credits">
                 <div class="Credit">
                     <div class="Name">Nick Amlag</div>
