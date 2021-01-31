@@ -3,7 +3,6 @@ import Stats from "stats.js"
 const dev = new class Dev {
     constructor() {
         this.isEnabled = false // !!
-        this.isEnabled = true
         if(this.isEnabled == false) return
 
         this.stats = new Stats()
