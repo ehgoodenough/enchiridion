@@ -18,14 +18,12 @@ export default class Mount {
     get onClick() {
         return (event) => {
             const route = this.route
-            console.log(route)
             if(route.screen != "video") {
                 route.screen = "video"
             } else {
                 route.index += 1
                 route.screen = "title"
             }
-            console.log(route)
             window.location.hash = "#/" + route.index + "/" + route.screen
         }
     }
@@ -50,15 +48,15 @@ export default class Mount {
         if(this.route.screen == "title") {
             return (
                 <div class="TitleScreen">
-                    <div class="Emoji">{this.entry["Emoji"] || "😃"}</div>
-                    <div class="Title">{this.entry["Game Name"]}</div>
+                    <div class="Emoji">{this.entry.emoji || "😃"}</div>
+                    <div class="Title">{this.entry.title}</div>
                 </div>
             )
         }
         if(this.route.screen == "video") {
             return (
                 <div class="VideoScreen">
-                    <Youtube/>
+                    <Youtube youtube={this.entry.youtube}/>
                 </div>
             )
         }
@@ -68,10 +66,9 @@ export default class Mount {
 class Youtube {
     render() {
         return (
-            <iframe width="560" height="315" src={"https://www.youtube.com/embed/" + "Anji33pmKKk"} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe width="560" height="315" src={"https://www.youtube.com/embed/" + this.props.youtube + "?autoplay=1"} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         )
     }
 }
 
-// TODO: progress the hash
-// TODO: pull youtube url
+// TODO: Transitions between slides?
