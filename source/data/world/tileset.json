@@ -44,7 +44,8 @@
          "id":3,
          "image":"..\/..\/assets\/images\/gravestone.png",
          "imageheight":16,
-         "imagewidth":16
+         "imagewidth":16,
+         "type":"collision"
         }, 
         {
          "id":4,

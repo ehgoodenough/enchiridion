@@ -3,25 +3,24 @@ import analytics from "library/analytics.js"
 
 import App from "models/App.js"
 import Player from "models/Player.js"
-import World from "models/World.js"
-import Camera from "models/Camera.js"
+import State from "models/State.js"
 
 export default class Game {
-    constructor() {
-        analytics.reportStartGame()
+    constructor({savestate} = {}) {
+        this.start()
 
-        this.world = new World()
-        this.camera = new Camera(this)
+        this.state = State.generate()
+
+        if(savestate != undefined) {
+            this.state = State.merge(this.state, savestate)
+        }
     }
     update(delta) {
-        if(this.hasEnded) {
-            return
-        }
+        if(this.hasEnded) return
         Player.update(this, delta)
-        this.camera.reaction(this)
     }
     static performReactions(game) {
-        Objdict.forEach(game.world.entities, (entity) => {
+        Objdict.forEach(game.state.entities, (entity) => {
             if(entity.reaction instanceof Function) {
                 entity.reaction(game)
             }
@@ -30,6 +29,20 @@ export default class Game {
         // if(this.isDemo != true) {
         //     // App.saveGame(game)
         // }
+    }
+    static pruneProgress(game) {
+        const collectibles = Object.values(game.state.entities).filter((entity) => {
+            return entity.type == "collectible"
+                && entity.status == "collected"
+        })
+        return {
+            "entities": collectibles.map((collectible) => {
+                return {"key": collectible.key, "status": collectible.status}
+            })
+        }
+    }
+    start() {
+        analytics.reportStartGame()
     }
     end() {
         analytics.reportEndGame()

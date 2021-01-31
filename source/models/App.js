@@ -8,8 +8,6 @@ import Game from "models/Game.js"
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
 const STATE_EXPIRATION = 10 * 1000 // in milliseconds
 
-const DEMO_GAME_STATE = {"isDemo": true, "adventurer": {"position": {"x": 2, "y": 2}}}
-const NEW_GAME_STATE = {"adventurer": {"position": {"x": 2, "y": 2}}}
 
 const Dev = {"isInDevMode": true}
 
@@ -27,11 +25,7 @@ const App = new class {
             this.hasUsedKeyboard = state.hasUsedKeyboard
             this.game = new Game({"game": state.game})
         } else {
-            if(Dev.isInDevMode == true) {
-                this.game = new Game({"game": NEW_GAME_STATE})
-            } else {
-                this.game = new Game({"game": DEMO_GAME_STATE})
-            }
+            this.game = new Game()
         }
     }
     startNewGame() {
@@ -53,8 +47,9 @@ const App = new class {
                 || keyb.isJustDown("<right>", delta.ms)
                 || keyb.isJustDown("<space>", delta.ms)
                 || poin.wasJustPressed("primary", delta.ms)) {
-                    // Game.pruneProgress(this.game)
-                    // return this.startNewGame()
+                    const savestate = Game.pruneProgress(this.game)
+                    console.log(savestate)
+                    this.game = new Game({savestate})
                 }
             }
         }

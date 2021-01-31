@@ -9,7 +9,7 @@ export default class World {
         return (
             <div class="World">
                 <div class="Tiles">
-                    {Object.values(App.game.world.environment.tiles).map((tile) => {
+                    {Object.values(App.game.state.world.tiles).map((tile) => {
                         return (
                             <div class="Tile" style={{"left": tile.position.x + "em", "top": tile.position.y + "em"}}>
                                 {tile.images && tile.images.map((image) => {

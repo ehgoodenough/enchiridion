@@ -31,7 +31,7 @@ export default class Game {
         ].join(" ")
     }
     get entities() {
-        return Object.values(App.game.world.entities).map((entity) => (
+        return Object.values(App.game.state.entities).map((entity) => (
             <Entity entity={entity} key={entity.key}/>
         ))
     }

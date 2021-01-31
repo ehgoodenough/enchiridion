@@ -58,7 +58,7 @@ export default class Player {
         }
     }
     static performAction(game, action) {
-        const player = game.world.entities["player"]
+        const player = game.state.entities.player
 
         player.isAttacking = false
 
@@ -66,7 +66,7 @@ export default class Player {
         action.move.y = action.move.y || 0
         player.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"
 
-        Objdict.forEach(game.world.entities, (entity) => {
+        Objdict.forEach(game.state.entities, (entity) => {
             if(entity != this
             && entity.isDead != true
             && player.position.x + action.move.x == entity.position.x
@@ -88,10 +88,11 @@ export default class Player {
 
         const mx = player.position.x + action.move.x
         const my = player.position.y + action.move.y
-        const tile = game.world.environment.tiles[mx + "x" + my]
+        const tile = game.state.world.tiles[mx + "x" + my]
         if(tile != undefined && tile.collision == true) {
             action.move.x = 0
             action.move.y = 0
+            return
         }
 
         player.prevposition = {}
@@ -104,7 +105,7 @@ export default class Player {
         Game.performReactions(game)
     }
     static isDead(game) {
-        const player = game.world.entities["player"]
+        const player = game.state.entities.player
         return player == undefined
             || player.damage >= player.health
     }

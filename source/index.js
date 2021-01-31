@@ -9,11 +9,9 @@ import analytics from "library/analytics.js"
 //////////
 
 import frem from "frem"
+import frame from "data/frame.js"
 
-frem({
-    "width": 10,
-    "height": 10,
-})
+frem(frame)
 
 
 ///////////
