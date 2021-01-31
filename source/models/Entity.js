@@ -69,7 +69,7 @@ import scripts from "data/scripts.js"
 function performScript(state, script) {
     script.time = Date.now()
     state.script = {
-        "time": Date.now() + 1000,
+        "time": Date.now() + 500,
         "dialogue": script.dialogue.slice(), // shallow copy
         "goto": script.goto,
     }
@@ -192,7 +192,6 @@ const classedEntities = {
         "hasCollision": true,
         "images": {
             "standard": require("assets/images/char_slime.png"),
-            "threatening": require("assets/images/char_slime.png"),
         },
         "getAnimation": function() {
             if(this.isAttacking) {
@@ -205,7 +204,6 @@ const classedEntities = {
                 return "ooze"
             }
         },
-        "getImage": FlipFlopImage,
         "reaction": function(state) {
             StandardReaction(state, this, () => {
                 const action = {"move": {"x": 0, "y": 0}}
@@ -242,8 +240,7 @@ const classedEntities = {
         "description": "It looks gross.",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/char_slime.png"),
-            "threatening": require("assets/images/char_slime.png"),
+            "standard": require("assets/images/char_slime2.png"),
         },
         "getAnimation": function() {
             if(this.isAttacking) {
@@ -257,7 +254,6 @@ const classedEntities = {
             }
         },
         "health": 2,
-        "getImage": FlipFlopImage,
         "reaction": function(state) {
             StandardReaction(state, this, () => {
                 const action = {"move": {"x": 0, "y": 0}}
@@ -295,7 +291,6 @@ const classedEntities = {
         "hasCollision": true,
         "images": {
             "standard": require("assets/images/char_bat.png"),
-            "threatening": require("assets/images/char_bat.png"),
         },
         "getAnimation": StrikingAnimation,
         "getAnimation": function() {
@@ -348,7 +343,7 @@ const classedEntities = {
         "description": "Yikes, where is it going??",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/char_bat.png"),
+            "standard": require("assets/images/char_bat2.png"),
         },
         "getAnimation": StrikingAnimation,
         "reaction": function(state) {
@@ -428,7 +423,7 @@ const classedEntities = {
         "description": "Ssssss",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/char_snake.png"),
+            "standard": require("assets/images/char_snake2.png"),
         },
         "health": 2,
         "reaction": function(state) {

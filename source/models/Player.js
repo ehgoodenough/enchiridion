@@ -12,7 +12,7 @@ import scripts from "data/scripts.js"
 import directions from "data/directions.js"
 import deathtext from "data/deathtext.js"
 
-const MIN_DIALOGUE_TIME = 500 // in ms
+const MIN_DIALOGUE_TIME = 100 // in ms
 
 export default class Player {
     static update(state, delta) {
