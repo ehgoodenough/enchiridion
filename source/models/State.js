@@ -171,4 +171,29 @@ export default class State {
         })
         return state
     }
+    static performReactions(state) {
+        Objdict.forEach(state.entities, (entity) => {
+            if(entity.reaction instanceof Function) {
+                entity.reaction(state)
+            }
+        })
+
+        // App.saveGame(game)
+    }
+    static pruneProgress(state) {
+        const collectibles = Object.values(state.entities).filter((entity) => {
+            return entity.type == "collectible"
+                && entity.status == "collected"
+        })
+        return {
+            "entities": collectibles.map((collectible) => {
+                return {"key": collectible.key, "status": collectible.status}
+            })
+        }
+    }
+    static getCollectibleProgress(state) {
+        const totalCollectibles = Object.values(state.entities).filter((entity) => entity.type == "collectible")
+        const currentCollectibles = totalCollectibles.filter((entity) => entity.status == "collected")
+        return {"current": currentCollectibles.length, "total": totalCollectibles.length}
+    }
 }

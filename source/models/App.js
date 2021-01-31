@@ -4,6 +4,7 @@ import keyb from "keyb"
 import poin from "poin"
 
 import Game from "models/Game.js"
+import State from "models/State.js"
 
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
 const STATE_EXPIRATION = 10 * 1000 // in milliseconds
@@ -33,7 +34,7 @@ const App = new class {
     }
     update(delta) {
         if(this.game.isDemo === true
-        || this.game.hasEnded === true) {
+        || this.game.state.hasEnded === true) {
             this.deathtime = this.deathtime || 0
             this.deathtime += delta.s
             if(this.deathtime > MINIMUM_DEATH_TIME) {
@@ -47,7 +48,7 @@ const App = new class {
                 || keyb.isJustDown("<right>", delta.ms)
                 || keyb.isJustDown("<space>", delta.ms)
                 || poin.wasJustPressed("primary", delta.ms)) {
-                    const savestate = Game.pruneProgress(this.game)
+                    const savestate = State.pruneProgress(this.game.state)
                     console.log(savestate)
                     this.game = new Game({savestate})
                 }

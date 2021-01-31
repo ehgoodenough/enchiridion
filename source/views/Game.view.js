@@ -25,7 +25,7 @@ export default class Game {
     get className() {
         return [
             "Game",
-            App.game.isDone === true ? "isDone" : "",
+            App.game.state.hasEnded === true ? "hasEnded" : "",
             App.game.isDemo === true ? "isDemo" : "",
             App.game.isTutorial ? "isTutorial" : "",
         ].join(" ")

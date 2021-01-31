@@ -205,7 +205,7 @@
     }
 }
 
-.Game.isPaused:not(.isDone) {
+.Game.isPaused:not(.hasEnded) {
     .UI {
         .pause-banner {
             transition-delay: 1.5s;
@@ -216,7 +216,7 @@
     }
 }
 
-.Game.isDone {
+.Game.hasEnded {
     .UI {
         .hearts, .score {
             opacity: 0;

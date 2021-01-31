@@ -15,7 +15,7 @@
         }
     }
 
-    &.isDone {
+    &.hasEnded {
         .Scene {
             filter: blur(0.05em);
 
@@ -25,7 +25,7 @@
         }
     }
 
-    &.isPaused:not(.isDone):not(.isDemo) {
+    &.isPaused:not(.hasEnded):not(.isDemo) {
         .Scene {
             filter: blur(0.125em);
 

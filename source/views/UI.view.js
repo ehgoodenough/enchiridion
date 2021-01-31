@@ -1,6 +1,7 @@
 import * as Preact from "preact"
 
 import App from "models/App.js"
+import State from "models/State.js"
 
 import "views/UI.view.less"
 
@@ -53,11 +54,10 @@ export default class UI {
         return hearts
     }
     get score() {
-        const totalCollectibles = Object.values(App.game.state.entities).filter((entity) => entity.type == "collectible")
-        const currentCollectibles = totalCollectibles.filter((entity) => entity.status == "collected")
+        const collectibles = State.getCollectibleProgress(App.game.state)
         return (
             <span>
-                {currentCollectibles.length} of {totalCollectibles.length}
+                {collectibles.current} of {collectibles.total}{collectibles.current == collectibles.total ? "!!" : ""}
             </span>
         )
     }

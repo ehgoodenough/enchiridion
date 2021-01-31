@@ -16,39 +16,14 @@ export default class Game {
         }
     }
     update(delta) {
-        if(this.hasEnded) return
-        Player.update(this, delta)
-    }
-    static performReactions(game) {
-        Objdict.forEach(game.state.entities, (entity) => {
-            if(entity.reaction instanceof Function) {
-                entity.reaction(game)
-            }
-        })
-
-        // if(this.isDemo != true) {
-        //     // App.saveGame(game)
-        // }
-    }
-    static pruneProgress(game) {
-        const collectibles = Object.values(game.state.entities).filter((entity) => {
-            return entity.type == "collectible"
-                && entity.status == "collected"
-        })
-        return {
-            "entities": collectibles.map((collectible) => {
-                return {"key": collectible.key, "status": collectible.status}
-            })
-        }
+        if(this.state.hasEnded) return
+        Player.update(this.state, delta)
     }
     start() {
         analytics.reportStartGame()
     }
     end() {
         analytics.reportEndGame()
-    }
-    get isDone() {
-        return this.hasEnded
     }
     get isTutorial() {
         if(this.isDemo) {

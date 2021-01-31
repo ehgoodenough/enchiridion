@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":8,
+ "tilecount":9,
  "tiledversion":"1.4.2",
  "tileheight":18,
  "tiles":[
@@ -74,6 +74,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"collectible"
+        }, 
+        {
+         "id":8,
+         "image":"..\/..\/assets\/images\/goal.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"goal"
         }],
  "tilewidth":18,
  "type":"tileset",
