@@ -39,7 +39,7 @@ const directionsByLabel = {
 // tilemap.tileheight == 16 // in pixels
 
 const FIRST_TILEGID = 1
-const TILE_SIZE = 16
+const TILE_SIZE = 32
 
 function iterateTileLayer(layer, func) {
     layer.data.forEach((tilegid, index) => {
