@@ -12,10 +12,18 @@ export default class Mount {
             <div className="Mount">
                 <div className="Frame">
                     <Preload/>
-                    <Game/>
+                    {this.screen}
                 </div>
             </div>
         )
+    }
+    get screen() {
+        if(App.screen == undefined) {
+            return <Game/>
+        }
+        if(App.screen == "CreditsScreen") {
+            return <CreditsScreen/>
+        }
     }
 }
 
@@ -30,6 +38,15 @@ function Preload() {
             <img src={require("assets/images/ui/heart-half-white.png")}/>
             <img src={require("assets/images/ui/heart-none-white.png")}/>
             <img src={require("assets/images/ui/keyboard.png")}/>
+        </div>
+    )
+}
+
+function CreditsScreen() {
+    return (
+        <div class="CreditsScreen">
+            The world will remember your stewardship.
+            (Thanks for playing!!)
         </div>
     )
 }

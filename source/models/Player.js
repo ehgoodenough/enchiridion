@@ -8,6 +8,7 @@ import State from "models/State.js"
 import Entity from "models/Entity.js"
 import Dev from "library/Dev.js"
 
+import scripts from "data/scripts.js"
 import directions from "data/directions.js"
 import deathtext from "data/deathtext.js"
 
@@ -61,7 +62,8 @@ export default class Player {
                 if(entity.hasCollision == true) {
                     if(entity.key != player.key) {
                         player.isAttacking = true
-                        if(entity.handleAttacked instanceof Function) {
+                        if((entity.type == "goal" || scripts["sword1"].hasBeenTriggered == true)
+                        && entity.handleAttacked instanceof Function) {
                             entity.handleAttacked(state)
                         }
                     }

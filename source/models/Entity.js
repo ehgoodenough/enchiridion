@@ -64,7 +64,34 @@ function FlipFlopImage() {
     }
 }
 
+import scripts from "data/scripts.js"
+
+function performScript(script) {
+    script.dialogue.forEach((text) => {
+        window.alert(text)
+    })
+    if(script.goto != undefined) {
+        App.screen = script.goto
+    }
+}
+
 const classedEntities = {
+    "dialogue": {
+        "hasCollision": false,
+        "images": {
+            "standard": require("assets/images/collectible.png"),
+        },
+        "getOpacity": function() {
+            return 0
+        },
+        "handleSquished": function(state) {
+            if(scripts[this.scriptKey] != undefined
+            && scripts[this.scriptKey].hasBeenTriggered != true) {
+                scripts[this.scriptKey].hasBeenTriggered = true
+                performScript(scripts[this.scriptKey])
+            }
+        }
+    },
     "adventurer": {
         "title": "The Adventurer",
         "description": "It you!!",
@@ -110,6 +137,15 @@ const classedEntities = {
         "handleSquished": function(state) {
             if(this.status != "collected") {
                 this.status = "collected"
+
+                const collectibles = State.getCollectibleProgress(state)
+                if(collectibles.current == collectibles.total) {
+                    if(scripts["finalshard"] != undefined
+                    && scripts["finalshard"].hasBeenTriggered != true) {
+                        scripts["finalshard"].hasBeenTriggered = true
+                        performScript(scripts["finalshard"])
+                    }
+                }
             }
         }
     },
@@ -120,16 +156,24 @@ const classedEntities = {
         },
     },
     "goal": {
-        "hasCollision": false,
+        "hasCollision": true,
         "images": {
             "standard": require("assets/images/goal.png"),
         },
-        "handleSquished": function(state) {
+        "handleAttacked": function(state) {
             const collectibles = State.getCollectibleProgress(state)
             if(collectibles.current == collectibles.total) {
-                window.alert("You Win!!")
+                if(scripts["sword2"] != undefined
+                && scripts["sword2"].hasBeenTriggered != true) {
+                    scripts["sword2"].hasBeenTriggered = true
+                    performScript(scripts["sword2"])
+                }
+            } else if(scripts["sword1"] != undefined
+            && scripts["sword1"].hasBeenTriggered != true) {
+                scripts["sword1"].hasBeenTriggered = true
+                performScript(scripts["sword1"])
             } else {
-                window.alert("Come back when you've collected all the things.")
+                performScript(scripts["..."])
             }
         }
     },

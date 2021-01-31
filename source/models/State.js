@@ -104,10 +104,13 @@ export default class State {
                         object.direction = directionsByLabel[object.direction]
                     }
 
+                    object.scriptKey = findPropertyValue(object.properties, "ScriptKey")
+
                     const entity = Entity.generate({
                         "key": object.key || object.id,
                         "type": object.type,
                         "direction": object.direction,
+                        "scriptKey": object.scriptKey,
                         "position": {
                             "x": Math.floor(object.x / TILE_SIZE),
                             "y": Math.floor(object.y / TILE_SIZE) - 1, // TODO: Why -1?
