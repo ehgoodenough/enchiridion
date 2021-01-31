@@ -109,6 +109,12 @@ const classedEntities = {
             }
         }
     },
+    "shrub": {
+        "hasCollision": true,
+        "images": {
+            "standard": require("assets/images/shrub.png"),
+        },
+    },
     "goal": {
         "hasCollision": false,
         "images": {
