@@ -51,7 +51,7 @@ export default class Player {
 
         action.move.x = action.move.x || 0
         action.move.y = action.move.y || 0
-        player.direction = directions[action.move.x + "x" + action.move.y] || "none"
+        player.direction = {"x": action.move.x, "y": action.move.y}
 
         Objdict.forEach(state.entities, (entity) => {
             if(entity != this

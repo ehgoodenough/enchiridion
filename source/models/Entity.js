@@ -46,9 +46,13 @@ const defaultEntity = {
     },
 }
 
+function getDirectionLabel(direction) {
+    return directions[direction.x + "x" + direction.y] || "none"
+}
+
 function StrikingAnimation() {
     if(this.isAttacking) {
-        return "strike" + "-" + this.direction
+        return "strike" + "-" + getDirectionLabel(this.direction)
     }
 }
 
@@ -139,7 +143,7 @@ const classedEntities = {
         },
         "getAnimation": function() {
             if(this.isAttacking) {
-                return "strike" + "-" + this.direction
+                return "strike" + "-" + getDirectionLabel(this.direction)
             }
 
             if(this.flipflop === true) {
@@ -173,6 +177,8 @@ const classedEntities = {
                             action.move.x = +1
                         }
                     }
+
+                    this.direction = {"x": action.move.x, "y": action.move.y}
                 }
                 return action
             })
@@ -214,12 +220,58 @@ const classedEntities = {
                     if(moves.length > 0) {
                         action.move = moves[Math.floor((Math.random() * moves.length))]
                     }
+
+                    this.direction = {"x": action.move.x, "y": action.move.y}
                 }
 
                 return action
             })
         }
-    }
+    },
+    "red_snake": {
+        "title": "Red Snake",
+        "description": "Ssssss",
+        "hasCollision": true,
+        "images": {
+            "standard": require("assets/images/snake.png"),
+        },
+        "reaction": function(state) {
+            const entity = this
+            StandardReaction(state, entity, () => {
+                const action = {"move": {"x": 0, "y": 0}}
+
+                if(entity.direction == undefined) {
+                    entity.direction = Object.keys(directions)
+                    entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)]
+                    entity.direction = entity.direction.split("x")
+                    entity.direction = {"x": parseInt(entity.direction[0]), "y": parseInt(entity.direction[1])}
+                }
+                action.move.x = entity.direction.x // * entity.speed
+                action.move.y = entity.direction.y // * entity.speed
+
+                const x = entity.position.x + action.move.x
+                const y = entity.position.y + action.move.y
+                Objdict.forEach(state.entities, (otherEntity) => {
+                    if(entity != otherEntity
+                    && otherEntity.isDead != true
+                    && otherEntity.hasCollision == true
+                    && x == otherEntity.position.x
+                    && y == otherEntity.position.y) {
+                        entity.direction.x *= -1
+                        entity.direction.y *= -1
+                    }
+                })
+
+                const tile = state.world.tiles[x + "x" + y]
+                if(tile != undefined && tile.collision == true) {
+                    this.direction.x *= -1
+                    this.direction.y *= -1
+                }
+
+                return action
+            })
+        }
+    },
 }
 
 function StandardReaction(state, entity, getActionFromAI) {
@@ -232,7 +284,6 @@ function StandardReaction(state, entity, getActionFromAI) {
     action.move.y = action.move.y || 0
 
     entity.isAttacking = false
-    entity.direction = directions[action.move.x + "x" + action.move.y] || "none"
 
     // COLLISION WITH OTHER ENTITIES
     Objdict.forEach(state.entities, (otherEntity) => {
@@ -272,7 +323,7 @@ function filterInvalidMovements(state, entity, moves) {
             if(entity != otherEntity
             && otherEntity.isDead != true
             && otherEntity.hasCollision == true
-            && otherEntity.type == "adventurer" // THE ONLY ENTITY IT'LL RUN INTO
+            && otherEntity.key == "player" // THE ONLY ENTITY IT'LL RUN INTO
             && x == otherEntity.position.x
             && y == otherEntity.position.y) {
                 return false

@@ -4,6 +4,7 @@ import shortid from "shortid"
 import App from "models/App.js"
 import Entity from "models/Entity.js"
 
+import directions from "data/directions.js"
 import tilemap from "data/world/tilemap.json"
 import tileset from "data/world/tileset.json"
 
@@ -93,9 +94,14 @@ export default class State {
                         return
                     }
 
+                    if(object.direction != undefined) {
+                        object.direction = directions[object.direction]
+                    }
+
                     const entity = Entity.generate({
                         "key": object.key || object.id,
                         "type": object.type,
+                        "direction": object.direction,
                         "position": {
                             "x": Math.floor(object.x / TILE_SIZE),
                             "y": Math.floor(object.y / TILE_SIZE) - 1, // TODO: Why -1?

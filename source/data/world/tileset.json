@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":11,
+ "tilecount":12,
  "tiledversion":"1.4.2",
  "tileheight":18,
  "tiles":[
@@ -95,6 +95,13 @@
          "imageheight":18,
          "imagewidth":18,
          "type":"shrub"
+        }, 
+        {
+         "id":11,
+         "image":"..\/..\/assets\/images\/snake.png",
+         "imageheight":18,
+         "imagewidth":18,
+         "type":"red_snake"
         }],
  "tilewidth":18,
  "type":"tileset",
