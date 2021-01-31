@@ -98,8 +98,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(yaafloop__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
 /* harmony import */ var library_Dev_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2);
-/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(137);
-/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(160);
+/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(138);
+/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(161);
 ////////////////
 // Analytics //
 //////////////
@@ -194,7 +194,10 @@ var dev = new ( /*#__PURE__*/function () {
   function Dev() {
     _classCallCheck(this, Dev);
 
+    this.isEnabled = false; // !!
+
     this.isEnabled = true;
+    if (this.isEnabled == false) return;
     this.stats = new stats_js__WEBPACK_IMPORTED_MODULE_0___default.a();
     this.stats.dom.style.position = "absolute";
     this.stats.dom.style.display = "flex";
@@ -5218,7 +5221,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var library_Dev_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(2);
 /* harmony import */ var data_scripts_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(30);
 /* harmony import */ var data_directions_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(29);
-/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(136);
+/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(137);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -5236,6 +5239,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+var MIN_DIALOGUE_TIME = 500; // in ms
 
 var Player = /*#__PURE__*/function () {
   function Player() {
@@ -5246,6 +5250,26 @@ var Player = /*#__PURE__*/function () {
     key: "update",
     value: function update(state, delta) {
       if (models_Entity_js__WEBPACK_IMPORTED_MODULE_6__["default"].isDead(state, state.entities.player)) {
+        return;
+      }
+
+      if (state.script != undefined) {
+        if (Date.now() - state.script.time > MIN_DIALOGUE_TIME) {
+          if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("W", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("S", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("A", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("D", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<up>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<down>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<left>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<right>", delta.ms)) {
+            state.script.time = Date.now();
+            state.script.dialogue.shift(); // this mutates the source!!
+
+            if (state.script.dialogue[0] == undefined) {
+              if (state.script["goto"] != undefined) {
+                models_App_js__WEBPACK_IMPORTED_MODULE_3__["default"].screen = state.script["goto"]; // THIS WILL TELEPORT YOU TO THIS SCREEN AFTER THE DIALOGUE FINISHES
+              }
+
+              delete state.script;
+              return;
+            }
+          }
+        }
+
         return;
       }
 
@@ -5310,8 +5334,7 @@ var Player = /*#__PURE__*/function () {
         if (entity != _this && entity.isDead != true && player.position.x + action.move.x == entity.position.x && player.position.y + action.move.y == entity.position.y) {
           if (entity.hasCollision == true) {
             if (entity.key != player.key) {
-              player.isAttacking = true;
-
+              // player.isAttacking = true // REMOVED CUZ IT BAD
               if ((entity.type == "goal" || data_scripts_js__WEBPACK_IMPORTED_MODULE_8__["default"]["sword1"].hasBeenTriggered == true) && entity.handleAttacked instanceof Function) {
                 entity.handleAttacked(state);
               }
@@ -5375,10 +5398,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
 /* harmony import */ var models_Entity_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(28);
 /* harmony import */ var data_directions_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
-/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(46);
-var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(46, 1);
-/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(47);
-var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6___namespace = /*#__PURE__*/__webpack_require__.t(47, 1);
+/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40);
+var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(40, 1);
+/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(41);
+var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6___namespace = /*#__PURE__*/__webpack_require__.t(41, 1);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -5401,7 +5424,7 @@ var contextualize = function contextualize(context) {
   return recontext;
 };
 
-var buildImagePaths = contextualize(__webpack_require__(48));
+var buildImagePaths = contextualize(__webpack_require__(42));
 
 if (data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.tilesets.length != 1 || data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.tilesets[0].source != "tileset.json") {
   console.error("Unexpected tilesets", data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.tilesets);
@@ -5434,7 +5457,7 @@ var directionsByLabel = {
 // tilemap.tileheight == 16 // in pixels
 
 var FIRST_TILEGID = 1;
-var TILE_SIZE = 16;
+var TILE_SIZE = 32;
 
 function iterateTileLayer(layer, func) {
   layer.data.forEach(function (tilegid, index) {
@@ -5664,6 +5687,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
 /* harmony import */ var data_directions_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
 /* harmony import */ var data_scripts_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(30);
+var _red_bat;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -5751,14 +5778,14 @@ function FlipFlopImage() {
 
 
 
-function performScript(script) {
-  script.dialogue.forEach(function (text) {
-    window.alert(text);
-  });
-
-  if (script["goto"] != undefined) {
-    models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].screen = script["goto"];
-  }
+function performScript(state, script) {
+  script.time = Date.now();
+  state.script = {
+    "time": Date.now() + 1000,
+    "dialogue": script.dialogue.slice(),
+    // shallow copy
+    "goto": script["goto"]
+  };
 }
 
 var classedEntities = {
@@ -5773,7 +5800,7 @@ var classedEntities = {
     "handleSquished": function handleSquished(state) {
       if (data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"][this.scriptKey] != undefined && data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"][this.scriptKey].hasBeenTriggered != true) {
         data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"][this.scriptKey].hasBeenTriggered = true;
-        performScript(data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"][this.scriptKey]);
+        performScript(state, data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"][this.scriptKey]);
       }
     }
   },
@@ -5828,7 +5855,7 @@ var classedEntities = {
         if (collectibles.current == collectibles.total) {
           if (data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["finalshard"] != undefined && data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["finalshard"].hasBeenTriggered != true) {
             data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["finalshard"].hasBeenTriggered = true;
-            performScript(data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["finalshard"]);
+            performScript(state, data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["finalshard"]);
           }
         }
       }
@@ -5843,7 +5870,15 @@ var classedEntities = {
   "goal": {
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(35)
+      "standard": __webpack_require__(35),
+      "empty": __webpack_require__(36)
+    },
+    "getImage": function getImage(state) {
+      if (data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword1"].hasBeenTriggered == true && data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword2"].hasBeenTriggered != true) {
+        return this.images.empty;
+      } else {
+        return this.images.standard;
+      }
     },
     "handleAttacked": function handleAttacked(state) {
       var collectibles = models_State_js__WEBPACK_IMPORTED_MODULE_3__["default"].getCollectibleProgress(state);
@@ -5851,13 +5886,13 @@ var classedEntities = {
       if (collectibles.current == collectibles.total) {
         if (data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword2"] != undefined && data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword2"].hasBeenTriggered != true) {
           data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword2"].hasBeenTriggered = true;
-          performScript(data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword2"]);
+          performScript(state, data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword2"]);
         }
       } else if (data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword1"] != undefined && data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword1"].hasBeenTriggered != true) {
         data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword1"].hasBeenTriggered = true;
-        performScript(data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword1"]);
+        performScript(state, data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["sword1"]);
       } else {
-        performScript(data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["..."]);
+        performScript(state, data_scripts_js__WEBPACK_IMPORTED_MODULE_5__["default"]["..."]);
       }
     }
   },
@@ -5866,7 +5901,7 @@ var classedEntities = {
     "description": "It looks gross.",
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(36),
+      "standard": __webpack_require__(37),
       "threatening": __webpack_require__(37)
     },
     "getAnimation": function getAnimation() {
@@ -5926,8 +5961,8 @@ var classedEntities = {
     "description": "It looks gross.",
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(38),
-      "threatening": __webpack_require__(39)
+      "standard": __webpack_require__(37),
+      "threatening": __webpack_require__(37)
     },
     "getAnimation": function getAnimation() {
       if (this.isAttacking) {
@@ -5982,76 +6017,82 @@ var classedEntities = {
       });
     }
   },
-  "red_bat": {
+  "red_bat": (_red_bat = {
     "title": "Red Bat",
     "description": "Yikes, where is it going??",
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(40),
-      "threatening": __webpack_require__(41)
+      "standard": __webpack_require__(38),
+      "threatening": __webpack_require__(38)
     },
-    "getAnimation": StrikingAnimation,
-    "getImage": FlipFlopImage,
-    "reaction": function reaction(state) {
-      var _this3 = this;
+    "getAnimation": StrikingAnimation
+  }, _defineProperty(_red_bat, "getAnimation", function getAnimation() {
+    if (this.isAttacking) {
+      return "strike" + "-" + getDirectionLabel(this.direction);
+    }
 
-      StandardReaction(state, this, function () {
-        var action = {
-          "move": {
-            "x": 0,
-            "y": 0
-          }
-        };
+    if (this.flipflop === true) {
+      return "shake";
+    } else {
+      return "ooze";
+    }
+  }), _defineProperty(_red_bat, "reaction", function reaction(state) {
+    var _this3 = this;
 
-        if (_this3.flipflop != true) {
-          _this3.flipflop = true;
-        } else if (_this3.flipflop = true) {
-          _this3.flipflop = false;
-          var moves = [{
-            x: -1
-          }, {
-            x: +1
-          }, {
-            y: -1
-          }, {
-            y: +1
-          }]; // moves.forEach((move) => {
-          //     const x = this.position.x + (move.x || 0)
-          //     const y = this.position.y + (move.y || 0)
-          //     if(state.entities.player.position.x == x
-          //     && state.entities.player.position.y == y) {
-          //         moves = [move]
-          //     }
-          // })
+    StandardReaction(state, this, function () {
+      var action = {
+        "move": {
+          "x": 0,
+          "y": 0
+        }
+      };
 
-          if (moves.length > 1) {
-            moves = filterInvalidMovements(state, _this3, moves);
-          }
+      if (_this3.flipflop != true) {
+        _this3.flipflop = true;
+      } else if (_this3.flipflop = true) {
+        _this3.flipflop = false;
+        var moves = [{
+          x: -1
+        }, {
+          x: +1
+        }, {
+          y: -1
+        }, {
+          y: +1
+        }]; // moves.forEach((move) => {
+        //     const x = this.position.x + (move.x || 0)
+        //     const y = this.position.y + (move.y || 0)
+        //     if(state.entities.player.position.x == x
+        //     && state.entities.player.position.y == y) {
+        //         moves = [move]
+        //     }
+        // })
 
-          if (moves.length > 0) {
-            action.move = moves[Math.floor(Math.random() * moves.length)];
-          }
-
-          _this3.direction = {
-            "x": action.move.x,
-            "y": action.move.y
-          };
+        if (moves.length > 1) {
+          moves = filterInvalidMovements(state, _this3, moves);
         }
 
-        return action;
-      });
-    }
-  },
+        if (moves.length > 0) {
+          action.move = moves[Math.floor(Math.random() * moves.length)];
+        }
+
+        _this3.direction = {
+          "x": action.move.x,
+          "y": action.move.y
+        };
+      }
+
+      return action;
+    });
+  }), _red_bat),
   "blue_bat": {
     "title": "Blue Bat",
     "description": "Yikes, where is it going??",
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(42),
-      "threatening": __webpack_require__(43)
+      "standard": __webpack_require__(38)
     },
     "getAnimation": StrikingAnimation,
-    "getImage": FlipFlopImage,
     "reaction": function reaction(state) {
       var _this4 = this;
 
@@ -6100,7 +6141,7 @@ var classedEntities = {
     "description": "Ssssss",
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(44)
+      "standard": __webpack_require__(39)
     },
     "reaction": function reaction(state) {
       var _this5 = this;
@@ -6152,7 +6193,7 @@ var classedEntities = {
     "description": "Ssssss",
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(45)
+      "standard": __webpack_require__(39)
     },
     "health": 2,
     "reaction": function reaction(state) {
@@ -6277,7 +6318,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   "welcome": {
-    "dialogue": [["Come closer.", "Take hold of me, and wield true power!"]]
+    "dialogue": [["Come closer.", "Take hold of me", "and wield true power!"]]
   },
   "sword1": {
     "dialogue": [["My true strength lies dormant.", "Seek the shards of dawn to reclaim my edge."]]
@@ -6294,7 +6335,8 @@ __webpack_require__.r(__webpack_exports__);
   "sword2": {
     "dialogue": [["... I shall rest here."], ["My strength is of no use during these times of peace.", "It is my fate to lie dormant, lost to time..."], ["But one day, a courageous warrior will take up my", "blade and wield my true power against the foes of darkness."], ["They will have your stewardship to thank at such time."], // {"type": "pause"},
     ["Thank you, brave wanderer."]],
-    "goto": "CreditsScreen" // THIS SHOULD BE ANOTHER SCRIPT NODE
+    "goto": "CreditsScreen" // THIS SHOULD BE ANOTHER SCRIPT NODE?? LIKE PAUSE
+    // THIS WILL TELEPORT YOU TO THIS SCREEN AFTER THE DIALOGUE FINISHES
 
   }
 });
@@ -6309,7 +6351,7 @@ module.exports = __webpack_require__.p + "9fedbeeb5e578fb9806c615ffb10ac91.png";
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "ff27ca3405bc70444409f138274b9fa6.png";
+module.exports = __webpack_require__.p + "0464603c3b0067d676c93aa705e16b15.png";
 
 /***/ }),
 /* 33 */
@@ -6327,144 +6369,108 @@ module.exports = __webpack_require__.p + "2f747899813e947f0a270a4d19ffeebf.png";
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "82b6cabe717c051ab4c1ca76f8084807.png";
+module.exports = __webpack_require__.p + "fcafd3ecf40a73701c526c473558861b.png";
 
 /***/ }),
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
+module.exports = __webpack_require__.p + "d08158709f0fb8543824debe4c0eeab5.png";
 
 /***/ }),
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
+module.exports = __webpack_require__.p + "39eb68005417cc5a38ef96657faabfdd.png";
 
 /***/ }),
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "705ed10c4e482691c6a56986c61f35e4.png";
+module.exports = __webpack_require__.p + "09d68d8cc2370243481e77a9dcbb1d44.png";
 
 /***/ }),
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "6d3072345168b77c9f4ecb078ec6c38a.png";
+module.exports = __webpack_require__.p + "ea2ce463d2c051335a8b38e95956cc3c.png";
 
 /***/ }),
 /* 40 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module) {
 
-module.exports = __webpack_require__.p + "f5c7b676f22b54dda222e356513bb454.png";
+module.exports = JSON.parse("{\"compressionlevel\":-1,\"editorsettings\":{\"export\":{\"target\":\".\"}},\"height\":60,\"infinite\":false,\"layers\":[{\"data\":[91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91,91],\"height\":60,\"id\":22,\"name\":\"floor\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[59,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,57,59,55,55,55,55,57,59,55,55,55,55,55,55,55,55,57,59,55,55,55,55,55,55,55,55,57,61,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,60,61,68,68,68,68,60,61,68,68,68,68,68,68,68,68,60,61,68,68,68,68,68,68,68,68,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,56,58,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,89,88,88,90,0,0,0,0,0,0,60,61,0,0,0,0,69,70,0,0,0,0,0,0,0,0,60,61,0,0,63,62,62,65,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,89,88,88,88,88,90,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,56,55,57,61,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,89,88,88,88,88,90,0,0,0,0,0,60,61,0,88,0,0,0,0,0,0,0,0,0,0,0,0,56,58,0,0,69,70,60,61,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,89,88,88,90,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,72,0,0,0,0,60,61,0,0,60,61,0,0,0,89,90,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,70,0,0,0,0,60,61,0,0,60,61,0,0,89,88,88,90,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,63,65,0,0,0,0,0,0,0,0,0,0,0,0,63,62,34,61,0,0,60,61,0,0,89,88,88,90,0,0,63,62,62,62,65,0,0,63,62,62,62,62,62,62,64,66,62,62,62,62,34,34,62,62,62,62,62,62,62,62,62,62,62,62,34,34,34,61,0,0,60,61,0,0,89,88,88,90,0,0,60,34,55,55,58,0,0,56,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,58,0,0,60,61,0,0,89,88,88,90,0,0,60,34,68,68,68,0,0,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,70,0,0,60,61,0,0,0,89,90,0,0,0,60,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,0,0,0,0,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,65,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,0,0,88,0,0,88,0,0,0,0,0,0,0,0,0,84,83,83,83,83,83,83,86,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,84,80,73,73,73,73,73,73,78,86,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,0,88,0,88,0,0,88,0,0,0,0,0,0,0,81,73,73,73,73,73,73,73,73,82,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,81,73,73,73,73,73,73,73,73,82,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,62,62,65,0,0,63,62,62,34,34,62,62,62,62,62,62,62,62,62,65,0,0,0,0,81,73,73,73,73,73,73,73,73,82,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,59,55,55,58,0,0,56,55,55,34,34,34,34,34,34,59,55,55,55,57,61,0,0,0,0,81,73,73,73,73,73,73,73,73,82,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,68,68,70,0,0,69,68,68,60,34,34,34,34,59,58,68,68,68,60,61,0,0,0,0,81,73,73,73,73,73,73,73,73,82,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,34,34,59,58,70,0,0,0,60,61,0,0,0,0,81,73,73,73,73,73,73,73,73,82,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,34,34,59,58,70,0,0,0,0,56,58,0,0,0,0,77,87,73,73,73,73,73,73,85,79,0,0,0,0,60,66,62,62,62,62,62,62,62,62,64,66,62,62,62,62,62,62,62,62,34,34,59,58,70,0,0,0,0,0,69,70,0,0,0,0,0,77,76,76,76,76,76,76,79,0,0,0,0,0,60,34,55,57,34,59,55,55,55,57,34,59,34,34,34,34,34,34,34,34,34,59,58,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,69,56,55,58,68,68,68,56,57,61,68,68,68,68,68,68,68,68,60,61,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,69,68,70,0,0,0,69,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,63,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,3,0,0,60,66,62,62,65,0,0,63,62,62,64,66,65,0,0,0,0,0,0,63,34,34,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,34,61,0,0,0,0,0,0,0,0,60,59,55,55,58,0,0,56,55,55,57,59,58,0,0,0,0,0,0,56,34,59,55,55,55,55,55,55,55,55,57,34,55,55,55,55,55,55,55,55,55,58,0,0,0,0,0,0,0,0,60,61,68,68,70,0,0,69,68,68,60,61,70,0,0,0,0,0,0,69,56,58,68,68,68,68,68,68,68,68,60,61,68,68,68,68,68,68,68,68,68,70,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,69,70,0,0,0,0,0,0,0,0,56,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,18,0,18,0,0,0,0,69,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,89,88,88,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,56,58,0,0,0,0,0,0,0,0,0,0,0,18,0,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,88,88,90,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,69,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,65,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,63,62,62,62,62,62,62,62,62,62,62,62,62,62,62,34,34,62,62,65,0,0,63,62,62,34,34,62,62,62,62,62,62,62,62,62,62,62,62,62,65,0,0,63,62,64,61,0,0,0,60,34,55,55,55,55,55,55,55,55,55,55,55,55,55,34,59,55,55,58,0,0,56,34,34,34,34,34,55,55,57,59,55,55,57,34,34,34,55,55,58,0,0,56,57,34,61,0,0,0,60,61,68,68,68,68,68,68,68,68,68,68,68,68,68,60,61,68,68,70,0,0,69,56,34,34,34,58,0,0,60,61,68,68,56,34,34,58,68,68,70,0,0,69,56,57,61,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,56,58,0,0,0,0,0,0,69,56,34,61,70,0,0,56,58,0,0,69,56,58,70,0,0,0,0,0,0,69,60,61,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,69,70,0,0,0,0,0,0,0,69,56,58,0,0,0,69,70,0,0,0,69,70,0,0,0,0,0,0,0,0,60,61,0,0,0,60,66,62,62,62,62,62,62,62,62,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,70,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,60,61,0,0,0,56,55,55,55,55,55,55,55,55,55,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,60,61,0,0,0,69,68,68,68,68,68,68,68,68,68,70,0,0,0,0,63,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,65,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,64,61,0,0,0,0,0,0,0,0,63,65,0,0,0,63,65,0,0,0,60,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,64,34,61,0,0,0,0,0,0,0,0,60,66,65,0,0,60,61,0,0,63,64,66,65,0,0,0,0,0,0,0,60,66,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,34,34,34,34,65,0,0,63,62,62,62,62,34,34,66,62,62,64,66,62,62,64,34,34,66,62,62,62,62,62,62,62,64,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,58,0,0,56,55,55,55,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,70,0,0,69,68,68,68,68,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,63,65,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,56,58,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,69,70,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,66,62,62,62,62,62,62,62,62,64,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34],\"height\":60,\"id\":6,\"name\":\"layer1\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-2}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,74,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,74,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,42,42,42,42,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,47,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,35,35,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,47,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,47,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,52,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":60,\"id\":21,\"name\":\"layer2\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":60,\"id\":4,\"name\":\"data:collision\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":false,\"width\":50,\"x\":0,\"y\":0},{\"draworder\":\"topdown\",\"id\":15,\"name\":\"data:entities\",\"objects\":[{\"gid\":8,\"height\":16,\"id\":86,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":832,\"y\":160},{\"gid\":8,\"height\":16,\"id\":87,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":64,\"y\":736},{\"gid\":8,\"height\":16,\"id\":91,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":768},{\"gid\":8,\"height\":16,\"id\":94,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":1376},{\"gid\":8,\"height\":16,\"id\":96,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1184,\"y\":896},{\"gid\":8,\"height\":16,\"id\":97,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1408,\"y\":736},{\"gid\":8,\"height\":16,\"id\":98,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":544,\"y\":736},{\"gid\":8,\"height\":16,\"id\":99,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":832,\"y\":1120},{\"gid\":8,\"height\":16,\"id\":101,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1536,\"y\":1568},{\"gid\":6,\"height\":18,\"id\":102,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":736,\"y\":1216},{\"gid\":6,\"height\":18,\"id\":103,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":864,\"y\":1216},{\"gid\":10,\"height\":16,\"id\":111,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":384,\"y\":1408},{\"gid\":10,\"height\":16,\"id\":112,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":448,\"y\":1376},{\"gid\":12,\"height\":18,\"id\":113,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":1344},{\"gid\":12,\"height\":18,\"id\":114,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":1568},{\"gid\":11,\"height\":18,\"id\":117,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":928,\"y\":1472},{\"gid\":11,\"height\":18,\"id\":118,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":928,\"y\":1504},{\"gid\":11,\"height\":18,\"id\":119,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":640,\"y\":1472},{\"gid\":11,\"height\":18,\"id\":120,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":640,\"y\":1440},{\"gid\":11,\"height\":18,\"id\":121,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":768,\"y\":1312},{\"gid\":11,\"height\":18,\"id\":123,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":800,\"y\":1312},{\"gid\":11,\"height\":18,\"id\":124,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":1088},{\"gid\":11,\"height\":18,\"id\":125,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":1216},{\"gid\":11,\"height\":18,\"id\":130,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":1088},{\"gid\":11,\"height\":18,\"id\":131,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":1216},{\"gid\":11,\"height\":18,\"id\":132,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":992,\"y\":832},{\"gid\":11,\"height\":18,\"id\":133,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":864},{\"gid\":11,\"height\":18,\"id\":134,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":992,\"y\":928},{\"gid\":11,\"height\":18,\"id\":135,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":896},{\"gid\":11,\"height\":18,\"id\":137,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":928},{\"gid\":11,\"height\":18,\"id\":138,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":832},{\"gid\":11,\"height\":18,\"id\":139,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":896},{\"gid\":11,\"height\":18,\"id\":140,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":800},{\"gid\":11,\"height\":18,\"id\":141,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":736},{\"gid\":11,\"height\":18,\"id\":142,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":704},{\"gid\":11,\"height\":18,\"id\":143,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":736},{\"gid\":11,\"height\":18,\"id\":144,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":832},{\"gid\":11,\"height\":18,\"id\":145,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":800},{\"gid\":11,\"height\":18,\"id\":146,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":768},{\"gid\":11,\"height\":18,\"id\":147,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":864},{\"gid\":11,\"height\":18,\"id\":148,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":928},{\"gid\":11,\"height\":18,\"id\":149,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":928},{\"gid\":6,\"height\":18,\"id\":151,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":928},{\"gid\":6,\"height\":18,\"id\":152,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":832},{\"gid\":6,\"height\":18,\"id\":153,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":768},{\"gid\":9,\"height\":16,\"id\":157,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":864,\"y\":1856},{\"gid\":10,\"height\":16,\"id\":160,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":896},{\"gid\":10,\"height\":16,\"id\":161,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":64,\"y\":896},{\"gid\":16,\"height\":18,\"id\":162,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":864},{\"gid\":16,\"height\":18,\"id\":163,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":384,\"y\":288},{\"gid\":16,\"height\":18,\"id\":164,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":544,\"y\":256},{\"gid\":16,\"height\":18,\"id\":165,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":480},{\"gid\":16,\"height\":18,\"id\":166,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":224,\"y\":576},{\"gid\":16,\"height\":18,\"id\":167,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":128,\"y\":544},{\"gid\":15,\"height\":18,\"id\":168,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"west\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1408,\"y\":224},{\"gid\":12,\"height\":18,\"id\":169,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1344,\"y\":256},{\"gid\":12,\"height\":18,\"id\":170,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":96},{\"gid\":12,\"height\":18,\"id\":171,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":288},{\"gid\":12,\"height\":18,\"id\":178,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":288},{\"gid\":12,\"height\":18,\"id\":179,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1088,\"y\":96},{\"gid\":12,\"height\":18,\"id\":180,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":288},{\"gid\":12,\"height\":18,\"id\":181,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1440,\"y\":1504},{\"gid\":12,\"height\":18,\"id\":183,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"west\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1536,\"y\":1440},{\"gid\":12,\"height\":18,\"id\":184,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1344,\"y\":928},{\"gid\":10,\"height\":16,\"id\":185,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1120,\"y\":1120},{\"gid\":10,\"height\":16,\"id\":186,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":448,\"y\":1120},{\"gid\":10,\"height\":16,\"id\":188,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":416,\"y\":448},{\"gid\":10,\"height\":16,\"id\":191,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":544,\"y\":448},{\"gid\":12,\"height\":18,\"id\":193,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":448,\"y\":896},{\"gid\":6,\"height\":18,\"id\":194,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1408,\"y\":1088},{\"gid\":6,\"height\":18,\"id\":195,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1504,\"y\":1184},{\"gid\":6,\"height\":18,\"id\":196,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":1088},{\"gid\":6,\"height\":18,\"id\":197,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":192,\"y\":1152},{\"gid\":6,\"height\":18,\"id\":198,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":1536},{\"gid\":6,\"height\":18,\"id\":200,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1376,\"y\":448},{\"gid\":6,\"height\":18,\"id\":201,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1504,\"y\":544},{\"gid\":6,\"height\":18,\"id\":202,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1408,\"y\":576},{\"gid\":13,\"height\":16,\"id\":203,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":480,\"y\":544},{\"gid\":5,\"height\":18,\"id\":204,\"name\":\"\",\"properties\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"player\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":768,\"y\":1440},{\"gid\":6,\"height\":18,\"id\":205,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1376,\"y\":1216},{\"gid\":6,\"height\":18,\"id\":206,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":96,\"y\":1184},{\"gid\":1,\"height\":16,\"id\":207,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":960,\"y\":1504},{\"gid\":1,\"height\":16,\"id\":209,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":800,\"y\":1280},{\"gid\":1,\"height\":16,\"id\":210,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":768,\"y\":1280},{\"gid\":1,\"height\":16,\"id\":211,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":608,\"y\":1472},{\"gid\":1,\"height\":16,\"id\":212,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":960,\"y\":1472},{\"gid\":1,\"height\":16,\"id\":213,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":608,\"y\":1440},{\"gid\":1,\"height\":16,\"id\":214,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"welcome\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":704,\"y\":1632},{\"gid\":1,\"height\":16,\"id\":216,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"welcome\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":736,\"y\":1632}],\"opacity\":1,\"type\":\"objectgroup\",\"visible\":true,\"x\":0,\"y\":0}],\"nextlayerid\":23,\"nextobjectid\":218,\"orientation\":\"orthogonal\",\"properties\":[{\"name\":\"dialogue\",\"type\":\"string\",\"value\":\"test\"}],\"renderorder\":\"right-down\",\"tiledversion\":\"1.4.2\",\"tileheight\":32,\"tilesets\":[{\"firstgid\":1,\"source\":\"tileset.json\"}],\"tilewidth\":32,\"type\":\"map\",\"version\":1.4,\"width\":50}");
 
 /***/ }),
 /* 41 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module) {
 
-module.exports = __webpack_require__.p + "24b2ab7ec02f3ff4daeec0ee2c15b473.png";
+module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"terrains\":[{\"name\":\"grass\",\"tile\":54},{\"name\":\"rockwall\",\"tile\":54}],\"tilecount\":91,\"tiledversion\":\"1.4.2\",\"tileheight\":64,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":1,\"image\":\"../../assets/images/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":3,\"image\":\"../../assets/images/gravestone.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":4,\"image\":\"../../assets/images/adventurer.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"adventurer\"},{\"id\":5,\"image\":\"../../assets/images/slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_slime\"},{\"id\":6,\"image\":\"../../assets/images/slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_slime\"},{\"id\":7,\"image\":\"../../assets/images/collectible.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collectible\"},{\"id\":8,\"image\":\"../../assets/images/goal.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"goal\"},{\"id\":9,\"image\":\"../../assets/images/bat_alpha.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"red_bat\"},{\"id\":10,\"image\":\"../../assets/images/shrub.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"shrub\"},{\"id\":11,\"image\":\"../../assets/images/snake.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_snake\"},{\"id\":12,\"image\":\"../../assets/images/blue_bat_alpha.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"blue_bat\"},{\"id\":13,\"image\":\"../../assets/images/blue_bat_omega.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"blue_bat\"},{\"id\":14,\"image\":\"../../assets/images/blue_snake.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_snake\"},{\"id\":15,\"image\":\"../../assets/images/blue_slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_slime\"},{\"id\":16,\"image\":\"../../assets/images/blue_slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_slime\"},{\"id\":17,\"image\":\"../../assets/images/tiles/brickwall.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":18,\"image\":\"../../assets/images/tiles/brickwall_left.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":19,\"image\":\"../../assets/images/tiles/brickwall_right.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":20,\"image\":\"../../assets/images/tiles/dirt.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":21,\"image\":\"../../assets/images/tiles/dirtborder_bottom.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":22,\"image\":\"../../assets/images/tiles/dirtborder_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":23,\"image\":\"../../assets/images/tiles/dirtborder_bottomleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":24,\"image\":\"../../assets/images/tiles/dirtborder_bottomright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":25,\"image\":\"../../assets/images/tiles/dirtborder_bottomright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":26,\"image\":\"../../assets/images/tiles/dirtborder_left.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":27,\"image\":\"../../assets/images/tiles/dirtborder_right.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":28,\"image\":\"../../assets/images/tiles/dirtborder_top.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":29,\"image\":\"../../assets/images/tiles/dirtborder_topleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":30,\"image\":\"../../assets/images/tiles/dirtborder_topleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":31,\"image\":\"../../assets/images/tiles/dirtborder_topright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":32,\"image\":\"../../assets/images/tiles/dirtborder_topright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":33,\"image\":\"../../assets/images/tiles/grass.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[0,0,0,0],\"type\":\"collision\"},{\"id\":34,\"image\":\"../../assets/images/tiles/grassborder_bottom.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":35,\"image\":\"../../assets/images/tiles/grassborder_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":36,\"image\":\"../../assets/images/tiles/grassborder_bottomleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":37,\"image\":\"../../assets/images/tiles/grassborder_bottomright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":38,\"image\":\"../../assets/images/tiles/grassborder_bottomright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":39,\"image\":\"../../assets/images/tiles/grassborder_left.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":40,\"image\":\"../../assets/images/tiles/grassborder_right.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":41,\"image\":\"../../assets/images/tiles/grassborder_top.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":42,\"image\":\"../../assets/images/tiles/grassborder_topleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":43,\"image\":\"../../assets/images/tiles/grassborder_topleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":44,\"image\":\"../../assets/images/tiles/grassborder_topright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":45,\"image\":\"../../assets/images/tiles/grassborder_topright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":46,\"image\":\"../../assets/images/tiles/leaves_bunch1.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":47,\"image\":\"../../assets/images/tiles/leaves_bunch2.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":48,\"image\":\"../../assets/images/tiles/leaves_quad.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":49,\"image\":\"../../assets/images/tiles/leaves_tri.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":50,\"image\":\"../../assets/images/tiles/pedestal.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":51,\"image\":\"../../assets/images/tiles/pedestal_nosword.png\",\"imageheight\":64,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":52,\"image\":\"../../assets/images/tiles/pedestal_swordonly.png\",\"imageheight\":64,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":53,\"image\":\"../../assets/images/tiles/pedestal_withsword.png\",\"imageheight\":64,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":54,\"image\":\"../../assets/images/tiles/rockplatform_bottom.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[0,0,-1,-1],\"type\":\"collision\"},{\"id\":55,\"image\":\"../../assets/images/tiles/rockplatform_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[-1,0,-1,-1],\"type\":\"collision\"},{\"id\":56,\"image\":\"../../assets/images/tiles/rockplatform_bottomleft_in.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[0,0,-1,0],\"type\":\"collision\"},{\"id\":57,\"image\":\"../../assets/images/tiles/rockplatform_bottomright.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[0,-1,-1,-1],\"type\":\"collision\"},{\"id\":58,\"image\":\"../../assets/images/tiles/rockplatform_bottomright_in.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[0,0,0,-1],\"type\":\"collision\"},{\"id\":59,\"image\":\"../../assets/images/tiles/rockplatform_left.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[-1,0,-1,0],\"type\":\"collision\"},{\"id\":60,\"image\":\"../../assets/images/tiles/rockplatform_right.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[0,-1,0,-1],\"type\":\"collision\"},{\"id\":61,\"image\":\"../../assets/images/tiles/rockplatform_top.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[-1,-1,0,0],\"type\":\"collision\"},{\"id\":62,\"image\":\"../../assets/images/tiles/rockplatform_topleft.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[-1,-1,-1,0],\"type\":\"collision\"},{\"id\":63,\"image\":\"../../assets/images/tiles/rockplatform_topleft_in.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[-1,0,0,0],\"type\":\"collision\"},{\"id\":64,\"image\":\"../../assets/images/tiles/rockplatform_topright.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[-1,-1,0,-1],\"type\":\"collision\"},{\"id\":65,\"image\":\"../../assets/images/tiles/rockplatform_topright_in.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[0,-1,0,0],\"type\":\"collision\"},{\"id\":66,\"image\":\"../../assets/images/tiles/rockwall.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":67,\"image\":\"../../assets/images/tiles/rockwall_bottom.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[1,1,1,1],\"type\":\"collision\"},{\"id\":68,\"image\":\"../../assets/images/tiles/rockwall_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[-1,1,-1,1],\"type\":\"collision\"},{\"id\":69,\"image\":\"../../assets/images/tiles/rockwall_bottomright.png\",\"imageheight\":32,\"imagewidth\":32,\"terrain\":[1,-1,1,-1],\"type\":\"collision\"},{\"id\":70,\"image\":\"../../assets/images/tiles/rockwall_left.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":71,\"image\":\"../../assets/images/tiles/rockwall_right.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":72,\"image\":\"../../assets/images/tiles/sea.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":73,\"image\":\"../../assets/images/tiles/sea_coral.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":74,\"image\":\"../../assets/images/tiles/sea_lilypads.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":75,\"image\":\"../../assets/images/tiles/seashore_bottom.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":76,\"image\":\"../../assets/images/tiles/seashore_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":77,\"image\":\"../../assets/images/tiles/seashore_bottomleft_out.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":78,\"image\":\"../../assets/images/tiles/seashore_bottomright.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":79,\"image\":\"../../assets/images/tiles/seashore_bottomright_out.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":80,\"image\":\"../../assets/images/tiles/seashore_left.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":81,\"image\":\"../../assets/images/tiles/seashore_right.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":82,\"image\":\"../../assets/images/tiles/seashore_top.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":83,\"image\":\"../../assets/images/tiles/seashore_topleft.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":84,\"image\":\"../../assets/images/tiles/seashore_topleft_out.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":85,\"image\":\"../../assets/images/tiles/seashore_topright.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":86,\"image\":\"../../assets/images/tiles/seashore_topright_out.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":87,\"image\":\"../../assets/images/tiles/woodplanks.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":88,\"image\":\"../../assets/images/tiles/woodplanks_left.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":89,\"image\":\"../../assets/images/tiles/woodplanks_right.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":90,\"image\":\"../../assets/images/tiles/sand.png\",\"imageheight\":32,\"imagewidth\":32}],\"tilewidth\":32,\"type\":\"tileset\",\"version\":1.4}");
 
 /***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "54e3bcf9319b8cce1a6ff9a720874683.png";
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "63f722d8b7768a7d852c454e7dfbf833.png";
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "722604fb6d0783abf330fe8a45557662.png";
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "909af23f484db97f4a617bebd2f2fd80.png";
-
-/***/ }),
-/* 46 */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"compressionlevel\":-1,\"editorsettings\":{\"export\":{\"target\":\".\"}},\"height\":60,\"infinite\":false,\"layers\":[{\"data\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,3,3,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,3,3,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,2,2,2,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,2,2,2,2,2,3,3,2,3,2,2,3,3,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,3,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,2,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,2,2,2,2,3,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,2,2,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,2,2,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,3,3,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,3,3,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":60,\"id\":6,\"name\":\"layer1\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-2}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":60,\"id\":11,\"name\":\"layer2\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-1}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":60,\"id\":20,\"name\":\"Tile Layer 6\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[19,18,18,18,18,18,18,18,18,18,18,18,18,18,20,19,18,18,18,18,18,18,18,20,19,18,18,18,18,18,18,18,18,18,18,18,18,18,20,60,61,19,18,18,18,18,18,18,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,20,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,62,62,62,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,59,55,55,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,68,68,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,62,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,57,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,62,64,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,57,34,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,56,57,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,63,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,65,0,0,63,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,65,60,61,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,59,58,0,0,56,55,55,55,55,57,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,70,0,0,69,68,68,68,68,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,63,65,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,56,58,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,69,70,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,0,0,0,0,0,0,0,0,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,61,63,62,62,62,62,62,62,65,60,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34],\"height\":60,\"id\":18,\"name\":\"Tile Layer 4\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,65,0,0,0,0,0,0,0,0,63,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,64,61,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,64,34,61,0,0,0,0,0,0,0,0,60,66,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,55,55,58,0,0,0,0,0,0,0,0,56,55,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,68,68,70,0,0,0,0,0,0,0,0,69,68,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":60,\"id\":19,\"name\":\"Tile Layer 5\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":60,\"id\":4,\"name\":\"data:collision\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":false,\"width\":50,\"x\":0,\"y\":0},{\"draworder\":\"topdown\",\"id\":15,\"name\":\"data:entities\",\"objects\":[{\"gid\":8,\"height\":16,\"id\":86,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":832,\"y\":160},{\"gid\":8,\"height\":16,\"id\":87,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":64,\"y\":736},{\"gid\":8,\"height\":16,\"id\":91,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":768},{\"gid\":8,\"height\":16,\"id\":94,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":1376},{\"gid\":8,\"height\":16,\"id\":96,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1184,\"y\":896},{\"gid\":8,\"height\":16,\"id\":97,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1408,\"y\":736},{\"gid\":8,\"height\":16,\"id\":98,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":544,\"y\":736},{\"gid\":8,\"height\":16,\"id\":99,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":864,\"y\":1056},{\"gid\":8,\"height\":16,\"id\":101,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1536,\"y\":1568},{\"gid\":6,\"height\":18,\"id\":102,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":736,\"y\":1216},{\"gid\":6,\"height\":18,\"id\":103,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":864,\"y\":1152},{\"gid\":10,\"height\":16,\"id\":108,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":352,\"y\":1344},{\"gid\":10,\"height\":16,\"id\":111,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":384,\"y\":1408},{\"gid\":10,\"height\":16,\"id\":112,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":448,\"y\":1376},{\"gid\":12,\"height\":18,\"id\":113,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":1344},{\"gid\":12,\"height\":18,\"id\":114,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":1568},{\"gid\":11,\"height\":18,\"id\":117,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":928,\"y\":1472},{\"gid\":11,\"height\":18,\"id\":118,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":928,\"y\":1440},{\"gid\":11,\"height\":18,\"id\":119,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":640,\"y\":1472},{\"gid\":11,\"height\":18,\"id\":120,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":640,\"y\":1440},{\"gid\":11,\"height\":18,\"id\":121,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":768,\"y\":1312},{\"gid\":11,\"height\":18,\"id\":123,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":800,\"y\":1312},{\"gid\":11,\"height\":18,\"id\":124,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":1056},{\"gid\":11,\"height\":18,\"id\":125,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":1216},{\"gid\":11,\"height\":18,\"id\":130,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":1056},{\"gid\":11,\"height\":18,\"id\":131,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":1216},{\"gid\":11,\"height\":18,\"id\":132,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":992,\"y\":832},{\"gid\":11,\"height\":18,\"id\":133,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":864},{\"gid\":11,\"height\":18,\"id\":134,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":992,\"y\":928},{\"gid\":11,\"height\":18,\"id\":135,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":896},{\"gid\":11,\"height\":18,\"id\":137,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":928},{\"gid\":11,\"height\":18,\"id\":138,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":832},{\"gid\":11,\"height\":18,\"id\":139,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":896},{\"gid\":11,\"height\":18,\"id\":140,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":800},{\"gid\":11,\"height\":18,\"id\":141,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":736},{\"gid\":11,\"height\":18,\"id\":142,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":704},{\"gid\":11,\"height\":18,\"id\":143,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":736},{\"gid\":11,\"height\":18,\"id\":144,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":832},{\"gid\":11,\"height\":18,\"id\":145,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":800},{\"gid\":11,\"height\":18,\"id\":146,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":768},{\"gid\":11,\"height\":18,\"id\":147,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":864},{\"gid\":11,\"height\":18,\"id\":148,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":928},{\"gid\":11,\"height\":18,\"id\":149,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":928},{\"gid\":6,\"height\":18,\"id\":151,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":928},{\"gid\":6,\"height\":18,\"id\":152,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1216,\"y\":832},{\"gid\":6,\"height\":18,\"id\":153,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1152,\"y\":768},{\"gid\":9,\"height\":16,\"id\":157,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":864,\"y\":1856},{\"gid\":10,\"height\":16,\"id\":160,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":864},{\"gid\":10,\"height\":16,\"id\":161,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":64,\"y\":896},{\"gid\":16,\"height\":18,\"id\":162,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1184,\"y\":864},{\"gid\":16,\"height\":18,\"id\":163,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":384,\"y\":288},{\"gid\":16,\"height\":18,\"id\":164,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":544,\"y\":256},{\"gid\":16,\"height\":18,\"id\":165,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":480},{\"gid\":16,\"height\":18,\"id\":166,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":224,\"y\":576},{\"gid\":16,\"height\":18,\"id\":167,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":128,\"y\":544},{\"gid\":15,\"height\":18,\"id\":168,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"west\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1408,\"y\":192},{\"gid\":12,\"height\":18,\"id\":169,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1344,\"y\":224},{\"gid\":12,\"height\":18,\"id\":170,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":64},{\"gid\":12,\"height\":18,\"id\":171,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1056,\"y\":288},{\"gid\":12,\"height\":18,\"id\":178,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1024,\"y\":288},{\"gid\":12,\"height\":18,\"id\":179,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1088,\"y\":64},{\"gid\":12,\"height\":18,\"id\":180,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1120,\"y\":288},{\"gid\":12,\"height\":18,\"id\":181,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1440,\"y\":1504},{\"gid\":12,\"height\":18,\"id\":183,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"west\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1536,\"y\":1440},{\"gid\":12,\"height\":18,\"id\":184,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1344,\"y\":928},{\"gid\":10,\"height\":16,\"id\":185,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":1120,\"y\":1120},{\"gid\":10,\"height\":16,\"id\":186,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":448,\"y\":1120},{\"gid\":10,\"height\":16,\"id\":188,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":416,\"y\":448},{\"gid\":10,\"height\":16,\"id\":191,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":544,\"y\":448},{\"gid\":12,\"height\":18,\"id\":193,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":448,\"y\":896},{\"gid\":6,\"height\":18,\"id\":194,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1408,\"y\":1088},{\"gid\":6,\"height\":18,\"id\":195,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1504,\"y\":1184},{\"gid\":6,\"height\":18,\"id\":196,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":1088},{\"gid\":6,\"height\":18,\"id\":197,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":192,\"y\":1152},{\"gid\":6,\"height\":18,\"id\":198,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":1536},{\"gid\":6,\"height\":18,\"id\":200,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1376,\"y\":448},{\"gid\":6,\"height\":18,\"id\":201,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1504,\"y\":544},{\"gid\":6,\"height\":18,\"id\":202,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1408,\"y\":576},{\"gid\":13,\"height\":16,\"id\":203,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":480,\"y\":544},{\"gid\":5,\"height\":18,\"id\":204,\"name\":\"\",\"properties\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"player\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":832,\"y\":1440},{\"gid\":6,\"height\":18,\"id\":205,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":1376,\"y\":1216},{\"gid\":6,\"height\":18,\"id\":206,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":96,\"y\":1184},{\"gid\":1,\"height\":16,\"id\":207,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":960,\"y\":1440},{\"gid\":1,\"height\":16,\"id\":209,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":800,\"y\":1280},{\"gid\":1,\"height\":16,\"id\":210,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":768,\"y\":1280},{\"gid\":1,\"height\":16,\"id\":211,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":608,\"y\":1472},{\"gid\":1,\"height\":16,\"id\":212,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":960,\"y\":1472},{\"gid\":1,\"height\":16,\"id\":213,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"test\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":608,\"y\":1440},{\"gid\":1,\"height\":16,\"id\":214,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"welcome\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":704,\"y\":1632},{\"gid\":1,\"height\":16,\"id\":216,\"name\":\"\",\"properties\":[{\"name\":\"ScriptKey\",\"type\":\"string\",\"value\":\"welcome\"}],\"rotation\":0,\"type\":\"dialogue\",\"visible\":true,\"width\":16,\"x\":736,\"y\":1632}],\"opacity\":1,\"type\":\"objectgroup\",\"visible\":true,\"x\":0,\"y\":0}],\"nextlayerid\":21,\"nextobjectid\":218,\"orientation\":\"orthogonal\",\"properties\":[{\"name\":\"dialogue\",\"type\":\"string\",\"value\":\"test\"}],\"renderorder\":\"right-down\",\"tiledversion\":\"2021.01.13\",\"tileheight\":32,\"tilesets\":[{\"firstgid\":1,\"source\":\"tileset.json\"}],\"tilewidth\":32,\"type\":\"map\",\"version\":1.4,\"width\":50}");
-
-/***/ }),
-/* 47 */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"tilecount\":90,\"tiledversion\":\"2021.01.13\",\"tileheight\":64,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":1,\"image\":\"../../assets/images/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":3,\"image\":\"../../assets/images/gravestone.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":4,\"image\":\"../../assets/images/adventurer.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"adventurer\"},{\"id\":5,\"image\":\"../../assets/images/slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_slime\"},{\"id\":6,\"image\":\"../../assets/images/slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_slime\"},{\"id\":7,\"image\":\"../../assets/images/collectible.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collectible\"},{\"id\":8,\"image\":\"../../assets/images/goal.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"goal\"},{\"id\":9,\"image\":\"../../assets/images/bat_alpha.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"red_bat\"},{\"id\":10,\"image\":\"../../assets/images/shrub.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"shrub\"},{\"id\":11,\"image\":\"../../assets/images/snake.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_snake\"},{\"id\":12,\"image\":\"../../assets/images/blue_bat_alpha.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"blue_bat\"},{\"id\":13,\"image\":\"../../assets/images/blue_bat_omega.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"blue_bat\"},{\"id\":14,\"image\":\"../../assets/images/blue_snake.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_snake\"},{\"id\":15,\"image\":\"../../assets/images/blue_slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_slime\"},{\"id\":16,\"image\":\"../../assets/images/blue_slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_slime\"},{\"id\":17,\"image\":\"../../assets/images/tiles/brickwall.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":18,\"image\":\"../../assets/images/tiles/brickwall_left.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":19,\"image\":\"../../assets/images/tiles/brickwall_right.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":20,\"image\":\"../../assets/images/tiles/dirt.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":21,\"image\":\"../../assets/images/tiles/dirtborder_bottom.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":22,\"image\":\"../../assets/images/tiles/dirtborder_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":23,\"image\":\"../../assets/images/tiles/dirtborder_bottomleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":24,\"image\":\"../../assets/images/tiles/dirtborder_bottomright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":25,\"image\":\"../../assets/images/tiles/dirtborder_bottomright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":26,\"image\":\"../../assets/images/tiles/dirtborder_left.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":27,\"image\":\"../../assets/images/tiles/dirtborder_right.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":28,\"image\":\"../../assets/images/tiles/dirtborder_top.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":29,\"image\":\"../../assets/images/tiles/dirtborder_topleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":30,\"image\":\"../../assets/images/tiles/dirtborder_topleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":31,\"image\":\"../../assets/images/tiles/dirtborder_topright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":32,\"image\":\"../../assets/images/tiles/dirtborder_topright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":33,\"image\":\"../../assets/images/tiles/grass.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":34,\"image\":\"../../assets/images/tiles/grassborder_bottom.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":35,\"image\":\"../../assets/images/tiles/grassborder_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":36,\"image\":\"../../assets/images/tiles/grassborder_bottomleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":37,\"image\":\"../../assets/images/tiles/grassborder_bottomright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":38,\"image\":\"../../assets/images/tiles/grassborder_bottomright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":39,\"image\":\"../../assets/images/tiles/grassborder_left.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":40,\"image\":\"../../assets/images/tiles/grassborder_right.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":41,\"image\":\"../../assets/images/tiles/grassborder_top.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":42,\"image\":\"../../assets/images/tiles/grassborder_topleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":43,\"image\":\"../../assets/images/tiles/grassborder_topleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":44,\"image\":\"../../assets/images/tiles/grassborder_topright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":45,\"image\":\"../../assets/images/tiles/grassborder_topright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":46,\"image\":\"../../assets/images/tiles/leaves_bunch1.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":47,\"image\":\"../../assets/images/tiles/leaves_bunch2.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":48,\"image\":\"../../assets/images/tiles/leaves_quad.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":49,\"image\":\"../../assets/images/tiles/leaves_tri.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":50,\"image\":\"../../assets/images/tiles/pedestal.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":51,\"image\":\"../../assets/images/tiles/pedestal_nosword.png\",\"imageheight\":64,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":52,\"image\":\"../../assets/images/tiles/pedestal_swordonly.png\",\"imageheight\":64,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":53,\"image\":\"../../assets/images/tiles/pedestal_withsword.png\",\"imageheight\":64,\"imagewidth\":32,\"type\":\" collision\"},{\"id\":54,\"image\":\"../../assets/images/tiles/rockplatform_bottom.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":55,\"image\":\"../../assets/images/tiles/rockplatform_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":56,\"image\":\"../../assets/images/tiles/rockplatform_bottomleft_in.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":57,\"image\":\"../../assets/images/tiles/rockplatform_bottomright.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":58,\"image\":\"../../assets/images/tiles/rockplatform_bottomright_in.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":59,\"image\":\"../../assets/images/tiles/rockplatform_left.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":60,\"image\":\"../../assets/images/tiles/rockplatform_right.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":61,\"image\":\"../../assets/images/tiles/rockplatform_top.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":62,\"image\":\"../../assets/images/tiles/rockplatform_topleft.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":63,\"image\":\"../../assets/images/tiles/rockplatform_topleft_in.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":64,\"image\":\"../../assets/images/tiles/rockplatform_topright.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":65,\"image\":\"../../assets/images/tiles/rockplatform_topright_in.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":66,\"image\":\"../../assets/images/tiles/rockwall.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":67,\"image\":\"../../assets/images/tiles/rockwall_bottom.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":68,\"image\":\"../../assets/images/tiles/rockwall_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":69,\"image\":\"../../assets/images/tiles/rockwall_bottomright.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":70,\"image\":\"../../assets/images/tiles/rockwall_left.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":71,\"image\":\"../../assets/images/tiles/rockwall_right.png\",\"imageheight\":32,\"imagewidth\":32,\"type\":\"collision\"},{\"id\":72,\"image\":\"../../assets/images/tiles/sea.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":73,\"image\":\"../../assets/images/tiles/sea_coral.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":74,\"image\":\"../../assets/images/tiles/sea_lilypads.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":75,\"image\":\"../../assets/images/tiles/seashore_bottom.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":76,\"image\":\"../../assets/images/tiles/seashore_bottomleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":77,\"image\":\"../../assets/images/tiles/seashore_bottomleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":78,\"image\":\"../../assets/images/tiles/seashore_bottomright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":79,\"image\":\"../../assets/images/tiles/seashore_bottomright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":80,\"image\":\"../../assets/images/tiles/seashore_left.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":81,\"image\":\"../../assets/images/tiles/seashore_right.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":82,\"image\":\"../../assets/images/tiles/seashore_top.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":83,\"image\":\"../../assets/images/tiles/seashore_topleft.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":84,\"image\":\"../../assets/images/tiles/seashore_topleft_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":85,\"image\":\"../../assets/images/tiles/seashore_topright.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":86,\"image\":\"../../assets/images/tiles/seashore_topright_out.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":87,\"image\":\"../../assets/images/tiles/woodplanks.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":88,\"image\":\"../../assets/images/tiles/woodplanks_left.png\",\"imageheight\":32,\"imagewidth\":32},{\"id\":89,\"image\":\"../../assets/images/tiles/woodplanks_right.png\",\"imageheight\":32,\"imagewidth\":32}],\"tilewidth\":32,\"type\":\"tileset\",\"version\":1.4}");
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var map = {
-	"./adventurer.png": 32,
-	"./bat_alpha.png": 40,
-	"./bat_omega.png": 41,
-	"./blue_bat_alpha.png": 42,
-	"./blue_bat_omega.png": 43,
-	"./blue_slime_alpha.png": 38,
-	"./blue_slime_omega.png": 39,
-	"./blue_snake.png": 45,
-	"./char_bat.png": 49,
-	"./char_main.png": 50,
-	"./char_slime.png": 51,
-	"./char_snake.png": 52,
+	"./adventurer.png": 43,
+	"./bat_alpha.png": 44,
+	"./bat_omega.png": 45,
+	"./blue_bat_alpha.png": 46,
+	"./blue_bat_omega.png": 47,
+	"./blue_slime_alpha.png": 48,
+	"./blue_slime_omega.png": 49,
+	"./blue_snake.png": 50,
+	"./char_bat.png": 38,
+	"./char_main.png": 32,
+	"./char_slime.png": 37,
+	"./char_snake.png": 39,
 	"./collectible.png": 31,
-	"./goal.png": 35,
+	"./goal.png": 51,
 	"./gravestone.png": 33,
 	"./shrub.png": 34,
-	"./slime_alpha.png": 36,
-	"./slime_omega.png": 37,
-	"./snake.png": 44,
-	"./tiles/0.png": 53,
-	"./tiles/1.png": 54,
-	"./tiles/2.png": 55,
-	"./tiles/brickwall.png": 56,
-	"./tiles/brickwall_left.png": 57,
-	"./tiles/brickwall_right.png": 58,
-	"./tiles/dirt.png": 59,
-	"./tiles/dirtborder_bottom.png": 60,
-	"./tiles/dirtborder_bottomleft.png": 61,
-	"./tiles/dirtborder_bottomleft_out.png": 62,
-	"./tiles/dirtborder_bottomright.png": 63,
-	"./tiles/dirtborder_bottomright_out.png": 64,
-	"./tiles/dirtborder_left.png": 65,
-	"./tiles/dirtborder_right.png": 66,
-	"./tiles/dirtborder_top.png": 67,
-	"./tiles/dirtborder_topleft.png": 68,
-	"./tiles/dirtborder_topleft_out.png": 69,
-	"./tiles/dirtborder_topright.png": 70,
-	"./tiles/dirtborder_topright_out.png": 71,
-	"./tiles/grass.png": 72,
-	"./tiles/grassborder_bottom.png": 73,
-	"./tiles/grassborder_bottomleft.png": 74,
-	"./tiles/grassborder_bottomleft_out.png": 75,
-	"./tiles/grassborder_bottomright.png": 76,
-	"./tiles/grassborder_bottomright_out.png": 77,
-	"./tiles/grassborder_left.png": 78,
-	"./tiles/grassborder_right.png": 79,
-	"./tiles/grassborder_top.png": 80,
-	"./tiles/grassborder_topleft.png": 81,
-	"./tiles/grassborder_topleft_out.png": 82,
-	"./tiles/grassborder_topright.png": 83,
-	"./tiles/grassborder_topright_out.png": 84,
-	"./tiles/leaves_bunch1.png": 85,
-	"./tiles/leaves_bunch2.png": 86,
-	"./tiles/leaves_quad.png": 87,
-	"./tiles/leaves_tri.png": 88,
-	"./tiles/pedestal.png": 89,
-	"./tiles/pedestal_nosword.png": 90,
-	"./tiles/pedestal_swordonly.png": 91,
-	"./tiles/pedestal_withsword.png": 92,
+	"./slime_alpha.png": 52,
+	"./slime_omega.png": 53,
+	"./snake.png": 54,
+	"./tiles/0.png": 55,
+	"./tiles/1.png": 56,
+	"./tiles/2.png": 57,
+	"./tiles/brickwall.png": 58,
+	"./tiles/brickwall_left.png": 59,
+	"./tiles/brickwall_right.png": 60,
+	"./tiles/dirt.png": 61,
+	"./tiles/dirtborder_bottom.png": 62,
+	"./tiles/dirtborder_bottomleft.png": 63,
+	"./tiles/dirtborder_bottomleft_out.png": 64,
+	"./tiles/dirtborder_bottomright.png": 65,
+	"./tiles/dirtborder_bottomright_out.png": 66,
+	"./tiles/dirtborder_left.png": 67,
+	"./tiles/dirtborder_right.png": 68,
+	"./tiles/dirtborder_top.png": 69,
+	"./tiles/dirtborder_topleft.png": 70,
+	"./tiles/dirtborder_topleft_out.png": 71,
+	"./tiles/dirtborder_topright.png": 72,
+	"./tiles/dirtborder_topright_out.png": 73,
+	"./tiles/grass.png": 74,
+	"./tiles/grassborder_bottom.png": 75,
+	"./tiles/grassborder_bottomleft.png": 76,
+	"./tiles/grassborder_bottomleft_out.png": 77,
+	"./tiles/grassborder_bottomright.png": 78,
+	"./tiles/grassborder_bottomright_out.png": 79,
+	"./tiles/grassborder_left.png": 80,
+	"./tiles/grassborder_right.png": 81,
+	"./tiles/grassborder_top.png": 82,
+	"./tiles/grassborder_topleft.png": 83,
+	"./tiles/grassborder_topleft_out.png": 84,
+	"./tiles/grassborder_topright.png": 85,
+	"./tiles/grassborder_topright_out.png": 86,
+	"./tiles/leaves_bunch1.png": 87,
+	"./tiles/leaves_bunch2.png": 88,
+	"./tiles/leaves_quad.png": 89,
+	"./tiles/leaves_tri.png": 90,
+	"./tiles/pedestal.png": 36,
+	"./tiles/pedestal_nosword.png": 91,
+	"./tiles/pedestal_swordonly.png": 92,
+	"./tiles/pedestal_withsword.png": 35,
 	"./tiles/rockplatform_bottom.png": 93,
 	"./tiles/rockplatform_bottomleft.png": 94,
 	"./tiles/rockplatform_bottomleft_in.png": 95,
@@ -6483,31 +6489,32 @@ var map = {
 	"./tiles/rockwall_bottomright.png": 108,
 	"./tiles/rockwall_left.png": 109,
 	"./tiles/rockwall_right.png": 110,
-	"./tiles/sea.png": 111,
-	"./tiles/sea_coral.png": 112,
-	"./tiles/sea_lilypads.png": 113,
-	"./tiles/seashore_bottom.png": 114,
-	"./tiles/seashore_bottomleft.png": 115,
-	"./tiles/seashore_bottomleft_out.png": 116,
-	"./tiles/seashore_bottomright.png": 117,
-	"./tiles/seashore_bottomright_out.png": 118,
-	"./tiles/seashore_left.png": 119,
-	"./tiles/seashore_right.png": 120,
-	"./tiles/seashore_top.png": 121,
-	"./tiles/seashore_topleft.png": 122,
-	"./tiles/seashore_topleft_out.png": 123,
-	"./tiles/seashore_topright.png": 124,
-	"./tiles/seashore_topright_out.png": 125,
-	"./tiles/woodplanks.png": 126,
-	"./tiles/woodplanks_left.png": 127,
-	"./tiles/woodplanks_right.png": 128,
-	"./ui/heart-full-white.png": 129,
-	"./ui/heart-full-yellow.png": 130,
-	"./ui/heart-half-white.png": 131,
-	"./ui/heart-half-yellow.png": 132,
-	"./ui/heart-none-white.png": 133,
-	"./ui/heart-none-yellow.png": 134,
-	"./ui/keyboard.png": 135
+	"./tiles/sand.png": 111,
+	"./tiles/sea.png": 112,
+	"./tiles/sea_coral.png": 113,
+	"./tiles/sea_lilypads.png": 114,
+	"./tiles/seashore_bottom.png": 115,
+	"./tiles/seashore_bottomleft.png": 116,
+	"./tiles/seashore_bottomleft_out.png": 117,
+	"./tiles/seashore_bottomright.png": 118,
+	"./tiles/seashore_bottomright_out.png": 119,
+	"./tiles/seashore_left.png": 120,
+	"./tiles/seashore_right.png": 121,
+	"./tiles/seashore_top.png": 122,
+	"./tiles/seashore_topleft.png": 123,
+	"./tiles/seashore_topleft_out.png": 124,
+	"./tiles/seashore_topright.png": 125,
+	"./tiles/seashore_topright_out.png": 126,
+	"./tiles/woodplanks.png": 127,
+	"./tiles/woodplanks_left.png": 128,
+	"./tiles/woodplanks_right.png": 129,
+	"./ui/heart-full-white.png": 130,
+	"./ui/heart-full-yellow.png": 131,
+	"./ui/heart-half-white.png": 132,
+	"./ui/heart-half-yellow.png": 133,
+	"./ui/heart-none-white.png": 134,
+	"./ui/heart-none-yellow.png": 135,
+	"./ui/keyboard.png": 136
 };
 
 
@@ -6528,271 +6535,307 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 48;
+webpackContext.id = 42;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "ff27ca3405bc70444409f138274b9fa6.png";
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "f5c7b676f22b54dda222e356513bb454.png";
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "24b2ab7ec02f3ff4daeec0ee2c15b473.png";
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "54e3bcf9319b8cce1a6ff9a720874683.png";
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "63f722d8b7768a7d852c454e7dfbf833.png";
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "705ed10c4e482691c6a56986c61f35e4.png";
 
 /***/ }),
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "09d68d8cc2370243481e77a9dcbb1d44.png";
+module.exports = __webpack_require__.p + "6d3072345168b77c9f4ecb078ec6c38a.png";
 
 /***/ }),
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "0464603c3b0067d676c93aa705e16b15.png";
+module.exports = __webpack_require__.p + "909af23f484db97f4a617bebd2f2fd80.png";
 
 /***/ }),
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "39eb68005417cc5a38ef96657faabfdd.png";
+module.exports = __webpack_require__.p + "82b6cabe717c051ab4c1ca76f8084807.png";
 
 /***/ }),
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "ea2ce463d2c051335a8b38e95956cc3c.png";
+module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
 
 /***/ }),
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "c46e7e7b60fdef1c773821f984161995.png";
+module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
 
 /***/ }),
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "aab047d0c2faa414f78f114bba6485cf.png";
+module.exports = __webpack_require__.p + "722604fb6d0783abf330fe8a45557662.png";
 
 /***/ }),
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "f49270d0a276797c299d001c5782cf7f.png";
+module.exports = __webpack_require__.p + "c46e7e7b60fdef1c773821f984161995.png";
 
 /***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "20acc37f27893bb3fb268490f182138b.png";
+module.exports = __webpack_require__.p + "aab047d0c2faa414f78f114bba6485cf.png";
 
 /***/ }),
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "5b6c8fa4b519d9b0879c27b8d761c92f.png";
+module.exports = __webpack_require__.p + "f49270d0a276797c299d001c5782cf7f.png";
 
 /***/ }),
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "cedc977c24f19330e867824d3e956b68.png";
+module.exports = __webpack_require__.p + "20acc37f27893bb3fb268490f182138b.png";
 
 /***/ }),
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "e6e9b3bef9baa6d66433e9f5dda88456.png";
+module.exports = __webpack_require__.p + "5b6c8fa4b519d9b0879c27b8d761c92f.png";
 
 /***/ }),
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "50dfa1b629c9fec32cf4bb7fb05109a4.png";
+module.exports = __webpack_require__.p + "cedc977c24f19330e867824d3e956b68.png";
 
 /***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "5627eb807ac1601cbe7787eb3f190a58.png";
+module.exports = __webpack_require__.p + "e6e9b3bef9baa6d66433e9f5dda88456.png";
 
 /***/ }),
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "7db8ef2494d291df5652ccd769557a99.png";
+module.exports = __webpack_require__.p + "50dfa1b629c9fec32cf4bb7fb05109a4.png";
 
 /***/ }),
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "9400bd9f7e0e11aeb8427542d10f9f21.png";
+module.exports = __webpack_require__.p + "5627eb807ac1601cbe7787eb3f190a58.png";
 
 /***/ }),
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "f85230f0c6cb70662a87b3aca6d20415.png";
+module.exports = __webpack_require__.p + "7db8ef2494d291df5652ccd769557a99.png";
 
 /***/ }),
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "21c1a555319703f4141eed496e48b86a.png";
+module.exports = __webpack_require__.p + "9400bd9f7e0e11aeb8427542d10f9f21.png";
 
 /***/ }),
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "88196e6b1de2d8911c45cec19df9bd4f.png";
+module.exports = __webpack_require__.p + "f85230f0c6cb70662a87b3aca6d20415.png";
 
 /***/ }),
 /* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "4c76a43996239018c73cfbf9bcd5d26c.png";
+module.exports = __webpack_require__.p + "21c1a555319703f4141eed496e48b86a.png";
 
 /***/ }),
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "562945a9d58a6ab96cdb6edfe9dbf687.png";
+module.exports = __webpack_require__.p + "88196e6b1de2d8911c45cec19df9bd4f.png";
 
 /***/ }),
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "38771e71e633ab5ff637d25f84f05d50.png";
+module.exports = __webpack_require__.p + "4c76a43996239018c73cfbf9bcd5d26c.png";
 
 /***/ }),
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "44e1c3b2b9f69a4d4560fd211ed5ed46.png";
+module.exports = __webpack_require__.p + "562945a9d58a6ab96cdb6edfe9dbf687.png";
 
 /***/ }),
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "58a3353c07af0cbe17087e5388033254.png";
+module.exports = __webpack_require__.p + "38771e71e633ab5ff637d25f84f05d50.png";
 
 /***/ }),
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "4aa887f68ca68c69da962a913ca5a4ce.png";
+module.exports = __webpack_require__.p + "44e1c3b2b9f69a4d4560fd211ed5ed46.png";
 
 /***/ }),
 /* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "2f8813efe0d496c09aa071556f3917e3.png";
+module.exports = __webpack_require__.p + "58a3353c07af0cbe17087e5388033254.png";
 
 /***/ }),
 /* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "45ce17a9302eff24f918710799cce7ee.png";
+module.exports = __webpack_require__.p + "4aa887f68ca68c69da962a913ca5a4ce.png";
 
 /***/ }),
 /* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "31b4795d7fb4eccf35ab0f3079130fda.png";
+module.exports = __webpack_require__.p + "2f8813efe0d496c09aa071556f3917e3.png";
 
 /***/ }),
 /* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "9604b84da8c28bd702ade50f0a55cf79.png";
+module.exports = __webpack_require__.p + "45ce17a9302eff24f918710799cce7ee.png";
 
 /***/ }),
 /* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "8366b8e26b7bd32555b638647d18050a.png";
+module.exports = __webpack_require__.p + "31b4795d7fb4eccf35ab0f3079130fda.png";
 
 /***/ }),
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "2889affabac83dfd1fd0cae4f5f8bd98.png";
+module.exports = __webpack_require__.p + "9604b84da8c28bd702ade50f0a55cf79.png";
 
 /***/ }),
 /* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "a727ac365d68d5e26346e0f0790fcaf7.png";
+module.exports = __webpack_require__.p + "8366b8e26b7bd32555b638647d18050a.png";
 
 /***/ }),
 /* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "84a0e4e45cc2dba08b6cf947e9f79b91.png";
+module.exports = __webpack_require__.p + "2889affabac83dfd1fd0cae4f5f8bd98.png";
 
 /***/ }),
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "ba989fbe0435c33c59a6f59c0594a3be.png";
+module.exports = __webpack_require__.p + "a727ac365d68d5e26346e0f0790fcaf7.png";
 
 /***/ }),
 /* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "ac4e0a9293ef54108d8a9937a2a4931c.png";
+module.exports = __webpack_require__.p + "84a0e4e45cc2dba08b6cf947e9f79b91.png";
 
 /***/ }),
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "1a3758d5f80ce73dbcbc3c0aa44ea5e1.png";
+module.exports = __webpack_require__.p + "ba989fbe0435c33c59a6f59c0594a3be.png";
 
 /***/ }),
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "af33d06c7157878b453218a68a70a659.png";
+module.exports = __webpack_require__.p + "ac4e0a9293ef54108d8a9937a2a4931c.png";
 
 /***/ }),
 /* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "cd3d10060848554f9d942879dfb61425.png";
+module.exports = __webpack_require__.p + "1a3758d5f80ce73dbcbc3c0aa44ea5e1.png";
 
 /***/ }),
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "eac3be655ab90e2687600c505ec8fd3c.png";
+module.exports = __webpack_require__.p + "af33d06c7157878b453218a68a70a659.png";
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "b846f8f80a960389baa9c0ceaf3492a5.png";
+module.exports = __webpack_require__.p + "cd3d10060848554f9d942879dfb61425.png";
 
 /***/ }),
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "f35d6bb0dc7f1b4beb05e94655083849.png";
+module.exports = __webpack_require__.p + "eac3be655ab90e2687600c505ec8fd3c.png";
 
 /***/ }),
 /* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "d08158709f0fb8543824debe4c0eeab5.png";
+module.exports = __webpack_require__.p + "b846f8f80a960389baa9c0ceaf3492a5.png";
 
 /***/ }),
 /* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "4bf5f401cd050c63fa134ea1d1d7b176.png";
+module.exports = __webpack_require__.p + "f35d6bb0dc7f1b4beb05e94655083849.png";
 
 /***/ }),
 /* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "698233be24ed0ce3921166fc90fc0dd3.png";
+module.exports = __webpack_require__.p + "4bf5f401cd050c63fa134ea1d1d7b176.png";
 
 /***/ }),
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "fcafd3ecf40a73701c526c473558861b.png";
+module.exports = __webpack_require__.p + "698233be24ed0ce3921166fc90fc0dd3.png";
 
 /***/ }),
 /* 93 */
@@ -6906,154 +6949,160 @@ module.exports = __webpack_require__.p + "1f3ccd00b2aff53d399c522488c8e2fc.png";
 /* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "df62d8a0b62f45699a9eb3f91a8dc119.png";
+module.exports = __webpack_require__.p + "48dde4241654dfb04fe7a1e0ddc11639.png";
 
 /***/ }),
 /* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "84cd7f3d34ca8ccbd7d80f6177548b26.png";
+module.exports = __webpack_require__.p + "df62d8a0b62f45699a9eb3f91a8dc119.png";
 
 /***/ }),
 /* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "6dd6029d71589587a1aa901bc92c2cfa.png";
+module.exports = __webpack_require__.p + "84cd7f3d34ca8ccbd7d80f6177548b26.png";
 
 /***/ }),
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "c1d87faeedb9df3349db45d6efb5afb8.png";
+module.exports = __webpack_require__.p + "6dd6029d71589587a1aa901bc92c2cfa.png";
 
 /***/ }),
 /* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "dd8e5bbccfea3c49e789be078e6be3f2.png";
+module.exports = __webpack_require__.p + "c1d87faeedb9df3349db45d6efb5afb8.png";
 
 /***/ }),
 /* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "ab6c460851e5d5c5b498e734f6a65365.png";
+module.exports = __webpack_require__.p + "dd8e5bbccfea3c49e789be078e6be3f2.png";
 
 /***/ }),
 /* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "384f1215e2add588afbcb22fb667ba19.png";
+module.exports = __webpack_require__.p + "ab6c460851e5d5c5b498e734f6a65365.png";
 
 /***/ }),
 /* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "ac7c2f95d6a217820fe1aaa2a52d5a21.png";
+module.exports = __webpack_require__.p + "384f1215e2add588afbcb22fb667ba19.png";
 
 /***/ }),
 /* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "d361d82e4f58ce7e361a195045c9f459.png";
+module.exports = __webpack_require__.p + "ac7c2f95d6a217820fe1aaa2a52d5a21.png";
 
 /***/ }),
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "709ec973fa1dcae51983e87675b8119d.png";
+module.exports = __webpack_require__.p + "d361d82e4f58ce7e361a195045c9f459.png";
 
 /***/ }),
 /* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "a071be2ba3c8773728a62ab4ac9dc1af.png";
+module.exports = __webpack_require__.p + "709ec973fa1dcae51983e87675b8119d.png";
 
 /***/ }),
 /* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "beac2ef54256c455dfbcb19414c4fa76.png";
+module.exports = __webpack_require__.p + "a071be2ba3c8773728a62ab4ac9dc1af.png";
 
 /***/ }),
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "7aa7c2ad7df9a222e355032a5e8a48eb.png";
+module.exports = __webpack_require__.p + "beac2ef54256c455dfbcb19414c4fa76.png";
 
 /***/ }),
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "33e732a18c06224e03f548cf1ba4c595.png";
+module.exports = __webpack_require__.p + "7aa7c2ad7df9a222e355032a5e8a48eb.png";
 
 /***/ }),
 /* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "2f29c8ebaeb667b14d5a00f50d5a93ed.png";
+module.exports = __webpack_require__.p + "33e732a18c06224e03f548cf1ba4c595.png";
 
 /***/ }),
 /* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "861a5af957e3cd4fb32d8c58ba141be8.png";
+module.exports = __webpack_require__.p + "2f29c8ebaeb667b14d5a00f50d5a93ed.png";
 
 /***/ }),
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "03d31d336defbdd9c47d7025f8b48085.png";
+module.exports = __webpack_require__.p + "861a5af957e3cd4fb32d8c58ba141be8.png";
 
 /***/ }),
 /* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "34ede4de97447bd1ac76c533b68a3e2c.png";
+module.exports = __webpack_require__.p + "03d31d336defbdd9c47d7025f8b48085.png";
 
 /***/ }),
 /* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "c445b7f6374a437c5506eed7a5d2e473.png";
+module.exports = __webpack_require__.p + "34ede4de97447bd1ac76c533b68a3e2c.png";
 
 /***/ }),
 /* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "20ab7de870ebb2ed76b36048e392691d.png";
+module.exports = __webpack_require__.p + "c445b7f6374a437c5506eed7a5d2e473.png";
 
 /***/ }),
 /* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "79b27b5927cef6f02460a93f41f2aa84.png";
+module.exports = __webpack_require__.p + "20ab7de870ebb2ed76b36048e392691d.png";
 
 /***/ }),
 /* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "7aa435c534e74880dd30deb358b472c0.png";
+module.exports = __webpack_require__.p + "79b27b5927cef6f02460a93f41f2aa84.png";
 
 /***/ }),
 /* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "dfef87f0bcb5ad87e0bafda937662040.png";
+module.exports = __webpack_require__.p + "7aa435c534e74880dd30deb358b472c0.png";
 
 /***/ }),
 /* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "58a6382774d8a94cbd13ce1960976417.png";
+module.exports = __webpack_require__.p + "dfef87f0bcb5ad87e0bafda937662040.png";
 
 /***/ }),
 /* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "07231bc69618323e334495f8e390947f.png";
+module.exports = __webpack_require__.p + "58a6382774d8a94cbd13ce1960976417.png";
 
 /***/ }),
 /* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "07231bc69618323e334495f8e390947f.png";
+
+/***/ }),
+/* 137 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7066,16 +7115,16 @@ __webpack_require__.r(__webpack_exports__);
 ]);
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mount; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(138);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(139);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
-/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(139);
-/* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(158);
+/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(140);
+/* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(159);
 /* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7124,32 +7173,48 @@ function Preload() {
   return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
     className: "Preload"
   }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(32)
+    src: __webpack_require__(43)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
     src: __webpack_require__(33)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(36)
+    src: __webpack_require__(52)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(37)
+    src: __webpack_require__(53)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(129)
+    src: __webpack_require__(130)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(131)
+    src: __webpack_require__(132)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(133)
+    src: __webpack_require__(134)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(135)
+    src: __webpack_require__(136)
   }));
 }
 
 function CreditsScreen() {
   return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
     "class": "CreditsScreen"
-  }, "The world will remember your stewardship. (Thanks for playing!!)");
+  }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Fade"
+  }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("h1", null, "Thanks for playing!!"), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Credits"
+  }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Credit"
+  }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Name"
+  }, "Nick Amlag"), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Stuff"
+  }, "Art, Writing")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Credit"
+  }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Name"
+  }, "Andrew Goodenough"), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+    "class": "Stuff"
+  }, "Code, Design"))));
 }
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7171,20 +7236,20 @@ var n,l,u,i,t,r,o={},f=[],e=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|z
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(138);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(139);
 /* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
-/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(140);
-/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(147);
-/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(150);
-/* harmony import */ var views_UI_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(153);
-/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(156);
+/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(141);
+/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(148);
+/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(151);
+/* harmony import */ var views_UI_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(154);
+/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(157);
 /* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7236,15 +7301,15 @@ var Game = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(138);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(139);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
-/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(141);
+/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(142);
 /* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_World_view_less__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7296,11 +7361,11 @@ var World = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(142);
-            var content = __webpack_require__(143);
+var api = __webpack_require__(143);
+            var content = __webpack_require__(144);
 
             content = content.__esModule ? content.default : content;
 
@@ -7320,7 +7385,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7595,13 +7660,13 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(144);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(145);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(146);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(145);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(146);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(147);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -7611,7 +7676,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7711,7 +7776,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7751,20 +7816,20 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "9167f1dbf5d8d9905aa5933a2fc45693.ttf";
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Entity; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(138);
-/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(148);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(139);
+/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(149);
 /* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7836,11 +7901,11 @@ var Entity = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(142);
-            var content = __webpack_require__(149);
+var api = __webpack_require__(143);
+            var content = __webpack_require__(150);
 
             content = content.__esModule ? content.default : content;
 
@@ -7860,28 +7925,28 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(144);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(145);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".Entity {\n  width: 1em;\n  height: 1em;\n  position: absolute;\n  transition-duration: 0.1s;\n  transition-property: top left opacity;\n  background-size: 1em;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.Entity[animation=shake] {\n  animation-name: shake;\n  animation-duration: 0.1s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=ooze] {\n  animation-name: ooze;\n  animation-duration: 4s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=strike-east] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-east;\n}\n.Entity[animation=strike-west] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-west;\n}\n.Entity[animation=strike-north] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-north;\n}\n.Entity[animation=strike-south] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-south;\n}\n@keyframes strike-east {\n  0% {\n    transform: translateX(-0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateX(0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-west {\n  0% {\n    transform: translateX(0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateX(-0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-south {\n  0% {\n    transform: translateY(-0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateY(0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes strike-north {\n  0% {\n    transform: translateY(0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateY(-0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes shake {\n  0% {\n    transform: translateX(-0.025em);\n  }\n  50% {\n    transform: translateX(0.025em);\n  }\n  100% {\n    transform: translateX(-0.025em);\n  }\n}\n@keyframes ooze {\n  0% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n  75% {\n    transform: scaleX(0.9) scaleY(1.1);\n  }\n  100% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n}\n", ""]);
+exports.push([module.i, ".Entity {\n  width: 1em;\n  height: 2em;\n  position: absolute;\n  margin-top: -1em;\n  transition-duration: 0.1s;\n  transition-property: top left opacity;\n  background-size: 1em;\n  background-position: center bottom;\n  background-repeat: no-repeat;\n}\n.Entity[animation=shake] {\n  animation-name: shake;\n  animation-duration: 0.1s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=ooze] {\n  animation-name: ooze;\n  animation-duration: 4s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=strike-east] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-east;\n}\n.Entity[animation=strike-west] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-west;\n}\n.Entity[animation=strike-north] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-north;\n}\n.Entity[animation=strike-south] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-south;\n}\n@keyframes strike-east {\n  0% {\n    transform: translateX(-0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateX(0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-west {\n  0% {\n    transform: translateX(0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateX(-0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-south {\n  0% {\n    transform: translateY(-0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateY(0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes strike-north {\n  0% {\n    transform: translateY(0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateY(-0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes shake {\n  0% {\n    transform: translateX(-0.025em);\n  }\n  50% {\n    transform: translateX(0.025em);\n  }\n  100% {\n    transform: translateX(-0.025em);\n  }\n}\n@keyframes ooze {\n  0% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n  75% {\n    transform: scaleX(0.9) scaleY(1.1);\n  }\n  100% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(138);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(139);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
-/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(151);
+/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(152);
 /* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7930,11 +7995,11 @@ var Camera = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(142);
-            var content = __webpack_require__(152);
+var api = __webpack_require__(143);
+            var content = __webpack_require__(153);
 
             content = content.__esModule ? content.default : content;
 
@@ -7954,11 +8019,11 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(144);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(145);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".Camera {\n  position: absolute;\n  transition-property: top left;\n  transition-duration: 0.5s;\n}\n", ""]);
@@ -7967,16 +8032,16 @@ module.exports = exports;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return UI; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(138);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(139);
 /* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(27);
-/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(154);
+/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(155);
 /* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_UI_view_less__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7999,26 +8064,33 @@ var UI = /*#__PURE__*/function () {
     value: function render() {
       if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player == undefined) return;
       return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "UI"
+        "class": "UI"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "hearts"
+        "class": "hearts"
       }, this.hearts), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "score"
+        "class": "score"
       }, this.score), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "flash"
+        "class": "flash"
       }, this.flash), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "title-banner"
+        "class": "title-banner"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "Enchiridion"), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", {
-        className: "play-prompt"
+        "class": "play-prompt"
       }, "Click to play!")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "game-over-banner"
-      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.deathtext || "Game Over")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "pause-banner"
-      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "PAUSED")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-        className: "tutorial"
-      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-        src: __webpack_require__(135)
-      }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "MOVE INTO MONSTERS TO SLAY THEM")));
+        "class": "game-over-banner"
+      }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.deathtext || "YOU HAVE PERISHED")), this.dialogue);
+    }
+  }, {
+    key: "dialogue",
+    get: function get() {
+      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.script != undefined) {
+        return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+          "class": "Dialogue"
+        }, models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.script.dialogue[0].map(function (text) {
+          return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
+            "class": "Text"
+          }, text);
+        }));
+      }
     }
   }, {
     key: "hearts",
@@ -8029,18 +8101,18 @@ var UI = /*#__PURE__*/function () {
         if (i >= models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.damage) {
           if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.damage + 1 === models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.health) {
             hearts.push(preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", {
-              className: "final full heart",
+              "class": "final full heart",
               key: i
             }));
           } else {
             hearts.push(preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", {
-              className: "full heart",
+              "class": "full heart",
               key: i
             }));
           }
         } else {
           hearts.push(preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", {
-            className: "none heart",
+            "class": "none heart",
             key: i
           }));
         }
@@ -8059,7 +8131,7 @@ var UI = /*#__PURE__*/function () {
     get: function get() {
       if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.isAttacked) {
         return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
-          className: "blood",
+          "class": "blood",
           key: models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.isAttacked
         });
       }
@@ -8072,11 +8144,11 @@ var UI = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(142);
-            var content = __webpack_require__(155);
+var api = __webpack_require__(143);
+            var content = __webpack_require__(156);
 
             content = content.__esModule ? content.default : content;
 
@@ -8096,19 +8168,19 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(144);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(145);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(146);
-var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(130);
-var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(129);
-var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(132);
-var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(131);
-var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(134);
-var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(133);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(145);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(146);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(147);
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(131);
+var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(130);
+var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(133);
+var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(132);
+var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(135);
+var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(134);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
@@ -8118,17 +8190,17 @@ var ___CSS_LOADER_URL_REPLACEMENT_4___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_
 var ___CSS_LOADER_URL_REPLACEMENT_5___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_5___);
 var ___CSS_LOADER_URL_REPLACEMENT_6___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_6___);
 // Module
-exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\n.UI {\n  pointer-events: none;\n}\n.UI .hearts {\n  top: 0em;\n  right: 0em;\n  z-index: 999;\n  padding: 0.5em;\n  position: absolute;\n}\n.UI .hearts .heart {\n  width: 0.75em;\n  height: 0.75em;\n  line-height: 1em;\n  margin-left: 0.1em;\n  display: inline-block;\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.UI .hearts .heart.full {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\n.UI .hearts .heart.half {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n.UI .hearts .heart.none {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n.UI .hearts .heart.final {\n  animation-name: tremble;\n  animation-duration: 0.5s;\n  animation-iteration-count: infinite;\n}\n.UI .score {\n  left: 0em;\n  bottom: 0em;\n  z-index: 999;\n  padding: 0.25em 0.5em;\n  position: absolute;\n  line-height: 1em;\n}\n.UI .score i {\n  font: inherit;\n  opacity: 0.5;\n}\n.UI .flash {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  z-index: 999;\n  position: absolute;\n}\n.UI .flash .blood {\n  width: 100%;\n  height: 100%;\n  background-color: #A52F22;\n  animation-name: flash;\n  animation-duration: 0.1s;\n  animation-fill-mode: forwards;\n}\n.UI .title-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .game-over-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .play-prompt {\n  opacity: 0;\n  left: 0em;\n  right: 0em;\n  bottom: -2em;\n  position: absolute;\n  color: #DEB74A;\n  font-size: 0.5em;\n  text-align: center;\n  animation-name: blink;\n  animation-duration: 3s;\n  animation-iteration-count: infinite;\n}\n.UI .pause-banner {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  width: 5em;\n  height: 5em;\n  margin: auto;\n  z-index: 999;\n  line-height: 5em;\n  text-align: center;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n}\n.UI .tutorial {\n  top: 3.5em;\n  width: 3em;\n  height: 4em;\n  right: 0.5em;\n  z-index: 999999;\n  position: absolute;\n  opacity: 0;\n  transition-duration: 1s;\n  transition-property: opacity;\n}\n.UI .tutorial img {\n  width: 100%;\n}\n.UI .tutorial span {\n  display: block;\n  font-size: 0.5em;\n  line-height: 1em;\n  text-align: center;\n}\n.Game.isTutorial .UI .tutorial {\n  opacity: 1;\n  transition-delay: 1s;\n}\n.Game.isPaused:not(.hasEnded) .UI .pause-banner {\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transition-property: transform;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.hasEnded .UI .hearts,\n.Game.hasEnded .UI .score {\n  opacity: 0;\n  transition-delay: 0.5s;\n  transition-duration: 0.5s;\n  transition-property: opacity;\n}\n.Game.hasEnded .UI .game-over-banner {\n  opacity: 1;\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.isDemo .UI .hearts,\n.Game.isDemo .UI .score,\n.Game.isDemo .UI .flash,\n.Game.isDemo .UI .pause-banner,\n.Game.isDemo .UI .game-over-banner {\n  visibility: hidden;\n}\n.Game.isDemo .UI .title-banner {\n  transform: rotate(45deg) scaleY(1);\n}\n@keyframes blink {\n  0% {\n    opacity: 1;\n  }\n  75% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes fadeinout {\n  0% {\n    opacity: 0;\n  }\n  50% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes flash {\n  0% {\n    opacity: 0.5;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes tremble {\n  0% {\n    transform: translate(0em, 0.025em);\n  }\n  10% {\n    transform: translate(0.025em, -0.025em);\n  }\n  20% {\n    transform: translate(0.025em, 0em);\n  }\n  30% {\n    transform: translate(-0.025em, -0.025em);\n  }\n  40% {\n    transform: translate(0em, -0.025em);\n  }\n  50% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  60% {\n    transform: translate(0em, -0.025em);\n  }\n  70% {\n    transform: translate(-0.025em, 0em);\n  }\n  80% {\n    transform: translate(0.025em, -0.025em);\n  }\n  90% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  100% {\n    transform: translate(0.025em, 0.025em);\n  }\n}\n", ""]);
+exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\n.Dialogue {\n  position: absolute;\n  background-color: rgba(0, 0, 0, 0.9);\n  z-index: 1000;\n  bottom: 0em;\n  left: 0em;\n  right: 0em;\n  top: 0em;\n  height: 3rem;\n  margin: auto;\n  font-size: 0.5em;\n  padding: 0.66em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  text-align: center;\n}\n.UI {\n  pointer-events: none;\n}\n.UI .hearts {\n  top: 0em;\n  right: 0em;\n  z-index: 999;\n  padding: 0.5em;\n  position: absolute;\n}\n.UI .hearts .heart {\n  width: 0.75em;\n  height: 0.75em;\n  line-height: 1em;\n  margin-left: 0.1em;\n  display: inline-block;\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.UI .hearts .heart.full {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\n.UI .hearts .heart.half {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n.UI .hearts .heart.none {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n.UI .hearts .heart.final {\n  animation-name: tremble;\n  animation-duration: 0.5s;\n  animation-iteration-count: infinite;\n}\n.UI .score {\n  left: 0em;\n  bottom: 0em;\n  z-index: 999;\n  padding: 0.25em 0.5em;\n  position: absolute;\n  line-height: 1em;\n}\n.UI .score i {\n  font: inherit;\n  opacity: 0.5;\n}\n.UI .flash {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  z-index: 999;\n  position: absolute;\n}\n.UI .flash .blood {\n  width: 100%;\n  height: 100%;\n  background-color: #A52F22;\n  animation-name: flash;\n  animation-duration: 0.1s;\n  animation-fill-mode: forwards;\n}\n.UI .title-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .game-over-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .play-prompt {\n  opacity: 0;\n  left: 0em;\n  right: 0em;\n  bottom: -2em;\n  position: absolute;\n  color: #DEB74A;\n  font-size: 0.5em;\n  text-align: center;\n  animation-name: blink;\n  animation-duration: 3s;\n  animation-iteration-count: infinite;\n}\n.UI .pause-banner {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  width: 5em;\n  height: 5em;\n  margin: auto;\n  z-index: 999;\n  line-height: 5em;\n  text-align: center;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n}\n.UI .tutorial {\n  top: 3.5em;\n  width: 3em;\n  height: 4em;\n  right: 0.5em;\n  z-index: 999999;\n  position: absolute;\n  opacity: 0;\n  transition-duration: 1s;\n  transition-property: opacity;\n}\n.UI .tutorial img {\n  width: 100%;\n}\n.UI .tutorial span {\n  display: block;\n  font-size: 0.5em;\n  line-height: 1em;\n  text-align: center;\n}\n.Game.isTutorial .UI .tutorial {\n  opacity: 1;\n  transition-delay: 1s;\n}\n.Game.isPaused:not(.hasEnded) .UI .pause-banner {\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transition-property: transform;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.hasEnded .UI .hearts,\n.Game.hasEnded .UI .score {\n  opacity: 0;\n  transition-delay: 0.5s;\n  transition-duration: 0.5s;\n  transition-property: opacity;\n}\n.Game.hasEnded .UI .game-over-banner {\n  opacity: 1;\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.isDemo .UI .hearts,\n.Game.isDemo .UI .score,\n.Game.isDemo .UI .flash,\n.Game.isDemo .UI .pause-banner,\n.Game.isDemo .UI .game-over-banner {\n  visibility: hidden;\n}\n.Game.isDemo .UI .title-banner {\n  transform: rotate(45deg) scaleY(1);\n}\n@keyframes blink {\n  0% {\n    opacity: 1;\n  }\n  75% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes fadeinout {\n  0% {\n    opacity: 0;\n  }\n  50% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes flash {\n  0% {\n    opacity: 0.5;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes tremble {\n  0% {\n    transform: translate(0em, 0.025em);\n  }\n  10% {\n    transform: translate(0.025em, -0.025em);\n  }\n  20% {\n    transform: translate(0.025em, 0em);\n  }\n  30% {\n    transform: translate(-0.025em, -0.025em);\n  }\n  40% {\n    transform: translate(0em, -0.025em);\n  }\n  50% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  60% {\n    transform: translate(0em, -0.025em);\n  }\n  70% {\n    transform: translate(-0.025em, 0em);\n  }\n  80% {\n    transform: translate(0.025em, -0.025em);\n  }\n  90% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  100% {\n    transform: translate(0.025em, 0.025em);\n  }\n}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(142);
-            var content = __webpack_require__(157);
+var api = __webpack_require__(143);
+            var content = __webpack_require__(158);
 
             content = content.__esModule ? content.default : content;
 
@@ -8148,13 +8220,13 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(144);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(145);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(146);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(145);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(146);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(147);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -8164,11 +8236,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(142);
-            var content = __webpack_require__(159);
+var api = __webpack_require__(143);
+            var content = __webpack_require__(160);
 
             content = content.__esModule ? content.default : content;
 
@@ -8188,28 +8260,28 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(144);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(145);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(146);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(145);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(146);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(147);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\nbody {\n  background-color: #111;\n}\n.Frame {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  margin: auto;\n  position: fixed;\n  overflow: hidden;\n  color: #DEB74A;\n  color: #F4F8F0;\n  width: 10em;\n  height: 10em;\n  background-image: linear-gradient(135deg, #2F243A, #444054);\n}\n.Preload {\n  opacity: 0;\n  position: absolute;\n}\n", ""]);
+exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\nbody {\n  background-color: #111;\n}\n.Frame {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  margin: auto;\n  position: fixed;\n  overflow: hidden;\n  color: #DEB74A;\n  color: #F4F8F0;\n  width: 10em;\n  height: 10em;\n  background-image: linear-gradient(135deg, #2F243A, #444054);\n}\n.Preload {\n  opacity: 0;\n  position: absolute;\n}\n.CreditsScreen {\n  text-align: center;\n}\n.CreditsScreen .Fade {\n  z-index: 999;\n  position: absolute;\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  animation-name: fade-in;\n  animation-duration: 3s;\n}\n@keyframes fade-in {\n  0% {\n    background-color: #111;\n  }\n  100% {\n    background-color: transparent;\n  }\n}\n.CreditsScreen h1 {\n  margin-top: 4rem;\n  margin-bottom: 1rem;\n  font-size: 0.75em;\n}\n.CreditsScreen .Credits {\n  width: 100%;\n  display: flex;\n}\n.CreditsScreen .Credits .Credit {\n  flex: 1;\n}\n.CreditsScreen .Credits .Credit .Name {\n  font-size: 0.4em;\n}\n.CreditsScreen .Credits .Credit .Stuff {\n  font-size: 0.25em;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(138);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(139);
 
 var dom = document.getElementById("view");
 var view = undefined;
