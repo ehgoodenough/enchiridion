@@ -1,62 +1,77 @@
 import * as Preact from "preact"
 
-import App from "models/App.js"
-
-import Game from "views/Game.view.js"
+import entries from "data/entries.js"
 
 import "views/Mount.view.less"
 
 export default class Mount {
     render() {
+        const entry = entries[0]
         return (
-            <div className="Mount">
-                <div className="Frame">
-                    <Preload/>
+            <div className="Mount" onClick={this.onClick}>
+                <div class="Frame">
                     {this.screen}
                 </div>
             </div>
         )
     }
-    get screen() {
-        if(App.screen == undefined) {
-            return <Game/>
+    get onClick() {
+        return (event) => {
+            const route = this.route
+            console.log(route)
+            if(route.screen != "video") {
+                route.screen = "video"
+            } else {
+                route.index += 1
+                route.screen = "title"
+            }
+            console.log(route)
+            window.location.hash = "#/" + route.index + "/" + route.screen
         }
-        if(App.screen == "CreditsScreen") {
-            return <CreditsScreen/>
+    }
+    get entry() {
+        return entries[this.route.index]
+    }
+    get route() {
+        const hashes = window.location.hash.split("/")
+        return {
+            "index": parseInt(hashes[1]) || 0,
+            "screen": hashes[2] || "title"
+        }
+    }
+    get screen() {
+        if(this.entry == undefined) {
+            return (
+                <div class="EndScreen">
+                    Thanks for jamming!!
+                </div>
+            )
+        }
+        if(this.route.screen == "title") {
+            return (
+                <div class="TitleScreen">
+                    <div class="Emoji">{this.entry["Emoji"] || "😃"}</div>
+                    <div class="Title">{this.entry["Game Name"]}</div>
+                </div>
+            )
+        }
+        if(this.route.screen == "video") {
+            return (
+                <div class="VideoScreen">
+                    <Youtube/>
+                </div>
+            )
         }
     }
 }
 
-function Preload() {
-    return (
-        <div className="Preload">
-            <img src={require("assets/images/adventurer.png")}/>
-            <img src={require("assets/images/gravestone.png")}/>
-            <img src={require("assets/images/slime_alpha.png")}/>
-            <img src={require("assets/images/slime_omega.png")}/>
-            <img src={require("assets/images/ui/heart-full-white.png")}/>
-            <img src={require("assets/images/ui/heart-half-white.png")}/>
-            <img src={require("assets/images/ui/heart-none-white.png")}/>
-            <img src={require("assets/images/ui/keyboard.png")}/>
-        </div>
-    )
+class Youtube {
+    render() {
+        return (
+            <iframe width="560" height="315" src={"https://www.youtube.com/embed/" + "Anji33pmKKk"} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        )
+    }
 }
 
-function CreditsScreen() {
-    return (
-        <div class="CreditsScreen">
-            <div class="Fade"/>
-            <h1>Thanks for playing!!</h1>
-            <div class="Credits">
-                <div class="Credit">
-                    <div class="Name">Nick Amlag</div>
-                    <div class="Stuff">Art, Writing</div>
-                </div>
-                <div class="Credit">
-                    <div class="Name">Andrew Goodenough</div>
-                    <div class="Stuff">Code, Design</div>
-                </div>
-            </div>
-        </div>
-    )
-}
+// TODO: progress the hash
+// TODO: pull youtube url

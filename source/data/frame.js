@@ -1,1 +1,1 @@
-export default {"width": 10, "height": 10}
+export default {"width": 16, "height": 9}
