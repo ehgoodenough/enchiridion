@@ -11,12 +11,12 @@ export default {
     },
     "...": {
         "dialogue": [
-            "..."
+            ["..."]
         ]
     },
     "test": {
         "dialogue": [
-            ["Take caution, seeker.", "This land knows peace, but feral beasts still roam these woods.",]
+            ["Take caution, seeker.", "This land knows peace, but feral beasts still roam these woods."],
             ["Reclaim my power from them."],
             ["They know not the true nature of these trinkets,", "but they guard them with their life."]
         ],
@@ -30,12 +30,10 @@ export default {
     "sword2": {
         "dialogue": [
             ["... I shall rest here."],
-            ["My strength is of no use during these times of peace.",
-            "It is my fate to lie dormant, lost to time..."],
-            ["But one day, a courageous warrior will take up my",
-            "blade and wield my true power against the foes of darkness."],
+            ["My strength is of no use during these times of peace.", "It is my fate to lie dormant, lost to time..."],
+            ["But one day, a courageous warrior will take up my", "blade and wield my true power against the foes of darkness."],
             ["They will have your stewardship to thank at such time."],
-            {"type": "pause"},
+            // {"type": "pause"},
             ["Thank you, brave wanderer."]
         ],
         "goto": "CreditsScreen" // THIS SHOULD BE ANOTHER SCRIPT NODE
