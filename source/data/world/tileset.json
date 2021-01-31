@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":9,
+ "tilecount":10,
  "tiledversion":"1.4.2",
  "tileheight":18,
  "tiles":[
@@ -59,14 +59,14 @@
          "image":"..\/..\/assets\/images\/slime_alpha.png",
          "imageheight":18,
          "imagewidth":18,
-         "type":"monster"
+         "type":"red_slime"
         }, 
         {
          "id":6,
          "image":"..\/..\/assets\/images\/slime_omega.png",
          "imageheight":18,
          "imagewidth":18,
-         "type":"monster"
+         "type":"red_slime"
         }, 
         {
          "id":7,
@@ -81,6 +81,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"goal"
+        }, 
+        {
+         "id":9,
+         "image":"..\/..\/assets\/images\/bat_alpha.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"white_bat"
         }],
  "tilewidth":18,
  "type":"tileset",
