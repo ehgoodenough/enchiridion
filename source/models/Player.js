@@ -6,7 +6,7 @@ import App from "models/App.js"
 import Game from "models/Game.js"
 import State from "models/State.js"
 import Entity from "models/Entity.js"
-const Dev = {"isInGodMode": __STAGE__ == "NONE"}
+import Dev from "library/Dev.js"
 
 import directions from "data/directions.js"
 import deathtext from "data/deathtext.js"
@@ -38,7 +38,7 @@ export default class Player {
             App.hasUsedKeyboard = true
         }
 
-        if(Dev.isInGodMode) {
+        if(Dev.isEnabled) {
             if(Keyb.isJustDown("T", delta.ms)) {
                 Player.performAction(state, {"move": {}})
             }

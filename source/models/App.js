@@ -9,12 +9,11 @@ import State from "models/State.js"
 const MINIMUM_DEATH_TIME = 1.5 // in seconds
 const STATE_EXPIRATION = 10 * 1000 // in milliseconds
 
-
-const Dev = {"isInDevMode": true}
+import Dev from "library/Dev.js"
 
 const App = new class {
     constructor() {
-        if(Dev.isInDevMode == true) {
+        if(Dev.isEnabled == true) {
             window.app = this
         }
 

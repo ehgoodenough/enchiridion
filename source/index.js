@@ -21,11 +21,16 @@ frem(frame)
 import Yaafloop from "yaafloop"
 
 import App from "models/App.js"
+import Dev from "library/Dev.js"
 
 import View from "views/Mount.view.js"
 import render from "library/render.js"
 
 const loop = new Yaafloop((delta) => {
+    Dev.atStartOfLoop()
+
     App.update(delta)
     render(View)
+
+    Dev.atEndOfLoop()
 })
