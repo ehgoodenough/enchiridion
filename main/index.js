@@ -91,15 +91,15 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(library_analytics_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var frem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var frem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
 /* harmony import */ var frem__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(frem__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
-/* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
+/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var yaafloop__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(yaafloop__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7);
-/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(47);
-/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(70);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
+/* harmony import */ var library_Dev_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2);
+/* harmony import */ var views_Mount_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(59);
+/* harmony import */ var library_render_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(82);
 ////////////////
 // Analytics //
 //////////////
@@ -117,25 +117,30 @@ frem__WEBPACK_IMPORTED_MODULE_1___default()(data_frame_js__WEBPACK_IMPORTED_MODU
 
 
 
+
 var loop = new yaafloop__WEBPACK_IMPORTED_MODULE_3___default.a(function (delta) {
+  library_Dev_js__WEBPACK_IMPORTED_MODULE_5__["default"].atStartOfLoop();
   models_App_js__WEBPACK_IMPORTED_MODULE_4__["default"].update(delta);
-  Object(library_render_js__WEBPACK_IMPORTED_MODULE_6__["default"])(views_Mount_view_js__WEBPACK_IMPORTED_MODULE_5__["default"]);
+  Object(library_render_js__WEBPACK_IMPORTED_MODULE_7__["default"])(views_Mount_view_js__WEBPACK_IMPORTED_MODULE_6__["default"]);
+  library_Dev_js__WEBPACK_IMPORTED_MODULE_5__["default"].atEndOfLoop();
 });
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var library_Dev_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 var GA_GAME_KEY = "9387130595a40e9374321119f6ef2f73";
 var GA_SECRET_KEY = "41653dad84e4f8df3671cafb2fe0d9117d47dddf";
 
-var GameAnalytics = __webpack_require__(2);
+
+var GameAnalytics = __webpack_require__(4);
 
 GameAnalytics._ = GameAnalytics.GameAnalytics;
-var Dev = {
-  "isInDevMode": true
-};
-var analytics = module.exports = {};
+var analytics = {};
+/* harmony default export */ __webpack_exports__["default"] = (analytics);
 analytics.isInitialized = false;
 
 analytics.initialize = function () {
@@ -149,7 +154,7 @@ analytics.initialize = function () {
 };
 
 analytics.reportError = function (error) {
-  if (Dev.isInDevMode) return;
+  if (library_Dev_js__WEBPACK_IMPORTED_MODULE_0__["default"].isEnabled) return;
 
   if (analytics.isInitialized === true) {
     GameAnalytics._.addErrorEvent(GameAnalytics.EGAErrorSeverity.Error, error.message);
@@ -157,14 +162,14 @@ analytics.reportError = function (error) {
 };
 
 analytics.reportStartGame = function () {
-  if (Dev.isInDevMode) return;
+  if (library_Dev_js__WEBPACK_IMPORTED_MODULE_0__["default"].isEnabled) return;
   if (analytics.isInitialized === false) analytics.initialize();
 
   GameAnalytics._.addProgressionEvent(GameAnalytics.EGAProgressionStatus.Start, "game");
 };
 
 analytics.reportEndGame = function () {
-  if (Dev.isInDevMode) return;
+  if (library_Dev_js__WEBPACK_IMPORTED_MODULE_0__["default"].isEnabled) return;
   if (analytics.isInitialized === false) analytics.initialize();
 
   GameAnalytics._.addProgressionEvent(GameAnalytics.EGAProgressionStatus.Complete, "game");
@@ -172,6 +177,69 @@ analytics.reportEndGame = function () {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var stats_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var stats_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(stats_js__WEBPACK_IMPORTED_MODULE_0__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var dev = new ( /*#__PURE__*/function () {
+  function Dev() {
+    _classCallCheck(this, Dev);
+
+    this.isEnabled = true;
+    this.stats = new stats_js__WEBPACK_IMPORTED_MODULE_0___default.a();
+    this.stats.dom.style.position = "absolute";
+    this.stats.dom.style.display = "flex";
+    this.stats.dom.style.flexDirection = "column";
+    this.stats.dom.style.zIndex = -1;
+    Object.values(this.stats.dom.children).forEach(function (child) {
+      return child.style = "block";
+    });
+    this.stats.dom.addEventListener("click", function (event) {
+      return event.stopPropagation();
+    }, true);
+    document.body.appendChild(this.stats.dom);
+  }
+
+  _createClass(Dev, [{
+    key: "atStartOfLoop",
+    value: function atStartOfLoop() {
+      if (this.isEnabled != true) return;
+      this.stats.begin();
+    }
+  }, {
+    key: "atEndOfLoop",
+    value: function atEndOfLoop() {
+      if (this.isEnabled != true) return;
+      this.stats.end();
+    }
+  }]);
+
+  return Dev;
+}())();
+/* harmony default export */ __webpack_exports__["default"] = (dev);
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// stats.js - http://github.com/mrdoob/stats.js
+(function(f,e){ true?module.exports=e():undefined})(this,function(){var f=function(){function e(a){c.appendChild(a.dom);return a}function u(a){for(var d=0;d<c.children.length;d++)c.children[d].style.display=d===a?"block":"none";l=a}var l=0,c=document.createElement("div");c.style.cssText="position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";c.addEventListener("click",function(a){a.preventDefault();
+u(++l%c.children.length)},!1);var k=(performance||Date).now(),g=k,a=0,r=e(new f.Panel("FPS","#0ff","#002")),h=e(new f.Panel("MS","#0f0","#020"));if(self.performance&&self.performance.memory)var t=e(new f.Panel("MB","#f08","#201"));u(0);return{REVISION:16,dom:c,addPanel:e,showPanel:u,begin:function(){k=(performance||Date).now()},end:function(){a++;var c=(performance||Date).now();h.update(c-k,200);if(c>g+1E3&&(r.update(1E3*a/(c-g),100),g=c,a=0,t)){var d=performance.memory;t.update(d.usedJSHeapSize/
+1048576,d.jsHeapSizeLimit/1048576)}return c},update:function(){k=this.end()},domElement:c,setMode:u}};f.Panel=function(e,f,l){var c=Infinity,k=0,g=Math.round,a=g(window.devicePixelRatio||1),r=80*a,h=48*a,t=3*a,v=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=h;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,h);b.fillStyle=f;b.fillText(e,t,v);
+b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(h,w){c=Math.min(c,h);k=Math.max(k,h);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=f;b.fillText(g(h)+" "+e+" ("+g(c)+"-"+g(k)+")",t,v);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,g((1-h/w)*p))}}};return f});
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4091,7 +4159,7 @@ var GameAnalytics = gameanalytics.GameAnalytics.gaCommand;
 module.exports = gameanalytics;
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports) {
 
 let width = undefined
@@ -4115,7 +4183,7 @@ window.addEventListener("resize", resize)
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4126,10 +4194,10 @@ __webpack_require__.r(__webpack_exports__);
 });
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Afloop = __webpack_require__(6)
+var Afloop = __webpack_require__(8)
 
 module.exports = function(func) {
     this.func = func
@@ -4159,7 +4227,7 @@ module.exports = function(func) {
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function Afloop(func) {
@@ -4173,18 +4241,20 @@ module.exports = Afloop
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
 /* harmony import */ var local_json_storage__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(local_json_storage__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 /* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(keyb__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var poin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
+/* harmony import */ var poin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 /* harmony import */ var poin__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(poin__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
+/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
+/* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(27);
+/* harmony import */ var library_Dev_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -4195,18 +4265,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var MINIMUM_DEATH_TIME = 1.5; // in seconds
 
 var STATE_EXPIRATION = 10 * 1000; // in milliseconds
 
-var Dev = {
-  "isInDevMode": true
-};
+
 var App = new ( /*#__PURE__*/function () {
   function _class() {
     _classCallCheck(this, _class);
 
-    if (Dev.isInDevMode == true) {
+    if (library_Dev_js__WEBPACK_IMPORTED_MODULE_5__["default"].isEnabled == true) {
       window.app = this;
     }
 
@@ -4232,13 +4301,13 @@ var App = new ( /*#__PURE__*/function () {
   }, {
     key: "update",
     value: function update(delta) {
-      if (this.game.isDemo === true || this.game.hasEnded === true) {
+      if (this.game.isDemo === true || this.game.state.hasEnded === true) {
         this.deathtime = this.deathtime || 0;
         this.deathtime += delta.s;
 
         if (this.deathtime > MINIMUM_DEATH_TIME) {
           if (keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("W", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("S", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("A", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("D", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<up>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<down>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<left>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<right>", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_1___default.a.isJustDown("<space>", delta.ms) || poin__WEBPACK_IMPORTED_MODULE_2___default.a.wasJustPressed("primary", delta.ms)) {
-            var savestate = models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"].pruneProgress(this.game);
+            var savestate = models_State_js__WEBPACK_IMPORTED_MODULE_4__["default"].pruneProgress(this.game.state);
             console.log(savestate);
             this.game = new models_Game_js__WEBPACK_IMPORTED_MODULE_3__["default"]({
               savestate: savestate
@@ -4265,7 +4334,7 @@ var App = new ( /*#__PURE__*/function () {
 /* harmony default export */ __webpack_exports__["default"] = (App);
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4282,10 +4351,10 @@ localJSONStorage.__proto__.getJSON = function(key) {
 module.exports = localJSONStorage;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const vkey = __webpack_require__(10)
+const vkey = __webpack_require__(12)
 
 const DEFAULT_DELTA = 1000 / 60
 
@@ -4337,7 +4406,7 @@ module.exports = Keyb
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4481,7 +4550,7 @@ for(i = 112; i < 136; ++i) {
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
 const BUTTON_NAMES = {
@@ -4542,18 +4611,17 @@ module.exports = Poin
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
 /* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(library_analytics_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
-/* harmony import */ var models_Player_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
-/* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var models_Player_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
+/* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(27);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -4584,23 +4652,18 @@ var Game = /*#__PURE__*/function () {
   _createClass(Game, [{
     key: "update",
     value: function update(delta) {
-      if (this.hasEnded) return;
-      models_Player_js__WEBPACK_IMPORTED_MODULE_3__["default"].update(this, delta);
+      if (this.state.hasEnded) return;
+      models_Player_js__WEBPACK_IMPORTED_MODULE_3__["default"].update(this.state, delta);
     }
   }, {
     key: "start",
     value: function start() {
-      library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default.a.reportStartGame();
+      library_analytics_js__WEBPACK_IMPORTED_MODULE_1__["default"].reportStartGame();
     }
   }, {
     key: "end",
     value: function end() {
-      library_analytics_js__WEBPACK_IMPORTED_MODULE_1___default.a.reportEndGame();
-    }
-  }, {
-    key: "isDone",
-    get: function get() {
-      return this.hasEnded;
+      library_analytics_js__WEBPACK_IMPORTED_MODULE_1__["default"].reportEndGame();
     }
   }, {
     key: "isTutorial",
@@ -4615,32 +4678,6 @@ var Game = /*#__PURE__*/function () {
 
       return true;
     }
-  }], [{
-    key: "performReactions",
-    value: function performReactions(game) {
-      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.state.entities, function (entity) {
-        if (entity.reaction instanceof Function) {
-          entity.reaction(game);
-        }
-      }); // if(this.isDemo != true) {
-      //     // App.saveGame(game)
-      // }
-    }
-  }, {
-    key: "pruneProgress",
-    value: function pruneProgress(game) {
-      var collectibles = Object.values(game.state.entities).filter(function (entity) {
-        return entity.type == "collectible" && entity.status == "collected";
-      });
-      return {
-        "entities": collectibles.map(function (collectible) {
-          return {
-            "key": collectible.key,
-            "status": collectible.status
-          };
-        })
-      };
-    }
   }]);
 
   return Game;
@@ -4649,7 +4686,7 @@ var Game = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4660,7 +4697,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convert", function() { return convert; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "from", function() { return from; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "forEach", function() { return forEach; });
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
 /* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_0__);
 // What is an object-based dictionary? It's any object with key-value pairs!
 // This is just a more primitive version of the ES2015 Maps.
@@ -4756,30 +4793,30 @@ function forEach(dict, iterator) {
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(15);
+module.exports = __webpack_require__(17);
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var alphabet = __webpack_require__(16);
-var build = __webpack_require__(18);
-var isValid = __webpack_require__(22);
+var alphabet = __webpack_require__(18);
+var build = __webpack_require__(20);
+var isValid = __webpack_require__(24);
 
 // if you are using cluster or multiple servers use this to make each instance
 // has a unique value for worker
 // Note: I don't know if this is automatically set when using third
 // party cluster solutions such as pm2.
-var clusterWorkerId = __webpack_require__(23) || 0;
+var clusterWorkerId = __webpack_require__(25) || 0;
 
 /**
  * Set the seed.
@@ -4834,13 +4871,13 @@ module.exports.isValid = isValid;
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var randomFromSeed = __webpack_require__(17);
+var randomFromSeed = __webpack_require__(19);
 
 var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 var alphabet;
@@ -4944,7 +4981,7 @@ module.exports = {
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4976,14 +5013,14 @@ module.exports = {
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var generate = __webpack_require__(19);
-var alphabet = __webpack_require__(16);
+var generate = __webpack_require__(21);
+var alphabet = __webpack_require__(18);
 
 // Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 // This number should be updated every year or so to keep the generated id short.
@@ -5029,15 +5066,15 @@ module.exports = build;
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var alphabet = __webpack_require__(16);
-var random = __webpack_require__(20);
-var format = __webpack_require__(21);
+var alphabet = __webpack_require__(18);
+var random = __webpack_require__(22);
+var format = __webpack_require__(23);
 
 function generate(number) {
     var loopCounter = 0;
@@ -5057,7 +5094,7 @@ module.exports = generate;
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5085,7 +5122,7 @@ module.exports = randomByte;
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports) {
 
 // This file replaces `format.js` in bundlers like webpack or Rollup,
@@ -5131,12 +5168,12 @@ module.exports = function (random, alphabet, size) {
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var alphabet = __webpack_require__(16);
+var alphabet = __webpack_require__(18);
 
 function isShortId(id) {
     if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -5153,7 +5190,7 @@ module.exports = isShortId;
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5163,25 +5200,24 @@ module.exports = 0;
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Player; });
-/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
 /* harmony import */ var keyb__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(keyb__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
 /* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
-/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
-/* harmony import */ var data_colors_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(25);
-/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(26);
-/* harmony import */ var assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(27);
-/* harmony import */ var assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(assets_images_gravestone_png__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(28);
-/* harmony import */ var assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(assets_images_adventurer_png__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+/* harmony import */ var models_Game_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(14);
+/* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(27);
+/* harmony import */ var models_Entity_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(28);
+/* harmony import */ var library_Dev_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(2);
+/* harmony import */ var data_directions_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(29);
+/* harmony import */ var data_deathtext_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(58);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -5193,38 +5229,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var Dev = {
-  "isInGodMode": "NONE" == "NONE"
-};
 
 
 
 
-var DIRECTIONS = {
-  "-1x0": "west",
-  "1x0": "east",
-  "0x-1": "north",
-  "0x1": "south"
-};
-var DEMO_CLOCK = 0.25; // in seconds
 
-var DEMO_MOVEMENTS = [{
-  "movement": {
-    "x": -1
-  }
-}, {
-  "movement": {
-    "x": +1
-  }
-}, {
-  "movement": {
-    "y": -1
-  }
-}, {
-  "movement": {
-    "y": +1
-  }
-}];
 
 var Player = /*#__PURE__*/function () {
   function Player() {
@@ -5233,13 +5242,13 @@ var Player = /*#__PURE__*/function () {
 
   _createClass(Player, null, [{
     key: "update",
-    value: function update(game, delta) {
-      if (Player.isDead(game)) {
+    value: function update(state, delta) {
+      if (models_Entity_js__WEBPACK_IMPORTED_MODULE_6__["default"].isDead(state, state.entities.player)) {
         return;
       }
 
       if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("W", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<up>", delta.ms)) {
-        Player.performAction(game, {
+        Player.performAction(state, {
           "move": {
             "y": -1
           }
@@ -5248,7 +5257,7 @@ var Player = /*#__PURE__*/function () {
       }
 
       if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("S", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<down>", delta.ms)) {
-        Player.performAction(game, {
+        Player.performAction(state, {
           "move": {
             "y": +1
           }
@@ -5257,7 +5266,7 @@ var Player = /*#__PURE__*/function () {
       }
 
       if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("A", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<left>", delta.ms)) {
-        Player.performAction(game, {
+        Player.performAction(state, {
           "move": {
             "x": -1
           }
@@ -5266,7 +5275,7 @@ var Player = /*#__PURE__*/function () {
       }
 
       if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("D", delta.ms) || keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("<right>", delta.ms)) {
-        Player.performAction(game, {
+        Player.performAction(state, {
           "move": {
             "x": +1
           }
@@ -5274,9 +5283,9 @@ var Player = /*#__PURE__*/function () {
         models_App_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasUsedKeyboard = true;
       }
 
-      if (Dev.isInGodMode) {
+      if (library_Dev_js__WEBPACK_IMPORTED_MODULE_7__["default"].isEnabled) {
         if (keyb__WEBPACK_IMPORTED_MODULE_0___default.a.isJustDown("T", delta.ms)) {
-          Player.performAction(game, {
+          Player.performAction(state, {
             "move": {}
           });
         }
@@ -5284,35 +5293,38 @@ var Player = /*#__PURE__*/function () {
     }
   }, {
     key: "performAction",
-    value: function performAction(game, action) {
+    value: function performAction(state, action) {
       var _this = this;
 
-      var player = game.state.entities.player;
+      var player = state.entities.player;
       player.isAttacking = false;
       action.move.x = action.move.x || 0;
       action.move.y = action.move.y || 0;
-      player.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none";
-      objdict__WEBPACK_IMPORTED_MODULE_1__["forEach"](game.state.entities, function (entity) {
+      player.direction = {
+        "x": action.move.x,
+        "y": action.move.y
+      };
+      objdict__WEBPACK_IMPORTED_MODULE_1__["forEach"](state.entities, function (entity) {
         if (entity != _this && entity.isDead != true && player.position.x + action.move.x == entity.position.x && player.position.y + action.move.y == entity.position.y) {
           if (entity.hasCollision == true) {
             if (entity.key != player.key) {
               player.isAttacking = true;
 
               if (entity.handleAttacked instanceof Function) {
-                entity.handleAttacked(game);
+                entity.handleAttacked(state);
               }
             }
 
             action.move.x = 0;
             action.move.y = 0;
           } else if (entity.hasCollision == false) {
-            entity.handleSquished(game);
+            entity.handleSquished(state);
           }
         }
       });
       var mx = player.position.x + action.move.x;
       var my = player.position.y + action.move.y;
-      var tile = game.state.world.tiles[mx + "x" + my];
+      var tile = state.world.tiles[mx + "x" + my];
 
       if (tile != undefined && tile.collision == true) {
         action.move.x = 0;
@@ -5325,12 +5337,12 @@ var Player = /*#__PURE__*/function () {
       player.prevposition.y = player.position.y;
       player.position.x += action.move.x;
       player.position.y += action.move.y;
-      models_Game_js__WEBPACK_IMPORTED_MODULE_4__["default"].performReactions(game);
+      models_State_js__WEBPACK_IMPORTED_MODULE_5__["default"].performReactions(state);
     }
   }, {
     key: "isDead",
-    value: function isDead(game) {
-      var player = game.state.entities.player;
+    value: function isDead(state) {
+      var player = state.entities.player;
       return player == undefined || player.damage >= player.health;
     } // toState() {
     //     return {
@@ -5349,64 +5361,28 @@ var Player = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  "yellow": "#DEB74A",
-  "red": "#A52F22",
-  "white": "#F4F8F0",
-  "blue": "#00688B"
-});
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = (["you died", "you died", "you died again", "you died", "you died", "pjsalt", "you died", "you died?", "what happened?", "you died", "press f", "you died", "ouch", "dang it", "not like this", "you died" // "rest in peace",
-// "that's rough buddy",
-// "everyone is dead",
-// "you have died",
-// "game over",
-]);
-
-/***/ }),
 /* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "9edf8ad89007f07cd20bdce9b376fb46.png";
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "df5169e48dff213ccfea80e266517db5.png";
-
-/***/ }),
-/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return State; });
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
 /* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
-/* harmony import */ var models_Entity_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
-/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(34);
-var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4___namespace = /*#__PURE__*/__webpack_require__.t(34, 1);
-/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(35);
-var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(35, 1);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var models_Entity_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(28);
+/* harmony import */ var data_directions_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
+/* harmony import */ var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(45);
+var data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(45, 1);
+/* harmony import */ var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(46);
+var data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6___namespace = /*#__PURE__*/__webpack_require__.t(46, 1);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -5423,13 +5399,30 @@ var contextualize = function contextualize(context) {
   return recontext;
 };
 
-var buildImagePaths = contextualize(__webpack_require__(36));
+var buildImagePaths = contextualize(__webpack_require__(47));
 
-if (data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.tilesets.length != 1 || data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.tilesets[0].source != "tileset.json") {
-  console.error("Unexpected tilesets", data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.tilesets);
+if (data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.tilesets.length != 1 || data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.tilesets[0].source != "tileset.json") {
+  console.error("Unexpected tilesets", data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.tilesets);
 }
 
-console.log(data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__, data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__); // tilemap.renderorder == "right-down"
+var directionsByLabel = {
+  "west": {
+    "x": -1,
+    "y": 0
+  },
+  "east": {
+    "x": +1,
+    "y": 0
+  },
+  "north": {
+    "x": 0,
+    "y": -1
+  },
+  "south": {
+    "x": 0,
+    "y": +1
+  }
+}; // tilemap.renderorder == "right-down"
 // tilemap.orientation == "orthogonal"
 // tilemap.tiledversion == "1.4.2"
 // tilemap.version == 1.4
@@ -5476,14 +5469,14 @@ var State = /*#__PURE__*/function () {
   _createClass(State, null, [{
     key: "generate",
     value: function generate() {
-      this.width = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.width;
-      this.height = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.height;
+      this.width = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.width;
+      this.height = data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.height;
       var state = {};
       state.entities = {};
       state.world = {
         "tiles": {}
       };
-      data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_4__.layers.forEach(function (layer) {
+      data_world_tilemap_json__WEBPACK_IMPORTED_MODULE_5__.layers.forEach(function (layer) {
         if (layer.name == "data:entities" && layer.type == "objectgroup") {
           return layer.objects.forEach(function (object) {
             if (object.visible == false) return;
@@ -5496,7 +5489,7 @@ var State = /*#__PURE__*/function () {
               object.type = findPropertyValue(object.properties, "EntityType");
 
               if (object.type == undefined || object.type == "") {
-                var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__.tiles[object.gid];
+                var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6__.tiles[object.gid];
 
                 if (tile != undefined) {
                   object.type = tile.type;
@@ -5513,9 +5506,16 @@ var State = /*#__PURE__*/function () {
               return;
             }
 
+            object.direction = findPropertyValue(object.properties, "Direction");
+
+            if (object.direction != undefined) {
+              object.direction = directionsByLabel[object.direction];
+            }
+
             var entity = models_Entity_js__WEBPACK_IMPORTED_MODULE_3__["default"].generate({
               "key": object.key || object.id,
               "type": object.type,
+              "direction": object.direction,
               "position": {
                 "x": Math.floor(object.x / TILE_SIZE),
                 "y": Math.floor(object.y / TILE_SIZE) - 1,
@@ -5552,7 +5552,7 @@ var State = /*#__PURE__*/function () {
             var tilegid = _ref2.tilegid,
                 position = _ref2.position;
             tilegid -= FIRST_TILEGID;
-            var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_5__.tiles[tilegid];
+            var tile = data_world_tileset_json__WEBPACK_IMPORTED_MODULE_6__.tiles[tilegid];
             if (tile == undefined) return;
             state.world.tiles[position.key] = state.world.tiles[position.key] || {};
             state.world.tiles[position.key].position = state.world.tiles[position.key].position || position;
@@ -5601,6 +5601,44 @@ var State = /*#__PURE__*/function () {
       });
       return state;
     }
+  }, {
+    key: "performReactions",
+    value: function performReactions(state) {
+      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](state.entities, function (entity) {
+        if (entity.reaction instanceof Function) {
+          entity.reaction(state);
+        }
+      }); // App.saveGame(game)
+    }
+  }, {
+    key: "pruneProgress",
+    value: function pruneProgress(state) {
+      var collectibles = Object.values(state.entities).filter(function (entity) {
+        return entity.type == "collectible" && entity.status == "collected";
+      });
+      return {
+        "entities": collectibles.map(function (collectible) {
+          return {
+            "key": collectible.key,
+            "status": collectible.status
+          };
+        })
+      };
+    }
+  }, {
+    key: "getCollectibleProgress",
+    value: function getCollectibleProgress(state) {
+      var totalCollectibles = Object.values(state.entities).filter(function (entity) {
+        return entity.type == "collectible";
+      });
+      var currentCollectibles = totalCollectibles.filter(function (entity) {
+        return entity.status == "collected";
+      });
+      return {
+        "current": currentCollectibles.length,
+        "total": totalCollectibles.length
+      };
+    }
   }]);
 
   return State;
@@ -5609,21 +5647,25 @@ var State = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Entity; });
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
-/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
 /* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
+/* harmony import */ var data_directions_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 
 
@@ -5648,9 +5690,9 @@ var Entity = /*#__PURE__*/function () {
     }
   }, {
     key: "isInCamera",
-    value: function isInCamera(game, entity) {
-      if (game.state.entities.player == undefined) return true;
-      var playerPosition = game.state.entities.player.prevposition || game.state.entities.player.position;
+    value: function isInCamera(state, entity) {
+      if (state.entities.player == undefined) return true;
+      var playerPosition = state.entities.player.prevposition || state.entities.player.position;
       var CAMZONE_WIDTH = 10;
       var CAMZONE_HEIGHT = 10;
       var playerCamzonePosition = {
@@ -5672,17 +5714,36 @@ var Entity = /*#__PURE__*/function () {
 var defaultEntity = {
   "damage": 0,
   "health": 1,
-  "handleAttacked": function handleAttacked(game) {
+  "handleAttacked": function handleAttacked(state) {
     this.damage += 1;
 
     if (this.damage >= this.health) {
-      this.isDead = true; // this.game.score += 1
-      // this.game.wave.killcount -= 1
+      this.isDead = true; // this.score += 1
+      // this.wave.killcount -= 1
 
-      delete game.state.entities[this.key];
+      delete state.entities[this.key];
     }
   }
 };
+
+function getDirectionLabel(direction) {
+  return data_directions_js__WEBPACK_IMPORTED_MODULE_4__["default"][direction.x + "x" + direction.y] || "none";
+}
+
+function StrikingAnimation() {
+  if (this.isAttacking) {
+    return "strike" + "-" + getDirectionLabel(this.direction);
+  }
+}
+
+function FlipFlopImage() {
+  if (this.flipflop === true) {
+    return this.images.threatening;
+  } else {
+    return this.images.standard;
+  }
+}
+
 var classedEntities = {
   "adventurer": {
     "title": "The Adventurer",
@@ -5690,9 +5751,10 @@ var classedEntities = {
     "hasCollision": true,
     "health": 3,
     "images": {
-      "standard": __webpack_require__(28),
-      "dead": __webpack_require__(27)
+      "standard": __webpack_require__(30),
+      "dead": __webpack_require__(31)
     },
+    "getAnimation": StrikingAnimation,
     "getImage": function getImage() {
       if (Entity.isDead(this)) {
         return this.images.dead;
@@ -5700,13 +5762,8 @@ var classedEntities = {
         return this.images.standard;
       }
     },
-    "getAnimation": function getAnimation() {
-      if (this.isAttacking) {
-        return "strike" + "-" + this.direction;
-      }
-    },
-    "handleAttacked": function handleAttacked(game) {
-      // if(this.game.isDemo) return
+    "handleAttacked": function handleAttacked(state) {
+      // if(this.isDemo) return
       if (Entity.isDead(this)) return;
       this.damage += 1;
       this.isAttacked = shortid__WEBPACK_IMPORTED_MODULE_1___default.a.generate();
@@ -5714,7 +5771,7 @@ var classedEntities = {
       if (Entity.isDead(this)) {
         // this.deathtext = deathtext[0]
         // deathtext.push(deathtext.shift())
-        game.hasEnded = true;
+        state.hasEnded = true;
         models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].deathtime = 0;
       }
     }
@@ -5722,7 +5779,7 @@ var classedEntities = {
   "collectible": {
     "hasCollision": false,
     "images": {
-      "standard": __webpack_require__(31)
+      "standard": __webpack_require__(32)
     },
     "getOpacity": function getOpacity() {
       if (this.status == "collected") {
@@ -5731,24 +5788,44 @@ var classedEntities = {
         return 1;
       }
     },
-    "handleSquished": function handleSquished(game) {
+    "handleSquished": function handleSquished(state) {
       if (this.status != "collected") {
-        this.status = "collected"; // delete game.state.entities[this.key]
+        this.status = "collected";
       }
     }
   },
-  "monster": {
+  "shrub": {
+    "hasCollision": true,
+    "images": {
+      "standard": __webpack_require__(33)
+    }
+  },
+  "goal": {
+    "hasCollision": false,
+    "images": {
+      "standard": __webpack_require__(34)
+    },
+    "handleSquished": function handleSquished(state) {
+      var collectibles = models_State_js__WEBPACK_IMPORTED_MODULE_3__["default"].getCollectibleProgress(state);
+
+      if (collectibles.current == collectibles.total) {
+        window.alert("You Win!!");
+      } else {
+        window.alert("Come back when you've collected all the things.");
+      }
+    }
+  },
+  "red_slime": {
     "title": "Red Slime",
     "description": "It looks gross.",
     "hasCollision": true,
     "images": {
-      "standard": __webpack_require__(32),
-      "threatening": __webpack_require__(33)
+      "standard": __webpack_require__(35),
+      "threatening": __webpack_require__(36)
     },
-    "flipflop": false,
     "getAnimation": function getAnimation() {
       if (this.isAttacking) {
-        return "strike" + "-" + this.direction;
+        return "strike" + "-" + getDirectionLabel(this.direction);
       }
 
       if (this.flipflop === true) {
@@ -5757,136 +5834,527 @@ var classedEntities = {
         return "ooze";
       }
     },
-    "getImage": function getImage() {
-      if (this.flipflop === true) {
-        return this.images.threatening;
-      } else {
-        return this.images.standard;
-      }
-    },
-    "reaction": function reaction(game) {
+    "getImage": FlipFlopImage,
+    "reaction": function reaction(state) {
       var _this = this;
 
-      if (Entity.isDead(this)) return;
-      if (Entity.isInCamera(game, this) == false) return;
-      var action = {
-        "move": {
-          "x": 0,
-          "y": 0
-        }
-      };
-      this.isAttacking = false;
-
-      if (this.flipflop == false) {
-        this.flipflop = true;
-      } else if (this.flipflop = true) {
-        this.flipflop = false; // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
-
-        if (Math.abs(this.position.y - (game.state.entities.player.position.y + game.state.entities.player.prevposition.y) / 2) >= Math.abs(this.position.x - (game.state.entities.player.position.x + game.state.entities.player.prevposition.x) / 2)) {
-          if (this.position.y > game.state.entities.player.position.y) {
-            action.move.y = -1;
-          } else if (this.position.y < game.state.entities.player.position.y) {
-            action.move.y = +1;
+      StandardReaction(state, this, function () {
+        var action = {
+          "move": {
+            "x": 0,
+            "y": 0
           }
-        } else {
-          if (this.position.x > game.state.entities.player.position.x) {
-            action.move.x = -1;
-          } else if (this.position.x < game.state.entities.player.position.x) {
-            action.move.x = +1;
-          }
-        }
-      } ///////////
-      // MOVE //
-      /////////
+        };
 
+        if (_this.flipflop == false) {
+          _this.flipflop = true;
+        } else if (_this.flipflop = true) {
+          _this.flipflop = false; // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
 
-      action.move.x = action.move.x || 0;
-      action.move.y = action.move.y || 0;
-      var DIRECTIONS = {
-        "-1x0": "west",
-        "1x0": "east",
-        "0x-1": "north",
-        "0x1": "south"
-      };
-      this.direction = DIRECTIONS[action.move.x + "x" + action.move.y] || "none"; // COLLISION WITH OTHER ENTITIES
-
-      objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](game.state.entities, function (entity) {
-        if (entity != _this && entity.isDead != true && entity.hasCollision == true && _this.position.x + action.move.x == entity.position.x && _this.position.y + action.move.y == entity.position.y) {
-          if (entity.key == "player") {
-            _this.isAttacking = true;
-            entity.handleAttacked(game);
+          if (Math.abs(_this.position.y - (state.entities.player.position.y + state.entities.player.prevposition.y) / 2) >= Math.abs(_this.position.x - (state.entities.player.position.x + state.entities.player.prevposition.x) / 2)) {
+            if (_this.position.y > state.entities.player.position.y) {
+              action.move.y = -1;
+            } else if (_this.position.y < state.entities.player.position.y) {
+              action.move.y = +1;
+            }
+          } else {
+            if (_this.position.x > state.entities.player.position.x) {
+              action.move.x = -1;
+            } else if (_this.position.x < state.entities.player.position.x) {
+              action.move.x = +1;
+            }
           }
 
-          action.move.x = 0;
-          action.move.y = 0;
+          _this.direction = {
+            "x": action.move.x,
+            "y": action.move.y
+          };
         }
-      }); // COLLISION WITH MAP
 
-      var x = this.position.x + action.move.x;
-      var y = this.position.y + action.move.y;
-      var tile = game.state.world.tiles[x + "x" + y];
-
-      if (tile != undefined && tile.collision == true) {
-        action.move.x = 0;
-        action.move.y = 0;
+        return action;
+      });
+    }
+  },
+  "blue_slime": {
+    "title": "Red Slime",
+    "description": "It looks gross.",
+    "hasCollision": true,
+    "images": {
+      "standard": __webpack_require__(37),
+      "threatening": __webpack_require__(38)
+    },
+    "getAnimation": function getAnimation() {
+      if (this.isAttacking) {
+        return "strike" + "-" + getDirectionLabel(this.direction);
       }
 
-      this.position.x += action.move.x;
-      this.position.y += action.move.y;
+      if (this.flipflop === true) {
+        return "shake";
+      } else {
+        return "ooze";
+      }
+    },
+    "health": 2,
+    "getImage": FlipFlopImage,
+    "reaction": function reaction(state) {
+      var _this2 = this;
+
+      StandardReaction(state, this, function () {
+        var action = {
+          "move": {
+            "x": 0,
+            "y": 0
+          }
+        };
+
+        if (_this2.flipflop == false) {
+          _this2.flipflop = true;
+        } else if (_this2.flipflop = true) {
+          _this2.flipflop = false; // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
+
+          if (Math.abs(_this2.position.y - (state.entities.player.position.y + state.entities.player.prevposition.y) / 2) >= Math.abs(_this2.position.x - (state.entities.player.position.x + state.entities.player.prevposition.x) / 2)) {
+            if (_this2.position.y > state.entities.player.position.y) {
+              action.move.y = -1;
+            } else if (_this2.position.y < state.entities.player.position.y) {
+              action.move.y = +1;
+            }
+          } else {
+            if (_this2.position.x > state.entities.player.position.x) {
+              action.move.x = -1;
+            } else if (_this2.position.x < state.entities.player.position.x) {
+              action.move.x = +1;
+            }
+          }
+
+          _this2.direction = {
+            "x": action.move.x,
+            "y": action.move.y
+          };
+        }
+
+        return action;
+      });
+    }
+  },
+  "red_bat": {
+    "title": "Red Bat",
+    "description": "Yikes, where is it going??",
+    "hasCollision": true,
+    "images": {
+      "standard": __webpack_require__(39),
+      "threatening": __webpack_require__(40)
+    },
+    "getAnimation": StrikingAnimation,
+    "getImage": FlipFlopImage,
+    "reaction": function reaction(state) {
+      var _this3 = this;
+
+      StandardReaction(state, this, function () {
+        var action = {
+          "move": {
+            "x": 0,
+            "y": 0
+          }
+        };
+
+        if (_this3.flipflop != true) {
+          _this3.flipflop = true;
+        } else if (_this3.flipflop = true) {
+          _this3.flipflop = false;
+          var moves = [{
+            x: -1
+          }, {
+            x: +1
+          }, {
+            y: -1
+          }, {
+            y: +1
+          }]; // moves.forEach((move) => {
+          //     const x = this.position.x + (move.x || 0)
+          //     const y = this.position.y + (move.y || 0)
+          //     if(state.entities.player.position.x == x
+          //     && state.entities.player.position.y == y) {
+          //         moves = [move]
+          //     }
+          // })
+
+          if (moves.length > 1) {
+            moves = filterInvalidMovements(state, _this3, moves);
+          }
+
+          if (moves.length > 0) {
+            action.move = moves[Math.floor(Math.random() * moves.length)];
+          }
+
+          _this3.direction = {
+            "x": action.move.x,
+            "y": action.move.y
+          };
+        }
+
+        return action;
+      });
+    }
+  },
+  "blue_bat": {
+    "title": "Blue Bat",
+    "description": "Yikes, where is it going??",
+    "hasCollision": true,
+    "images": {
+      "standard": __webpack_require__(41),
+      "threatening": __webpack_require__(42)
+    },
+    "getAnimation": StrikingAnimation,
+    "getImage": FlipFlopImage,
+    "reaction": function reaction(state) {
+      var _this4 = this;
+
+      StandardReaction(state, this, function () {
+        var action = {
+          "move": {
+            "x": 0,
+            "y": 0
+          }
+        };
+        var moves = [{
+          x: -1
+        }, {
+          x: +1
+        }, {
+          y: -1
+        }, {
+          y: +1
+        }]; // moves.forEach((move) => {
+        //     const x = this.position.x + (move.x || 0)
+        //     const y = this.position.y + (move.y || 0)
+        //     if(state.entities.player.position.x == x
+        //     && state.entities.player.position.y == y) {
+        //         moves = [move]
+        //     }
+        // })
+
+        if (moves.length > 1) {
+          moves = filterInvalidMovements(state, _this4, moves);
+        }
+
+        if (moves.length > 0) {
+          action.move = moves[Math.floor(Math.random() * moves.length)];
+        }
+
+        _this4.direction = {
+          "x": action.move.x,
+          "y": action.move.y
+        };
+        return action;
+      });
+    }
+  },
+  "red_snake": {
+    "title": "Red Snake",
+    "description": "Ssssss",
+    "hasCollision": true,
+    "images": {
+      "standard": __webpack_require__(43)
+    },
+    "reaction": function reaction(state) {
+      var _this5 = this;
+
+      var entity = this;
+      StandardReaction(state, entity, function () {
+        var action = {
+          "move": {
+            "x": 0,
+            "y": 0
+          }
+        };
+
+        if (entity.direction == undefined) {
+          entity.direction = Object.keys(data_directions_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
+          entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)];
+          entity.direction = entity.direction.split("x");
+          entity.direction = {
+            "x": parseInt(entity.direction[0]),
+            "y": parseInt(entity.direction[1])
+          };
+        }
+
+        action.move.x = entity.direction.x; // * entity.speed
+
+        action.move.y = entity.direction.y; // * entity.speed
+
+        var x = entity.position.x + action.move.x;
+        var y = entity.position.y + action.move.y;
+        objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](state.entities, function (otherEntity) {
+          if (entity != otherEntity && otherEntity.isDead != true && otherEntity.hasCollision == true && x == otherEntity.position.x && y == otherEntity.position.y) {
+            entity.direction.x *= -1;
+            entity.direction.y *= -1;
+          }
+        });
+        var tile = state.world.tiles[x + "x" + y];
+
+        if (tile != undefined && tile.collision == true) {
+          _this5.direction.x *= -1;
+          _this5.direction.y *= -1;
+        }
+
+        return action;
+      });
+    }
+  },
+  "blue_snake": {
+    "title": "Blue Snake",
+    "description": "Ssssss",
+    "hasCollision": true,
+    "images": {
+      "standard": __webpack_require__(44)
+    },
+    "health": 2,
+    "reaction": function reaction(state) {
+      var _this6 = this;
+
+      var entity = this;
+      StandardReaction(state, entity, function () {
+        var action = {
+          "move": {
+            "x": 0,
+            "y": 0
+          }
+        };
+
+        if (entity.direction == undefined) {
+          entity.direction = Object.keys(data_directions_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
+          entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)];
+          entity.direction = entity.direction.split("x");
+          entity.direction = {
+            "x": parseInt(entity.direction[0]),
+            "y": parseInt(entity.direction[1])
+          };
+        }
+
+        action.move.x = entity.direction.x; // * entity.speed
+
+        action.move.y = entity.direction.y; // * entity.speed
+
+        var x = entity.position.x + action.move.x;
+        var y = entity.position.y + action.move.y;
+        objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](state.entities, function (otherEntity) {
+          if (entity != otherEntity && otherEntity.isDead != true && otherEntity.hasCollision == true && x == otherEntity.position.x && y == otherEntity.position.y) {
+            entity.direction.x *= -1;
+            entity.direction.y *= -1;
+          }
+        });
+        var tile = state.world.tiles[x + "x" + y];
+
+        if (tile != undefined && tile.collision == true) {
+          _this6.direction.x *= -1;
+          _this6.direction.y *= -1;
+        }
+
+        return action;
+      });
     }
   }
 };
+
+function StandardReaction(state, entity, getActionFromAI) {
+  if (Entity.isDead(entity)) return;
+  if (Entity.isInCamera(state, entity) == false) return;
+  var action = getActionFromAI() || {};
+  action.move = action.move || {};
+  action.move.x = action.move.x || 0;
+  action.move.y = action.move.y || 0;
+  entity.isAttacking = false; // COLLISION WITH OTHER ENTITIES
+
+  objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](state.entities, function (otherEntity) {
+    if (entity != otherEntity && otherEntity.isDead != true && otherEntity.hasCollision == true && entity.position.x + action.move.x == otherEntity.position.x && entity.position.y + action.move.y == otherEntity.position.y) {
+      if (otherEntity.key == "player") {
+        entity.isAttacking = true;
+        otherEntity.handleAttacked(state);
+      }
+
+      action.move.x = 0;
+      action.move.y = 0;
+    }
+  }); // COLLISION WITH MAP
+
+  var x = entity.position.x + action.move.x;
+  var y = entity.position.y + action.move.y;
+  var tile = state.world.tiles[x + "x" + y];
+
+  if (tile != undefined && tile.collision == true) {
+    action.move.x = 0;
+    action.move.y = 0;
+  }
+
+  entity.position.x += action.move.x;
+  entity.position.y += action.move.y;
+}
+
+function filterInvalidMovements(state, entity, moves) {
+  return moves.filter(function (move) {
+    var x = entity.position.x + (move.x || 0);
+    var y = entity.position.y + (move.y || 0);
+    objdict__WEBPACK_IMPORTED_MODULE_0__["forEach"](state.entities, function (otherEntity) {
+      if (entity != otherEntity && otherEntity.isDead != true && otherEntity.hasCollision == true && otherEntity.key == "player" // THE ONLY ENTITY IT'LL RUN INTO
+      && x == otherEntity.position.x && y == otherEntity.position.y) {
+        return false;
+      }
+    });
+    var tile = state.world.tiles[x + "x" + y];
+
+    if (tile != undefined && tile.collision == true) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "-1x0": "west",
+  "1x0": "east",
+  "0x-1": "north",
+  "0x1": "south"
+});
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "ff27ca3405bc70444409f138274b9fa6.png";
 
 /***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "9fedbeeb5e578fb9806c615ffb10ac91.png";
+module.exports = __webpack_require__.p + "9edf8ad89007f07cd20bdce9b376fb46.png";
 
 /***/ }),
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
+module.exports = __webpack_require__.p + "9fedbeeb5e578fb9806c615ffb10ac91.png";
 
 /***/ }),
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
+module.exports = __webpack_require__.p + "2f747899813e947f0a270a4d19ffeebf.png";
 
 /***/ }),
 /* 34 */
-/***/ (function(module) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = JSON.parse("{\"compressionlevel\":-1,\"editorsettings\":{\"export\":{\"target\":\".\"}},\"height\":50,\"infinite\":false,\"layers\":[{\"data\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,3,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,2,3,2,2,3,3,2,1,1,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,3,3,3,3,3,3,3,3,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,3,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,3,3,3,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1],\"height\":50,\"id\":6,\"name\":\"layer1\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-2}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,4,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":50,\"id\":11,\"name\":\"layer2\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-1}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":50,\"id\":4,\"name\":\"data:collision\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":false,\"width\":50,\"x\":0,\"y\":0},{\"draworder\":\"topdown\",\"id\":15,\"name\":\"data:entities\",\"objects\":[{\"gid\":5,\"height\":18,\"id\":8,\"name\":\"adventurer\",\"properties\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"player\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":416,\"y\":752},{\"gid\":6,\"height\":18,\"id\":9,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":96,\"y\":128},{\"gid\":6,\"height\":18,\"id\":12,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":112,\"y\":64},{\"gid\":6,\"height\":18,\"id\":17,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":192,\"y\":48},{\"gid\":6,\"height\":18,\"id\":18,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":96},{\"gid\":6,\"height\":18,\"id\":19,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":208,\"y\":144},{\"gid\":8,\"height\":16,\"id\":20,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":48,\"y\":48},{\"gid\":8,\"height\":16,\"id\":21,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":256,\"y\":64},{\"gid\":8,\"height\":16,\"id\":22,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":368,\"y\":704},{\"gid\":8,\"height\":16,\"id\":23,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":592,\"y\":768},{\"gid\":8,\"height\":16,\"id\":24,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":688,\"y\":400},{\"gid\":8,\"height\":16,\"id\":25,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":592,\"y\":608},{\"gid\":8,\"height\":16,\"id\":26,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":32,\"y\":384},{\"gid\":8,\"height\":16,\"id\":28,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":192,\"y\":384},{\"gid\":8,\"height\":16,\"id\":29,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":272,\"y\":448},{\"gid\":8,\"height\":16,\"id\":31,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":512,\"y\":128},{\"gid\":8,\"height\":16,\"id\":32,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":32,\"y\":768},{\"gid\":6,\"height\":18,\"id\":33,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":704},{\"gid\":6,\"height\":18,\"id\":34,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":128,\"y\":768},{\"gid\":6,\"height\":18,\"id\":35,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":720},{\"gid\":6,\"height\":18,\"id\":36,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":768},{\"gid\":6,\"height\":18,\"id\":37,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":704},{\"gid\":6,\"height\":18,\"id\":38,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":592},{\"gid\":6,\"height\":18,\"id\":39,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":592,\"y\":528},{\"gid\":6,\"height\":18,\"id\":40,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":192,\"y\":560},{\"gid\":6,\"height\":18,\"id\":41,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":608},{\"gid\":6,\"height\":18,\"id\":42,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":256,\"y\":560},{\"gid\":6,\"height\":18,\"id\":43,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":48,\"y\":544},{\"gid\":6,\"height\":18,\"id\":44,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":96,\"y\":592},{\"gid\":6,\"height\":18,\"id\":45,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":80,\"y\":384},{\"gid\":6,\"height\":18,\"id\":46,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":32,\"y\":240},{\"gid\":6,\"height\":18,\"id\":47,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":112,\"y\":288},{\"gid\":6,\"height\":18,\"id\":48,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":240,\"y\":208},{\"gid\":6,\"height\":18,\"id\":49,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":96},{\"gid\":6,\"height\":18,\"id\":50,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":400,\"y\":128},{\"gid\":6,\"height\":18,\"id\":51,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":112},{\"gid\":6,\"height\":18,\"id\":52,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":704,\"y\":576},{\"gid\":6,\"height\":18,\"id\":53,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":704,\"y\":256},{\"gid\":6,\"height\":18,\"id\":54,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":288},{\"gid\":6,\"height\":18,\"id\":55,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":208},{\"gid\":6,\"height\":18,\"id\":56,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":464},{\"gid\":6,\"height\":18,\"id\":57,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":432},{\"gid\":6,\"height\":18,\"id\":58,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":474,\"y\":1013},{\"gid\":6,\"height\":18,\"id\":59,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":72,\"y\":820},{\"gid\":6,\"height\":18,\"id\":62,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":354,\"y\":612},{\"gid\":6,\"height\":18,\"id\":63,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":432,\"y\":581},{\"gid\":6,\"height\":18,\"id\":64,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":768}],\"opacity\":1,\"type\":\"objectgroup\",\"visible\":true,\"x\":0,\"y\":0}],\"nextlayerid\":18,\"nextobjectid\":65,\"orientation\":\"orthogonal\",\"renderorder\":\"right-down\",\"tiledversion\":\"1.4.2\",\"tileheight\":16,\"tilesets\":[{\"firstgid\":1,\"source\":\"tileset.json\"}],\"tilewidth\":16,\"type\":\"map\",\"version\":1.4,\"width\":50}");
+module.exports = __webpack_require__.p + "82b6cabe717c051ab4c1ca76f8084807.png";
 
 /***/ }),
 /* 35 */
-/***/ (function(module) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"tilecount\":8,\"tiledversion\":\"1.4.2\",\"tileheight\":18,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":1,\"image\":\"../../assets/images/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":3,\"image\":\"../../assets/images/gravestone.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":4,\"image\":\"../../assets/images/adventurer.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"adventurer\"},{\"id\":5,\"image\":\"../../assets/images/slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"monster\"},{\"id\":6,\"image\":\"../../assets/images/slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"monster\"},{\"id\":7,\"image\":\"../../assets/images/collectible.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collectible\"}],\"tilewidth\":18,\"type\":\"tileset\",\"version\":1.4}");
+module.exports = __webpack_require__.p + "67e6355612749bdb32866842a0d0525a.png";
 
 /***/ }),
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__.p + "77e28c59b7a24ca9a1cdf625be8270c4.png";
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "705ed10c4e482691c6a56986c61f35e4.png";
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "6d3072345168b77c9f4ecb078ec6c38a.png";
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "f5c7b676f22b54dda222e356513bb454.png";
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "24b2ab7ec02f3ff4daeec0ee2c15b473.png";
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "54e3bcf9319b8cce1a6ff9a720874683.png";
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "63f722d8b7768a7d852c454e7dfbf833.png";
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "722604fb6d0783abf330fe8a45557662.png";
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "909af23f484db97f4a617bebd2f2fd80.png";
+
+/***/ }),
+/* 45 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"compressionlevel\":-1,\"editorsettings\":{\"export\":{\"target\":\".\"}},\"height\":50,\"infinite\":false,\"layers\":[{\"data\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,3,3,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,3,3,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,2,2,2,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,2,2,2,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,2,2,2,2,2,3,3,2,3,2,2,3,3,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,3,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,3,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,2,3,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,3,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,3,3,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,2,2,2,2,3,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,2,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,2,2,2,3,3,3,2,2,3,3,2,2,3,3,3,3,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],\"height\":50,\"id\":6,\"name\":\"layer1\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-2}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":50,\"id\":11,\"name\":\"layer2\",\"opacity\":1,\"properties\":[{\"name\":\"Stack\",\"type\":\"int\",\"value\":-1}],\"type\":\"tilelayer\",\"visible\":true,\"width\":50,\"x\":0,\"y\":0},{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"height\":50,\"id\":4,\"name\":\"data:collision\",\"opacity\":1,\"type\":\"tilelayer\",\"visible\":false,\"width\":50,\"x\":0,\"y\":0},{\"draworder\":\"topdown\",\"id\":15,\"name\":\"data:entities\",\"objects\":[{\"gid\":8,\"height\":16,\"id\":86,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":416,\"y\":80},{\"gid\":8,\"height\":16,\"id\":87,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":32,\"y\":368},{\"gid\":8,\"height\":16,\"id\":91,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":112,\"y\":384},{\"gid\":8,\"height\":16,\"id\":94,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":112,\"y\":688},{\"gid\":8,\"height\":16,\"id\":96,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":592,\"y\":448},{\"gid\":8,\"height\":16,\"id\":97,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":704,\"y\":368},{\"gid\":8,\"height\":16,\"id\":98,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":272,\"y\":368},{\"gid\":8,\"height\":16,\"id\":99,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":416,\"y\":544},{\"gid\":8,\"height\":16,\"id\":101,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":768,\"y\":784},{\"gid\":6,\"height\":18,\"id\":102,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":368,\"y\":608},{\"gid\":6,\"height\":18,\"id\":103,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":432,\"y\":576},{\"gid\":10,\"height\":16,\"id\":108,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":176,\"y\":672},{\"gid\":10,\"height\":16,\"id\":111,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":192,\"y\":704},{\"gid\":10,\"height\":16,\"id\":112,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":688},{\"gid\":12,\"height\":18,\"id\":113,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":672},{\"gid\":12,\"height\":18,\"id\":114,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":784},{\"gid\":11,\"height\":18,\"id\":117,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":464,\"y\":736},{\"gid\":11,\"height\":18,\"id\":118,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":464,\"y\":720},{\"gid\":11,\"height\":18,\"id\":119,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":320,\"y\":736},{\"gid\":11,\"height\":18,\"id\":120,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":320,\"y\":720},{\"gid\":11,\"height\":18,\"id\":121,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":384,\"y\":656},{\"gid\":11,\"height\":18,\"id\":123,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":400,\"y\":656},{\"gid\":11,\"height\":18,\"id\":124,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":512,\"y\":528},{\"gid\":11,\"height\":18,\"id\":125,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":512,\"y\":608},{\"gid\":11,\"height\":18,\"id\":130,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":592,\"y\":528},{\"gid\":11,\"height\":18,\"id\":131,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":592,\"y\":608},{\"gid\":11,\"height\":18,\"id\":132,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":496,\"y\":416},{\"gid\":11,\"height\":18,\"id\":133,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":512,\"y\":432},{\"gid\":11,\"height\":18,\"id\":134,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":496,\"y\":464},{\"gid\":11,\"height\":18,\"id\":135,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":448},{\"gid\":11,\"height\":18,\"id\":137,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":464},{\"gid\":11,\"height\":18,\"id\":138,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":416},{\"gid\":11,\"height\":18,\"id\":139,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":448},{\"gid\":11,\"height\":18,\"id\":140,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":400},{\"gid\":11,\"height\":18,\"id\":141,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":368},{\"gid\":11,\"height\":18,\"id\":142,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":352},{\"gid\":11,\"height\":18,\"id\":143,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":592,\"y\":368},{\"gid\":11,\"height\":18,\"id\":144,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":416},{\"gid\":11,\"height\":18,\"id\":145,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":608,\"y\":400},{\"gid\":11,\"height\":18,\"id\":146,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":592,\"y\":384},{\"gid\":11,\"height\":18,\"id\":147,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":608,\"y\":432},{\"gid\":11,\"height\":18,\"id\":148,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":464},{\"gid\":11,\"height\":18,\"id\":149,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":608,\"y\":464},{\"gid\":6,\"height\":18,\"id\":151,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":464},{\"gid\":6,\"height\":18,\"id\":152,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":608,\"y\":416},{\"gid\":6,\"height\":18,\"id\":153,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":576,\"y\":384},{\"gid\":9,\"height\":16,\"id\":157,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":352,\"y\":768},{\"gid\":10,\"height\":16,\"id\":160,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":112,\"y\":432},{\"gid\":10,\"height\":16,\"id\":161,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":32,\"y\":448},{\"gid\":16,\"height\":18,\"id\":162,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":592,\"y\":432},{\"gid\":16,\"height\":18,\"id\":163,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":192,\"y\":144},{\"gid\":16,\"height\":18,\"id\":164,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":272,\"y\":128},{\"gid\":16,\"height\":18,\"id\":165,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":32,\"y\":240},{\"gid\":16,\"height\":18,\"id\":166,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":112,\"y\":288},{\"gid\":16,\"height\":18,\"id\":167,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":64,\"y\":272},{\"gid\":15,\"height\":18,\"id\":168,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"west\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":704,\"y\":96},{\"gid\":12,\"height\":18,\"id\":169,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":672,\"y\":112},{\"gid\":12,\"height\":18,\"id\":170,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":512,\"y\":32},{\"gid\":12,\"height\":18,\"id\":171,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":528,\"y\":144},{\"gid\":12,\"height\":18,\"id\":178,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":512,\"y\":144},{\"gid\":12,\"height\":18,\"id\":179,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":544,\"y\":32},{\"gid\":12,\"height\":18,\"id\":180,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"north\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":560,\"y\":144},{\"gid\":12,\"height\":18,\"id\":181,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"south\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":720,\"y\":752},{\"gid\":12,\"height\":18,\"id\":183,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"west\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":768,\"y\":720},{\"gid\":12,\"height\":18,\"id\":184,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":672,\"y\":464},{\"gid\":10,\"height\":16,\"id\":185,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":560,\"y\":560},{\"gid\":10,\"height\":16,\"id\":186,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":224,\"y\":560},{\"gid\":10,\"height\":16,\"id\":188,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":208,\"y\":224},{\"gid\":10,\"height\":16,\"id\":191,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":272,\"y\":224},{\"gid\":12,\"height\":18,\"id\":193,\"name\":\"\",\"properties\":[{\"name\":\"direction\",\"type\":\"string\",\"value\":\"east\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":224,\"y\":448},{\"gid\":6,\"height\":18,\"id\":194,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":704,\"y\":544},{\"gid\":6,\"height\":18,\"id\":195,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":752,\"y\":592},{\"gid\":6,\"height\":18,\"id\":196,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":32,\"y\":544},{\"gid\":6,\"height\":18,\"id\":197,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":96,\"y\":576},{\"gid\":6,\"height\":18,\"id\":198,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":32,\"y\":768},{\"gid\":6,\"height\":18,\"id\":200,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":688,\"y\":224},{\"gid\":6,\"height\":18,\"id\":201,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":752,\"y\":272},{\"gid\":6,\"height\":18,\"id\":202,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":704,\"y\":288},{\"gid\":13,\"height\":16,\"id\":203,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":16,\"x\":240,\"y\":272},{\"gid\":5,\"height\":18,\"id\":204,\"name\":\"\",\"properties\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"player\"}],\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":416,\"y\":720},{\"gid\":6,\"height\":18,\"id\":205,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":688,\"y\":608},{\"gid\":6,\"height\":18,\"id\":206,\"name\":\"\",\"rotation\":0,\"type\":\"\",\"visible\":true,\"width\":18,\"x\":48,\"y\":592}],\"opacity\":1,\"type\":\"objectgroup\",\"visible\":true,\"x\":0,\"y\":0}],\"nextlayerid\":18,\"nextobjectid\":207,\"orientation\":\"orthogonal\",\"renderorder\":\"right-down\",\"tiledversion\":\"1.4.2\",\"tileheight\":16,\"tilesets\":[{\"firstgid\":1,\"source\":\"tileset.json\"}],\"tilewidth\":16,\"type\":\"map\",\"version\":1.4,\"width\":50}");
+
+/***/ }),
+/* 46 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"columns\":0,\"editorsettings\":{\"export\":{\"format\":\"\",\"target\":\".\"}},\"grid\":{\"height\":1,\"orientation\":\"orthogonal\",\"width\":1},\"margin\":0,\"name\":\"tileset\",\"spacing\":0,\"tilecount\":17,\"tiledversion\":\"1.4.2\",\"tileheight\":18,\"tiles\":[{\"id\":0,\"image\":\"../../assets/images/tiles/0.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":1,\"image\":\"../../assets/images/tiles/1.png\",\"imageheight\":16,\"imagewidth\":16},{\"id\":2,\"image\":\"../../assets/images/tiles/2.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":3,\"image\":\"../../assets/images/gravestone.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collision\"},{\"id\":4,\"image\":\"../../assets/images/adventurer.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"adventurer\"},{\"id\":5,\"image\":\"../../assets/images/slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_slime\"},{\"id\":6,\"image\":\"../../assets/images/slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_slime\"},{\"id\":7,\"image\":\"../../assets/images/collectible.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"collectible\"},{\"id\":8,\"image\":\"../../assets/images/goal.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"goal\"},{\"id\":9,\"image\":\"../../assets/images/bat_alpha.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"red_bat\"},{\"id\":10,\"image\":\"../../assets/images/shrub.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"shrub\"},{\"id\":11,\"image\":\"../../assets/images/snake.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"red_snake\"},{\"id\":12,\"image\":\"../../assets/images/blue_bat_alpha.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"blue_bat\"},{\"id\":13,\"image\":\"../../assets/images/blue_bat_omega.png\",\"imageheight\":16,\"imagewidth\":16,\"type\":\"blue_bat\"},{\"id\":14,\"image\":\"../../assets/images/blue_snake.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_snake\"},{\"id\":15,\"image\":\"../../assets/images/blue_slime_omega.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_slime\"},{\"id\":16,\"image\":\"../../assets/images/blue_slime_alpha.png\",\"imageheight\":18,\"imagewidth\":18,\"type\":\"blue_slime\"}],\"tilewidth\":18,\"type\":\"tileset\",\"version\":1.4}");
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var map = {
-	"./adventurer.png": 28,
-	"./collectible.png": 31,
-	"./gravestone.png": 27,
-	"./slime_alpha.png": 32,
-	"./slime_omega.png": 33,
-	"./tiles/0.png": 37,
-	"./tiles/1.png": 38,
-	"./tiles/2.png": 39,
-	"./ui/heart-full-white.png": 40,
-	"./ui/heart-full-yellow.png": 41,
-	"./ui/heart-half-white.png": 42,
-	"./ui/heart-half-yellow.png": 43,
-	"./ui/heart-none-white.png": 44,
-	"./ui/heart-none-yellow.png": 45,
-	"./ui/keyboard.png": 46
+	"./adventurer.png": 30,
+	"./bat_alpha.png": 39,
+	"./bat_omega.png": 40,
+	"./blue_bat_alpha.png": 41,
+	"./blue_bat_omega.png": 42,
+	"./blue_slime_alpha.png": 37,
+	"./blue_slime_omega.png": 38,
+	"./blue_snake.png": 44,
+	"./collectible.png": 32,
+	"./goal.png": 34,
+	"./gravestone.png": 31,
+	"./shrub.png": 33,
+	"./slime_alpha.png": 35,
+	"./slime_omega.png": 36,
+	"./snake.png": 43,
+	"./tiles/0.png": 48,
+	"./tiles/1.png": 49,
+	"./tiles/2.png": 50,
+	"./ui/heart-full-white.png": 51,
+	"./ui/heart-full-yellow.png": 52,
+	"./ui/heart-half-white.png": 53,
+	"./ui/heart-half-yellow.png": 54,
+	"./ui/heart-none-white.png": 55,
+	"./ui/heart-none-yellow.png": 56,
+	"./ui/keyboard.png": 57
 };
 
 
@@ -5907,79 +6375,92 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 36;
+webpackContext.id = 47;
 
 /***/ }),
-/* 37 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "551cf609e3aa1f122aa760ce689e26b4.png";
 
 /***/ }),
-/* 38 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "aab047d0c2faa414f78f114bba6485cf.png";
 
 /***/ }),
-/* 39 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "f49270d0a276797c299d001c5782cf7f.png";
 
 /***/ }),
-/* 40 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "c445b7f6374a437c5506eed7a5d2e473.png";
 
 /***/ }),
-/* 41 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "20ab7de870ebb2ed76b36048e392691d.png";
 
 /***/ }),
-/* 42 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "79b27b5927cef6f02460a93f41f2aa84.png";
 
 /***/ }),
-/* 43 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "7aa435c534e74880dd30deb358b472c0.png";
 
 /***/ }),
-/* 44 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "dfef87f0bcb5ad87e0bafda937662040.png";
 
 /***/ }),
-/* 45 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "58a6382774d8a94cbd13ce1960976417.png";
 
 /***/ }),
-/* 46 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "07231bc69618323e334495f8e390947f.png";
 
 /***/ }),
-/* 47 */
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (["you died", "you died", "you died again", "you died", "you died", "pjsalt", "you died", "you died?", "what happened?", "you died", "press f", "you died", "ouch", "dang it", "not like this", "you died" // "rest in peace",
+// "that's rough buddy",
+// "everyone is dead",
+// "you have died",
+// "game over",
+]);
+
+/***/ }),
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Mount; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(49);
-/* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var views_Game_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(61);
+/* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(80);
 /* harmony import */ var views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_Mount_view_less__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6017,26 +6498,26 @@ function Preload() {
   return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
     className: "Preload"
   }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(28)
+    src: __webpack_require__(30)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(27)
+    src: __webpack_require__(31)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(32)
+    src: __webpack_require__(35)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(33)
+    src: __webpack_require__(36)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(40)
+    src: __webpack_require__(51)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(42)
+    src: __webpack_require__(53)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(44)
+    src: __webpack_require__(55)
   }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-    src: __webpack_require__(46)
+    src: __webpack_require__(57)
   }));
 }
 
 /***/ }),
-/* 48 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6058,20 +6539,20 @@ var n,l,u,i,t,r,o={},f=[],e=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|z
 
 
 /***/ }),
-/* 49 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
-/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
-/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(50);
-/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(57);
-/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(60);
-/* harmony import */ var views_UI_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(63);
-/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(66);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
+/* harmony import */ var objdict__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var views_World_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(62);
+/* harmony import */ var views_Entity_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(69);
+/* harmony import */ var views_Camera_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(72);
+/* harmony import */ var views_UI_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(75);
+/* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(78);
 /* harmony import */ var views_Game_view_less__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(views_Game_view_less__WEBPACK_IMPORTED_MODULE_7__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6103,7 +6584,7 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "className",
     get: function get() {
-      return ["Game", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isDone === true ? "isDone" : "", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isDemo === true ? "isDemo" : "", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isTutorial ? "isTutorial" : ""].join(" ");
+      return ["Game", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.state.hasEnded === true ? "hasEnded" : "", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isDemo === true ? "isDemo" : "", models_App_js__WEBPACK_IMPORTED_MODULE_2__["default"].game.isTutorial ? "isTutorial" : ""].join(" ");
     }
   }, {
     key: "entities",
@@ -6123,15 +6604,15 @@ var Game = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 50 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(63);
 /* harmony import */ var views_World_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_World_view_less__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6151,11 +6632,14 @@ var World = /*#__PURE__*/function () {
   _createClass(World, [{
     key: "render",
     value: function render() {
+      if (models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player == undefined) return;
       return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         "class": "World"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         "class": "Tiles"
       }, Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.world.tiles).map(function (tile) {
+        if (Math.abs(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.position.x - tile.position.x) > 12) return;
+        if (Math.abs(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities.player.position.y - tile.position.y) > 12) return;
         return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
           "class": "Tile",
           style: {
@@ -6180,11 +6664,11 @@ var World = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 51 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(52);
-            var content = __webpack_require__(53);
+var api = __webpack_require__(64);
+            var content = __webpack_require__(65);
 
             content = content.__esModule ? content.default : content;
 
@@ -6204,7 +6688,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 52 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6479,13 +6963,13 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 53 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(66);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(67);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(68);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -6495,7 +6979,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 54 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6595,7 +7079,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 55 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6635,20 +7119,20 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 56 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "9167f1dbf5d8d9905aa5933a2fc45693.ttf";
 
 /***/ }),
-/* 57 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Entity; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
-/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(58);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
+/* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(70);
 /* harmony import */ var views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(views_Entity_view_less__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6720,11 +7204,11 @@ var Entity = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 58 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(52);
-            var content = __webpack_require__(59);
+var api = __webpack_require__(64);
+            var content = __webpack_require__(71);
 
             content = content.__esModule ? content.default : content;
 
@@ -6744,11 +7228,11 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 59 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(66);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".Entity {\n  width: 1em;\n  height: 1em;\n  position: absolute;\n  transition-duration: 0.1s;\n  transition-property: top left opacity;\n  background-size: 1em;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.Entity[animation=shake] {\n  animation-name: shake;\n  animation-duration: 0.1s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=ooze] {\n  animation-name: ooze;\n  animation-duration: 4s;\n  animation-iteration-count: infinite;\n}\n.Entity[animation=strike-east] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-east;\n}\n.Entity[animation=strike-west] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-west;\n}\n.Entity[animation=strike-north] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-north;\n}\n.Entity[animation=strike-south] {\n  animation-delay: 0.05s;\n  animation-duration: 0.25s;\n  animation-iteration-count: 1;\n  animation-name: strike-south;\n}\n@keyframes strike-east {\n  0% {\n    transform: translateX(-0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateX(0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-west {\n  0% {\n    transform: translateX(0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateX(-0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateX(0em);\n  }\n}\n@keyframes strike-south {\n  0% {\n    transform: translateY(-0.25em) rotate(25deg);\n  }\n  25% {\n    transform: translateY(0.5em) rotate(-25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes strike-north {\n  0% {\n    transform: translateY(0.25em) rotate(-25deg);\n  }\n  25% {\n    transform: translateY(-0.5em) rotate(25deg);\n  }\n  100% {\n    transform: translateY(0em);\n  }\n}\n@keyframes shake {\n  0% {\n    transform: translateX(-0.025em);\n  }\n  50% {\n    transform: translateX(0.025em);\n  }\n  100% {\n    transform: translateX(-0.025em);\n  }\n}\n@keyframes ooze {\n  0% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n  75% {\n    transform: scaleX(0.9) scaleY(1.1);\n  }\n  100% {\n    transform: scaleX(1.1) scaleY(0.9);\n  }\n}\n", ""]);
@@ -6757,17 +7241,17 @@ module.exports = exports;
 
 
 /***/ }),
-/* 60 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Camera; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(61);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73);
 /* harmony import */ var views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_Camera_view_less__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var data_frame_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -6814,11 +7298,11 @@ var Camera = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 61 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(52);
-            var content = __webpack_require__(62);
+var api = __webpack_require__(64);
+            var content = __webpack_require__(74);
 
             content = content.__esModule ? content.default : content;
 
@@ -6838,11 +7322,11 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 62 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(66);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".Camera {\n  position: absolute;\n  transition-property: top left;\n  transition-duration: 0.5s;\n}\n", ""]);
@@ -6851,21 +7335,23 @@ module.exports = exports;
 
 
 /***/ }),
-/* 63 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return UI; });
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
-/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(64);
-/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(views_UI_view_less__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
+/* harmony import */ var models_App_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var models_State_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(27);
+/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(76);
+/* harmony import */ var views_UI_view_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(views_UI_view_less__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -6899,7 +7385,7 @@ var UI = /*#__PURE__*/function () {
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "PAUSED")), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("div", {
         className: "tutorial"
       }, preact__WEBPACK_IMPORTED_MODULE_0__["h"]("img", {
-        src: __webpack_require__(46)
+        src: __webpack_require__(57)
       }), preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, "MOVE INTO MONSTERS TO SLAY THEM")));
     }
   }, {
@@ -6933,13 +7419,8 @@ var UI = /*#__PURE__*/function () {
   }, {
     key: "score",
     get: function get() {
-      var totalCollectibles = Object.values(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state.entities).filter(function (entity) {
-        return entity.type == "collectible";
-      });
-      var currentCollectibles = totalCollectibles.filter(function (entity) {
-        return entity.status == "collected";
-      });
-      return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, currentCollectibles.length, " of ", totalCollectibles.length);
+      var collectibles = models_State_js__WEBPACK_IMPORTED_MODULE_2__["default"].getCollectibleProgress(models_App_js__WEBPACK_IMPORTED_MODULE_1__["default"].game.state);
+      return preact__WEBPACK_IMPORTED_MODULE_0__["h"]("span", null, collectibles.current, " of ", collectibles.total, collectibles.current == collectibles.total ? "!!" : "");
     }
   }, {
     key: "flash",
@@ -6959,11 +7440,11 @@ var UI = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 64 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(52);
-            var content = __webpack_require__(65);
+var api = __webpack_require__(64);
+            var content = __webpack_require__(77);
 
             content = content.__esModule ? content.default : content;
 
@@ -6983,19 +7464,19 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 65 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
-var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(41);
-var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(40);
-var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(43);
-var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(42);
-var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(45);
-var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(44);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(66);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(67);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(68);
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(52);
+var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(51);
+var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(54);
+var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(53);
+var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(56);
+var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(55);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
@@ -7005,17 +7486,17 @@ var ___CSS_LOADER_URL_REPLACEMENT_4___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_
 var ___CSS_LOADER_URL_REPLACEMENT_5___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_5___);
 var ___CSS_LOADER_URL_REPLACEMENT_6___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_6___);
 // Module
-exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\n.UI {\n  pointer-events: none;\n}\n.UI .hearts {\n  top: 0em;\n  right: 0em;\n  z-index: 999;\n  padding: 0.5em;\n  position: absolute;\n}\n.UI .hearts .heart {\n  width: 0.75em;\n  height: 0.75em;\n  line-height: 1em;\n  margin-left: 0.1em;\n  display: inline-block;\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.UI .hearts .heart.full {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\n.UI .hearts .heart.half {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n.UI .hearts .heart.none {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n.UI .hearts .heart.final {\n  animation-name: tremble;\n  animation-duration: 0.5s;\n  animation-iteration-count: infinite;\n}\n.UI .score {\n  left: 0em;\n  bottom: 0em;\n  z-index: 999;\n  padding: 0.25em 0.5em;\n  position: absolute;\n  line-height: 1em;\n}\n.UI .score i {\n  font: inherit;\n  opacity: 0.5;\n}\n.UI .flash {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  z-index: 999;\n  position: absolute;\n}\n.UI .flash .blood {\n  width: 100%;\n  height: 100%;\n  background-color: #A52F22;\n  animation-name: flash;\n  animation-duration: 0.1s;\n  animation-fill-mode: forwards;\n}\n.UI .title-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .game-over-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .play-prompt {\n  opacity: 0;\n  left: 0em;\n  right: 0em;\n  bottom: -2em;\n  position: absolute;\n  color: #DEB74A;\n  font-size: 0.5em;\n  text-align: center;\n  animation-name: blink;\n  animation-duration: 3s;\n  animation-iteration-count: infinite;\n}\n.UI .pause-banner {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  width: 5em;\n  height: 5em;\n  margin: auto;\n  z-index: 999;\n  line-height: 5em;\n  text-align: center;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n}\n.UI .tutorial {\n  top: 3.5em;\n  width: 3em;\n  height: 4em;\n  right: 0.5em;\n  z-index: 999999;\n  position: absolute;\n  opacity: 0;\n  transition-duration: 1s;\n  transition-property: opacity;\n}\n.UI .tutorial img {\n  width: 100%;\n}\n.UI .tutorial span {\n  display: block;\n  font-size: 0.5em;\n  line-height: 1em;\n  text-align: center;\n}\n.Game.isTutorial .UI .tutorial {\n  opacity: 1;\n  transition-delay: 1s;\n}\n.Game.isPaused:not(.isDone) .UI .pause-banner {\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transition-property: transform;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.isDone .UI .hearts,\n.Game.isDone .UI .score {\n  opacity: 0;\n  transition-delay: 0.5s;\n  transition-duration: 0.5s;\n  transition-property: opacity;\n}\n.Game.isDone .UI .game-over-banner {\n  opacity: 1;\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.isDemo .UI .hearts,\n.Game.isDemo .UI .score,\n.Game.isDemo .UI .flash,\n.Game.isDemo .UI .pause-banner,\n.Game.isDemo .UI .game-over-banner {\n  visibility: hidden;\n}\n.Game.isDemo .UI .title-banner {\n  transform: rotate(45deg) scaleY(1);\n}\n@keyframes blink {\n  0% {\n    opacity: 1;\n  }\n  75% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes fadeinout {\n  0% {\n    opacity: 0;\n  }\n  50% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes flash {\n  0% {\n    opacity: 0.5;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes tremble {\n  0% {\n    transform: translate(0em, 0.025em);\n  }\n  10% {\n    transform: translate(0.025em, -0.025em);\n  }\n  20% {\n    transform: translate(0.025em, 0em);\n  }\n  30% {\n    transform: translate(-0.025em, -0.025em);\n  }\n  40% {\n    transform: translate(0em, -0.025em);\n  }\n  50% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  60% {\n    transform: translate(0em, -0.025em);\n  }\n  70% {\n    transform: translate(-0.025em, 0em);\n  }\n  80% {\n    transform: translate(0.025em, -0.025em);\n  }\n  90% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  100% {\n    transform: translate(0.025em, 0.025em);\n  }\n}\n", ""]);
+exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\n.UI {\n  pointer-events: none;\n}\n.UI .hearts {\n  top: 0em;\n  right: 0em;\n  z-index: 999;\n  padding: 0.5em;\n  position: absolute;\n}\n.UI .hearts .heart {\n  width: 0.75em;\n  height: 0.75em;\n  line-height: 1em;\n  margin-left: 0.1em;\n  display: inline-block;\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.UI .hearts .heart.full {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\n.UI .hearts .heart.half {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n.UI .hearts .heart.none {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n.UI .hearts .heart.final {\n  animation-name: tremble;\n  animation-duration: 0.5s;\n  animation-iteration-count: infinite;\n}\n.UI .score {\n  left: 0em;\n  bottom: 0em;\n  z-index: 999;\n  padding: 0.25em 0.5em;\n  position: absolute;\n  line-height: 1em;\n}\n.UI .score i {\n  font: inherit;\n  opacity: 0.5;\n}\n.UI .flash {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  z-index: 999;\n  position: absolute;\n}\n.UI .flash .blood {\n  width: 100%;\n  height: 100%;\n  background-color: #A52F22;\n  animation-name: flash;\n  animation-duration: 0.1s;\n  animation-fill-mode: forwards;\n}\n.UI .title-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .game-over-banner {\n  transition-duration: 0.1s;\n  transition-property: transform;\n  top: 0em;\n  left: -2em;\n  right: -2em;\n  bottom: 0em;\n  margin: auto;\n  height: 2em;\n  z-index: 999;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n  line-height: 2em;\n  text-align: center;\n  border-radius: 1em;\n  background-color: rgba(165, 47, 34, 0.5);\n}\n.UI .play-prompt {\n  opacity: 0;\n  left: 0em;\n  right: 0em;\n  bottom: -2em;\n  position: absolute;\n  color: #DEB74A;\n  font-size: 0.5em;\n  text-align: center;\n  animation-name: blink;\n  animation-duration: 3s;\n  animation-iteration-count: infinite;\n}\n.UI .pause-banner {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  width: 5em;\n  height: 5em;\n  margin: auto;\n  z-index: 999;\n  line-height: 5em;\n  text-align: center;\n  position: absolute;\n  transform: rotate(0deg) scaleY(0);\n}\n.UI .tutorial {\n  top: 3.5em;\n  width: 3em;\n  height: 4em;\n  right: 0.5em;\n  z-index: 999999;\n  position: absolute;\n  opacity: 0;\n  transition-duration: 1s;\n  transition-property: opacity;\n}\n.UI .tutorial img {\n  width: 100%;\n}\n.UI .tutorial span {\n  display: block;\n  font-size: 0.5em;\n  line-height: 1em;\n  text-align: center;\n}\n.Game.isTutorial .UI .tutorial {\n  opacity: 1;\n  transition-delay: 1s;\n}\n.Game.isPaused:not(.hasEnded) .UI .pause-banner {\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transition-property: transform;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.hasEnded .UI .hearts,\n.Game.hasEnded .UI .score {\n  opacity: 0;\n  transition-delay: 0.5s;\n  transition-duration: 0.5s;\n  transition-property: opacity;\n}\n.Game.hasEnded .UI .game-over-banner {\n  opacity: 1;\n  transition-delay: 1.5s;\n  transition-duration: 0.5s;\n  transform: rotate(45deg) scaleY(1);\n}\n.Game.isDemo .UI .hearts,\n.Game.isDemo .UI .score,\n.Game.isDemo .UI .flash,\n.Game.isDemo .UI .pause-banner,\n.Game.isDemo .UI .game-over-banner {\n  visibility: hidden;\n}\n.Game.isDemo .UI .title-banner {\n  transform: rotate(45deg) scaleY(1);\n}\n@keyframes blink {\n  0% {\n    opacity: 1;\n  }\n  75% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes fadeinout {\n  0% {\n    opacity: 0;\n  }\n  50% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes flash {\n  0% {\n    opacity: 0.5;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes tremble {\n  0% {\n    transform: translate(0em, 0.025em);\n  }\n  10% {\n    transform: translate(0.025em, -0.025em);\n  }\n  20% {\n    transform: translate(0.025em, 0em);\n  }\n  30% {\n    transform: translate(-0.025em, -0.025em);\n  }\n  40% {\n    transform: translate(0em, -0.025em);\n  }\n  50% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  60% {\n    transform: translate(0em, -0.025em);\n  }\n  70% {\n    transform: translate(-0.025em, 0em);\n  }\n  80% {\n    transform: translate(0.025em, -0.025em);\n  }\n  90% {\n    transform: translate(-0.025em, 0.025em);\n  }\n  100% {\n    transform: translate(0.025em, 0.025em);\n  }\n}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 66 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(52);
-            var content = __webpack_require__(67);
+var api = __webpack_require__(64);
+            var content = __webpack_require__(79);
 
             content = content.__esModule ? content.default : content;
 
@@ -7035,27 +7516,27 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 67 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(66);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(67);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(68);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\n.Game {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  color: #FFF;\n  font-family: tiny;\n  font-weight: normal;\n}\n.Game.isDemo .Scene {\n  filter: blur(0.05em);\n}\n.Game.isDone .Scene {\n  filter: blur(0.05em);\n  transition-delay: 1s;\n  transition-duration: 2s;\n  transition-property: filter;\n}\n.Game.isPaused:not(.isDone):not(.isDemo) .Scene {\n  filter: blur(0.125em);\n  transition-delay: 0.25s;\n  transition-duration: 0.5s;\n  transition-property: filter;\n}\n", ""]);
+exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\n.Game {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  color: #FFF;\n  font-family: tiny;\n  font-weight: normal;\n}\n.Game.isDemo .Scene {\n  filter: blur(0.05em);\n}\n.Game.hasEnded .Scene {\n  filter: blur(0.05em);\n  transition-delay: 1s;\n  transition-duration: 2s;\n  transition-property: filter;\n}\n.Game.isPaused:not(.hasEnded):not(.isDemo) .Scene {\n  filter: blur(0.125em);\n  transition-delay: 0.25s;\n  transition-duration: 0.5s;\n  transition-property: filter;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 68 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(52);
-            var content = __webpack_require__(69);
+var api = __webpack_require__(64);
+            var content = __webpack_require__(81);
 
             content = content.__esModule ? content.default : content;
 
@@ -7075,30 +7556,30 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 69 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(54);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(55);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(56);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(66);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(67);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(68);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\n.Mount {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  position: absolute;\n  background-color: #111;\n}\n.Frame {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  margin: auto;\n  position: fixed;\n  overflow: hidden;\n  color: #DEB74A;\n  color: #F4F8F0;\n  width: 10em;\n  height: 10em;\n  background-image: linear-gradient(135deg, #2F243A, #444054);\n}\n.Preload {\n  opacity: 0;\n  position: absolute;\n}\n", ""]);
+exports.push([module.i, "* {\n  margin: 0px;\n  padding: 0px;\n  user-select: none;\n  box-sizing: border-box;\n  image-rendering: pixelated;\n}\n@font-face {\n  font-weight: 400;\n  font-family: \"tiny\";\n  src: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") format(\"truetype\");\n}\nbody {\n  background-color: #111;\n}\n.Frame {\n  top: 0em;\n  left: 0em;\n  right: 0em;\n  bottom: 0em;\n  margin: auto;\n  position: fixed;\n  overflow: hidden;\n  color: #DEB74A;\n  color: #F4F8F0;\n  width: 10em;\n  height: 10em;\n  background-image: linear-gradient(135deg, #2F243A, #444054);\n}\n.Preload {\n  opacity: 0;\n  position: absolute;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 70 */
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
 
-var dom = document.body;
+var dom = document.getElementById("view");
 var view = undefined;
 /* harmony default export */ __webpack_exports__["default"] = (function (ViewModel) {
   view = preact__WEBPACK_IMPORTED_MODULE_0__["render"](preact__WEBPACK_IMPORTED_MODULE_0__["h"](ViewModel), dom, view);
