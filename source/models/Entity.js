@@ -98,7 +98,7 @@ const classedEntities = {
         "hasCollision": true,
         "health": 3,
         "images": {
-            "standard": require("assets/images/adventurer.png"),
+            "standard": require("assets/images/char_main.png"),
             "dead": require("assets/images/gravestone.png"),
         },
         "getAnimation": StrikingAnimation,
@@ -191,8 +191,8 @@ const classedEntities = {
         "description": "It looks gross.",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/slime_alpha.png"),
-            "threatening": require("assets/images/slime_omega.png"),
+            "standard": require("assets/images/char_slime.png"),
+            "threatening": require("assets/images/char_slime.png"),
         },
         "getAnimation": function() {
             if(this.isAttacking) {
@@ -242,8 +242,8 @@ const classedEntities = {
         "description": "It looks gross.",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/blue_slime_alpha.png"),
-            "threatening": require("assets/images/blue_slime_omega.png"),
+            "standard": require("assets/images/char_slime.png"),
+            "threatening": require("assets/images/char_slime.png"),
         },
         "getAnimation": function() {
             if(this.isAttacking) {
@@ -294,11 +294,21 @@ const classedEntities = {
         "description": "Yikes, where is it going??",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/bat_alpha.png"),
-            "threatening": require("assets/images/bat_omega.png"),
+            "standard": require("assets/images/char_bat.png"),
+            "threatening": require("assets/images/char_bat.png"),
         },
         "getAnimation": StrikingAnimation,
-        "getImage": FlipFlopImage,
+        "getAnimation": function() {
+            if(this.isAttacking) {
+                return "strike" + "-" + getDirectionLabel(this.direction)
+            }
+
+            if(this.flipflop === true) {
+                return "shake"
+            } else {
+                return "ooze"
+            }
+        },
         "reaction": function(state) {
             StandardReaction(state, this, () => {
                 const action = {"move": {"x": 0, "y": 0}}
@@ -338,11 +348,9 @@ const classedEntities = {
         "description": "Yikes, where is it going??",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/blue_bat_alpha.png"),
-            "threatening": require("assets/images/blue_bat_omega.png"),
+            "standard": require("assets/images/char_bat.png"),
         },
         "getAnimation": StrikingAnimation,
-        "getImage": FlipFlopImage,
         "reaction": function(state) {
             StandardReaction(state, this, () => {
                 const action = {"move": {"x": 0, "y": 0}}
@@ -376,7 +384,7 @@ const classedEntities = {
         "description": "Ssssss",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/snake.png"),
+            "standard": require("assets/images/char_snake.png"),
         },
         "reaction": function(state) {
             const entity = this
@@ -420,7 +428,7 @@ const classedEntities = {
         "description": "Ssssss",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/blue_snake.png"),
+            "standard": require("assets/images/char_snake.png"),
         },
         "health": 2,
         "reaction": function(state) {
