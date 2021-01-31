@@ -241,8 +241,7 @@
          "id":33,
          "image":"..\/..\/assets\/images\/tiles\/grass.png",
          "imageheight":32,
-         "imagewidth":32,
-         "type":"collision"
+         "imagewidth":32
         }, 
         {
          "id":34,
@@ -505,15 +504,13 @@
          "id":73,
          "image":"..\/..\/assets\/images\/tiles\/sea_coral.png",
          "imageheight":32,
-         "imagewidth":32,
-         "type":"collision"
+         "imagewidth":32
         }, 
         {
          "id":74,
          "image":"..\/..\/assets\/images\/tiles\/sea_lilypads.png",
          "imageheight":32,
-         "imagewidth":32,
-         "type":"collision"
+         "imagewidth":32
         }, 
         {
          "id":75,
