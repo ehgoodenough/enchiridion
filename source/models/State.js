@@ -5,8 +5,8 @@ import App from "models/App.js"
 import Entity from "models/Entity.js"
 
 import directions from "data/directions.js"
-import tilemap from "data/world/tilemap.json"
-import tileset from "data/world/tileset.json"
+import tilemap from "data/world/lofi.tilemap.json"
+import tileset from "data/world/lofi.tileset.json"
 
 const contextualize = (context) => {
     const recontext = {}
@@ -17,8 +17,7 @@ const contextualize = (context) => {
 }
 const buildImagePaths = contextualize(require.context("assets/images/", true))
 
-if(tilemap.tilesets.length != 1
-|| tilemap.tilesets[0].source != "tileset.json") {
+if(tilemap.tilesets.length != 1) {
     console.error("Unexpected tilesets", tilemap.tilesets)
 }
 
@@ -39,7 +38,6 @@ const directionsByLabel = {
 // tilemap.tileheight == 16 // in pixels
 
 const FIRST_TILEGID = 1
-const TILE_SIZE = 32
 
 function iterateTileLayer(layer, func) {
     layer.data.forEach((tilegid, index) => {
@@ -112,8 +110,8 @@ export default class State {
                         "direction": object.direction,
                         "scriptKey": object.scriptKey,
                         "position": {
-                            "x": Math.floor(object.x / TILE_SIZE),
-                            "y": Math.floor(object.y / TILE_SIZE) - 1, // TODO: Why -1?
+                            "x": Math.floor(object.x / tilemap.tilewidth),
+                            "y": Math.floor(object.y / tilemap.tileheight) - 1, // TODO: Why -1?
                             "z": 0
                         }
                     })

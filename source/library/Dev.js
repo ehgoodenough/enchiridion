@@ -2,8 +2,9 @@ import Stats from "stats.js"
 
 const dev = new class Dev {
     constructor() {
-        this.isEnabled = false // !!
-        if(this.isEnabled == false) return
+        // this.isEnabled = false // !!
+        this.isEnabled = true
+        if(this.isEnabled != true) return
 
         this.stats = new Stats()
         this.stats.dom.style.position = "absolute"

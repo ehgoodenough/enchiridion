@@ -76,30 +76,14 @@ function performScript(state, script) {
 }
 
 const classedEntities = {
-    "dialogue": {
-        "hasCollision": false,
-        "images": {
-            "standard": require("assets/images/collectible.png"),
-        },
-        "getOpacity": function() {
-            return 0
-        },
-        "handleSquished": function(state) {
-            if(scripts[this.scriptKey] != undefined
-            && scripts[this.scriptKey].hasBeenTriggered != true) {
-                scripts[this.scriptKey].hasBeenTriggered = true
-                performScript(state, scripts[this.scriptKey])
-            }
-        }
-    },
     "adventurer": {
         "title": "The Adventurer",
         "description": "It you!!",
         "hasCollision": true,
         "health": 3,
         "images": {
-            "standard": require("assets/images/char_main.png"),
-            "dead": require("assets/images/gravestone.png"),
+            "standard": require("assets/images/lofi/adventurer.png"),
+            "dead": require("assets/images/lofi/gravestone.png"),
         },
         "getAnimation": StrikingAnimation,
         "getImage": function() {
@@ -122,76 +106,19 @@ const classedEntities = {
             }
         }
     },
-    "collectible": {
-        "hasCollision": false,
-        "images": {
-            "standard": require("assets/images/collectible.png"),
-        },
-        "getOpacity": function() {
-            if(this.status == "collected") {
-                return 0.5
-            } else {
-                return 1
-            }
-        },
-        "handleSquished": function(state) {
-            if(this.status != "collected") {
-                this.status = "collected"
-
-                const collectibles = State.getCollectibleProgress(state)
-                if(collectibles.current == collectibles.total) {
-                    if(scripts["finalshard"] != undefined
-                    && scripts["finalshard"].hasBeenTriggered != true) {
-                        scripts["finalshard"].hasBeenTriggered = true
-                        performScript(state, scripts["finalshard"])
-                    }
-                }
-            }
-        }
-    },
     "shrub": {
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/shrub.png"),
+            "standard": require("assets/images/lofi/shrub.png"),
         },
     },
-    "goal": {
-        "hasCollision": true,
-        "images": {
-            "standard": require("assets/images/tiles/pedestal_withsword.png"),
-            "empty": require("assets/images/tiles/pedestal.png"),
-        },
-        "getImage": function(state) {
-            if(scripts["sword1"].hasBeenTriggered == true
-            && scripts["sword2"].hasBeenTriggered != true) {
-                return this.images.empty
-            } else {
-                return this.images.standard
-            }
-        },
-        "handleAttacked": function(state) {
-            const collectibles = State.getCollectibleProgress(state)
-            if(collectibles.current == collectibles.total) {
-                if(scripts["sword2"] != undefined
-                && scripts["sword2"].hasBeenTriggered != true) {
-                    scripts["sword2"].hasBeenTriggered = true
-                    performScript(state, scripts["sword2"])
-                }
-            } else if(scripts["sword1"] != undefined
-            && scripts["sword1"].hasBeenTriggered != true) {
-                scripts["sword1"].hasBeenTriggered = true
-                performScript(state, scripts["sword1"])
-            } else {
-                performScript(state, scripts["..."])
-            }
-        }
-    },
-    "red_slime": {
+    "red-slime": {
         "title": "Red Slime",
         "description": "It looks gross.",
         "hasCollision": true,
         "images": {
-            "standard": require("assets/images/char_slime.png"),
+            "standard": require("assets/images/lofi/slime_alpha.png"),
+            "threatening": require("assets/images/lofi/slime_omega.png"),
         },
         "getAnimation": function() {
             if(this.isAttacking) {
@@ -204,6 +131,7 @@ const classedEntities = {
                 return "ooze"
             }
         },
+        "getImage": FlipFlopImage,
         "reaction": function(state) {
             StandardReaction(state, this, () => {
                 const action = {"move": {"x": 0, "y": 0}}
@@ -235,234 +163,309 @@ const classedEntities = {
             })
         }
     },
-    "blue_slime": {
-        "title": "Red Slime",
-        "description": "It looks gross.",
-        "hasCollision": true,
-        "images": {
-            "standard": require("assets/images/char_slime2.png"),
-        },
-        "getAnimation": function() {
-            if(this.isAttacking) {
-                return "strike" + "-" + getDirectionLabel(this.direction)
-            }
-
-            if(this.flipflop === true) {
-                return "shake"
-            } else {
-                return "ooze"
-            }
-        },
-        "health": 2,
-        "reaction": function(state) {
-            StandardReaction(state, this, () => {
-                const action = {"move": {"x": 0, "y": 0}}
-
-                if(this.flipflop == false) {
-                    this.flipflop = true
-                } else if(this.flipflop = true) {
-                    this.flipflop = false
-
-                    // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
-                    if(Math.abs(this.position.y - ((state.entities.player.position.y + state.entities.player.prevposition.y) / 2))
-                    >= Math.abs(this.position.x - ((state.entities.player.position.x + state.entities.player.prevposition.x) / 2))) {
-                        if(this.position.y > state.entities.player.position.y) {
-                            action.move.y = -1
-                        } else if(this.position.y < state.entities.player.position.y) {
-                            action.move.y = +1
-                        }
-                    } else {
-                        if(this.position.x > state.entities.player.position.x) {
-                            action.move.x = -1
-                        } else if(this.position.x < state.entities.player.position.x) {
-                            action.move.x = +1
-                        }
-                    }
-
-                    this.direction = {"x": action.move.x, "y": action.move.y}
-                }
-                return action
-            })
-        }
-    },
-    "red_bat": {
-        "title": "Red Bat",
-        "description": "Yikes, where is it going??",
-        "hasCollision": true,
-        "images": {
-            "standard": require("assets/images/char_bat.png"),
-        },
-        "getAnimation": StrikingAnimation,
-        "getAnimation": function() {
-            if(this.isAttacking) {
-                return "strike" + "-" + getDirectionLabel(this.direction)
-            }
-
-            if(this.flipflop === true) {
-                return "shake"
-            } else {
-                return "ooze"
-            }
-        },
-        "reaction": function(state) {
-            StandardReaction(state, this, () => {
-                const action = {"move": {"x": 0, "y": 0}}
-
-                if(this.flipflop != true) {
-                    this.flipflop = true
-                } else if(this.flipflop = true) {
-                    this.flipflop = false
-
-                    let moves = [{x: -1}, {x: +1}, {y: -1}, {y: +1}]
-                    // moves.forEach((move) => {
-                    //     const x = this.position.x + (move.x || 0)
-                    //     const y = this.position.y + (move.y || 0)
-                    //     if(state.entities.player.position.x == x
-                    //     && state.entities.player.position.y == y) {
-                    //         moves = [move]
-                    //     }
-                    // })
-
-                    if(moves.length > 1) {
-                        moves = filterInvalidMovements(state, this, moves)
-                    }
-
-                    if(moves.length > 0) {
-                        action.move = moves[Math.floor((Math.random() * moves.length))]
-                    }
-
-                    this.direction = {"x": action.move.x, "y": action.move.y}
-                }
-
-                return action
-            })
-        }
-    },
-    "blue_bat": {
-        "title": "Blue Bat",
-        "description": "Yikes, where is it going??",
-        "hasCollision": true,
-        "images": {
-            "standard": require("assets/images/char_bat2.png"),
-        },
-        "getAnimation": StrikingAnimation,
-        "reaction": function(state) {
-            StandardReaction(state, this, () => {
-                const action = {"move": {"x": 0, "y": 0}}
-
-                let moves = [{x: -1}, {x: +1}, {y: -1}, {y: +1}]
-                // moves.forEach((move) => {
-                //     const x = this.position.x + (move.x || 0)
-                //     const y = this.position.y + (move.y || 0)
-                //     if(state.entities.player.position.x == x
-                //     && state.entities.player.position.y == y) {
-                //         moves = [move]
-                //     }
-                // })
-
-                if(moves.length > 1) {
-                    moves = filterInvalidMovements(state, this, moves)
-                }
-
-                if(moves.length > 0) {
-                    action.move = moves[Math.floor((Math.random() * moves.length))]
-                }
-
-                this.direction = {"x": action.move.x, "y": action.move.y}
-
-                return action
-            })
-        }
-    },
-    "red_snake": {
-        "title": "Red Snake",
-        "description": "Ssssss",
-        "hasCollision": true,
-        "images": {
-            "standard": require("assets/images/char_snake.png"),
-        },
-        "reaction": function(state) {
-            const entity = this
-            StandardReaction(state, entity, () => {
-                const action = {"move": {"x": 0, "y": 0}}
-
-                if(entity.direction == undefined) {
-                    entity.direction = Object.keys(directions)
-                    entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)]
-                    entity.direction = entity.direction.split("x")
-                    entity.direction = {"x": parseInt(entity.direction[0]), "y": parseInt(entity.direction[1])}
-                }
-                action.move.x = entity.direction.x // * entity.speed
-                action.move.y = entity.direction.y // * entity.speed
-
-                const x = entity.position.x + action.move.x
-                const y = entity.position.y + action.move.y
-                Objdict.forEach(state.entities, (otherEntity) => {
-                    if(entity != otherEntity
-                    && otherEntity.isDead != true
-                    && otherEntity.hasCollision == true
-                    && x == otherEntity.position.x
-                    && y == otherEntity.position.y) {
-                        entity.direction.x *= -1
-                        entity.direction.y *= -1
-                    }
-                })
-
-                const tile = state.world.tiles[x + "x" + y]
-                if(tile != undefined && tile.collision == true) {
-                    this.direction.x *= -1
-                    this.direction.y *= -1
-                }
-
-                return action
-            })
-        }
-    },
-    "blue_snake": {
-        "title": "Blue Snake",
-        "description": "Ssssss",
-        "hasCollision": true,
-        "images": {
-            "standard": require("assets/images/char_snake2.png"),
-        },
-        "health": 2,
-        "reaction": function(state) {
-            const entity = this
-            StandardReaction(state, entity, () => {
-                const action = {"move": {"x": 0, "y": 0}}
-
-                if(entity.direction == undefined) {
-                    entity.direction = Object.keys(directions)
-                    entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)]
-                    entity.direction = entity.direction.split("x")
-                    entity.direction = {"x": parseInt(entity.direction[0]), "y": parseInt(entity.direction[1])}
-                }
-                action.move.x = entity.direction.x // * entity.speed
-                action.move.y = entity.direction.y // * entity.speed
-
-                const x = entity.position.x + action.move.x
-                const y = entity.position.y + action.move.y
-                Objdict.forEach(state.entities, (otherEntity) => {
-                    if(entity != otherEntity
-                    && otherEntity.isDead != true
-                    && otherEntity.hasCollision == true
-                    && x == otherEntity.position.x
-                    && y == otherEntity.position.y) {
-                        entity.direction.x *= -1
-                        entity.direction.y *= -1
-                    }
-                })
-
-                const tile = state.world.tiles[x + "x" + y]
-                if(tile != undefined && tile.collision == true) {
-                    this.direction.x *= -1
-                    this.direction.y *= -1
-                }
-
-                return action
-            })
-        }
-    },
+    // "dialogue": {
+    //     "hasCollision": false,
+    //     "images": {
+    //         "standard": require("assets/images/collectible.png"),
+    //     },
+    //     "getOpacity": function() {
+    //         return 0
+    //     },
+    //     "handleSquished": function(state) {
+    //         if(scripts[this.scriptKey] != undefined
+    //         && scripts[this.scriptKey].hasBeenTriggered != true) {
+    //             scripts[this.scriptKey].hasBeenTriggered = true
+    //             performScript(state, scripts[this.scriptKey])
+    //         }
+    //     }
+    // },
+    // "collectible": {
+    //     "hasCollision": false,
+    //     "images": {
+    //         "standard": require("assets/images/collectible.png"),
+    //     },
+    //     "getOpacity": function() {
+    //         if(this.status == "collected") {
+    //             return 0.5
+    //         } else {
+    //             return 1
+    //         }
+    //     },
+    //     "handleSquished": function(state) {
+    //         if(this.status != "collected") {
+    //             this.status = "collected"
+    //
+    //             const collectibles = State.getCollectibleProgress(state)
+    //             if(collectibles.current == collectibles.total) {
+    //                 if(scripts["finalshard"] != undefined
+    //                 && scripts["finalshard"].hasBeenTriggered != true) {
+    //                     scripts["finalshard"].hasBeenTriggered = true
+    //                     performScript(state, scripts["finalshard"])
+    //                 }
+    //             }
+    //         }
+    //     }
+    // },
+    //
+    // "goal": {
+    //     "hasCollision": true,
+    //     "images": {
+    //         "standard": require("assets/images/tiles/pedestal_withsword.png"),
+    //         "empty": require("assets/images/tiles/pedestal.png"),
+    //     },
+    //     "getImage": function(state) {
+    //         if(scripts["sword1"].hasBeenTriggered == true
+    //         && scripts["sword2"].hasBeenTriggered != true) {
+    //             return this.images.empty
+    //         } else {
+    //             return this.images.standard
+    //         }
+    //     },
+    //     "handleAttacked": function(state) {
+    //         const collectibles = State.getCollectibleProgress(state)
+    //         if(collectibles.current == collectibles.total) {
+    //             if(scripts["sword2"] != undefined
+    //             && scripts["sword2"].hasBeenTriggered != true) {
+    //                 scripts["sword2"].hasBeenTriggered = true
+    //                 performScript(state, scripts["sword2"])
+    //             }
+    //         } else if(scripts["sword1"] != undefined
+    //         && scripts["sword1"].hasBeenTriggered != true) {
+    //             scripts["sword1"].hasBeenTriggered = true
+    //             performScript(state, scripts["sword1"])
+    //         } else {
+    //             performScript(state, scripts["..."])
+    //         }
+    //     }
+    // },
+    // "blue_slime": {
+    //     "title": "Red Slime",
+    //     "description": "It looks gross.",
+    //     "hasCollision": true,
+    //     "images": {
+    //         "standard": require("assets/images/char_slime2.png"),
+    //     },
+    //     "getAnimation": function() {
+    //         if(this.isAttacking) {
+    //             return "strike" + "-" + getDirectionLabel(this.direction)
+    //         }
+    //
+    //         if(this.flipflop === true) {
+    //             return "shake"
+    //         } else {
+    //             return "ooze"
+    //         }
+    //     },
+    //     "health": 2,
+    //     "reaction": function(state) {
+    //         StandardReaction(state, this, () => {
+    //             const action = {"move": {"x": 0, "y": 0}}
+    //
+    //             if(this.flipflop == false) {
+    //                 this.flipflop = true
+    //             } else if(this.flipflop = true) {
+    //                 this.flipflop = false
+    //
+    //                 // move towards the adventurer, prioritzing whichever vector has a longer magnitude.
+    //                 if(Math.abs(this.position.y - ((state.entities.player.position.y + state.entities.player.prevposition.y) / 2))
+    //                 >= Math.abs(this.position.x - ((state.entities.player.position.x + state.entities.player.prevposition.x) / 2))) {
+    //                     if(this.position.y > state.entities.player.position.y) {
+    //                         action.move.y = -1
+    //                     } else if(this.position.y < state.entities.player.position.y) {
+    //                         action.move.y = +1
+    //                     }
+    //                 } else {
+    //                     if(this.position.x > state.entities.player.position.x) {
+    //                         action.move.x = -1
+    //                     } else if(this.position.x < state.entities.player.position.x) {
+    //                         action.move.x = +1
+    //                     }
+    //                 }
+    //
+    //                 this.direction = {"x": action.move.x, "y": action.move.y}
+    //             }
+    //             return action
+    //         })
+    //     }
+    // },
+    // "red_bat": {
+    //     "title": "Red Bat",
+    //     "description": "Yikes, where is it going??",
+    //     "hasCollision": true,
+    //     "images": {
+    //         "standard": require("assets/images/char_bat.png"),
+    //     },
+    //     "getAnimation": StrikingAnimation,
+    //     "getAnimation": function() {
+    //         if(this.isAttacking) {
+    //             return "strike" + "-" + getDirectionLabel(this.direction)
+    //         }
+    //
+    //         if(this.flipflop === true) {
+    //             return "shake"
+    //         } else {
+    //             return "ooze"
+    //         }
+    //     },
+    //     "reaction": function(state) {
+    //         StandardReaction(state, this, () => {
+    //             const action = {"move": {"x": 0, "y": 0}}
+    //
+    //             if(this.flipflop != true) {
+    //                 this.flipflop = true
+    //             } else if(this.flipflop = true) {
+    //                 this.flipflop = false
+    //
+    //                 let moves = [{x: -1}, {x: +1}, {y: -1}, {y: +1}]
+    //                 // moves.forEach((move) => {
+    //                 //     const x = this.position.x + (move.x || 0)
+    //                 //     const y = this.position.y + (move.y || 0)
+    //                 //     if(state.entities.player.position.x == x
+    //                 //     && state.entities.player.position.y == y) {
+    //                 //         moves = [move]
+    //                 //     }
+    //                 // })
+    //
+    //                 if(moves.length > 1) {
+    //                     moves = filterInvalidMovements(state, this, moves)
+    //                 }
+    //
+    //                 if(moves.length > 0) {
+    //                     action.move = moves[Math.floor((Math.random() * moves.length))]
+    //                 }
+    //
+    //                 this.direction = {"x": action.move.x, "y": action.move.y}
+    //             }
+    //
+    //             return action
+    //         })
+    //     }
+    // },
+    // "blue_bat": {
+    //     "title": "Blue Bat",
+    //     "description": "Yikes, where is it going??",
+    //     "hasCollision": true,
+    //     "images": {
+    //         "standard": require("assets/images/char_bat2.png"),
+    //     },
+    //     "getAnimation": StrikingAnimation,
+    //     "reaction": function(state) {
+    //         StandardReaction(state, this, () => {
+    //             const action = {"move": {"x": 0, "y": 0}}
+    //
+    //             let moves = [{x: -1}, {x: +1}, {y: -1}, {y: +1}]
+    //             // moves.forEach((move) => {
+    //             //     const x = this.position.x + (move.x || 0)
+    //             //     const y = this.position.y + (move.y || 0)
+    //             //     if(state.entities.player.position.x == x
+    //             //     && state.entities.player.position.y == y) {
+    //             //         moves = [move]
+    //             //     }
+    //             // })
+    //
+    //             if(moves.length > 1) {
+    //                 moves = filterInvalidMovements(state, this, moves)
+    //             }
+    //
+    //             if(moves.length > 0) {
+    //                 action.move = moves[Math.floor((Math.random() * moves.length))]
+    //             }
+    //
+    //             this.direction = {"x": action.move.x, "y": action.move.y}
+    //
+    //             return action
+    //         })
+    //     }
+    // },
+    // "red_snake": {
+    //     "title": "Red Snake",
+    //     "description": "Ssssss",
+    //     "hasCollision": true,
+    //     "images": {
+    //         "standard": require("assets/images/char_snake.png"),
+    //     },
+    //     "reaction": function(state) {
+    //         const entity = this
+    //         StandardReaction(state, entity, () => {
+    //             const action = {"move": {"x": 0, "y": 0}}
+    //
+    //             if(entity.direction == undefined) {
+    //                 entity.direction = Object.keys(directions)
+    //                 entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)]
+    //                 entity.direction = entity.direction.split("x")
+    //                 entity.direction = {"x": parseInt(entity.direction[0]), "y": parseInt(entity.direction[1])}
+    //             }
+    //             action.move.x = entity.direction.x // * entity.speed
+    //             action.move.y = entity.direction.y // * entity.speed
+    //
+    //             const x = entity.position.x + action.move.x
+    //             const y = entity.position.y + action.move.y
+    //             Objdict.forEach(state.entities, (otherEntity) => {
+    //                 if(entity != otherEntity
+    //                 && otherEntity.isDead != true
+    //                 && otherEntity.hasCollision == true
+    //                 && x == otherEntity.position.x
+    //                 && y == otherEntity.position.y) {
+    //                     entity.direction.x *= -1
+    //                     entity.direction.y *= -1
+    //                 }
+    //             })
+    //
+    //             const tile = state.world.tiles[x + "x" + y]
+    //             if(tile != undefined && tile.collision == true) {
+    //                 this.direction.x *= -1
+    //                 this.direction.y *= -1
+    //             }
+    //
+    //             return action
+    //         })
+    //     }
+    // },
+    // "blue_snake": {
+    //     "title": "Blue Snake",
+    //     "description": "Ssssss",
+    //     "hasCollision": true,
+    //     "images": {
+    //         "standard": require("assets/images/char_snake2.png"),
+    //     },
+    //     "health": 2,
+    //     "reaction": function(state) {
+    //         const entity = this
+    //         StandardReaction(state, entity, () => {
+    //             const action = {"move": {"x": 0, "y": 0}}
+    //
+    //             if(entity.direction == undefined) {
+    //                 entity.direction = Object.keys(directions)
+    //                 entity.direction = entity.direction[Math.floor(Math.random() * entity.direction.length)]
+    //                 entity.direction = entity.direction.split("x")
+    //                 entity.direction = {"x": parseInt(entity.direction[0]), "y": parseInt(entity.direction[1])}
+    //             }
+    //             action.move.x = entity.direction.x // * entity.speed
+    //             action.move.y = entity.direction.y // * entity.speed
+    //
+    //             const x = entity.position.x + action.move.x
+    //             const y = entity.position.y + action.move.y
+    //             Objdict.forEach(state.entities, (otherEntity) => {
+    //                 if(entity != otherEntity
+    //                 && otherEntity.isDead != true
+    //                 && otherEntity.hasCollision == true
+    //                 && x == otherEntity.position.x
+    //                 && y == otherEntity.position.y) {
+    //                     entity.direction.x *= -1
+    //                     entity.direction.y *= -1
+    //                 }
+    //             })
+    //
+    //             const tile = state.world.tiles[x + "x" + y]
+    //             if(tile != undefined && tile.collision == true) {
+    //                 this.direction.x *= -1
+    //                 this.direction.y *= -1
+    //             }
+    //
+    //             return action
+    //         })
+    //     }
+    // },
 }
 
 function StandardReaction(state, entity, getActionFromAI) {
