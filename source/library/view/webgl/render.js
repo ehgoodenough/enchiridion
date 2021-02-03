@@ -49,7 +49,9 @@ performer.start = function() {
     dom.height = view.sizes.canvas.height
 
     // gl
-    gl = dom.getContext("webgl2")
+    gl = dom.getContext("webgl2", {
+        // "premultipliedAlpha": false
+    })
     if(gl === undefined) throw new Error("webgl2 is not supported :(")
 
     // program setup
@@ -80,6 +82,9 @@ performer.start = function() {
 
     // view port
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+
+    gl.enable(gl.BLEND)
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 }
 
 
