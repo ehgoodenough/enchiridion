@@ -4,6 +4,12 @@
 
 import analytics from "library/analytics.js"
 
+/////////////////
+// Stylesheet //
+///////////////
+
+import "index.less"
+
 ////////////
 // Frame //
 //////////
@@ -23,14 +29,14 @@ import Yaafloop from "yaafloop"
 import App from "models/App.js"
 import Dev from "library/Dev.js"
 
-import View from "views/Mount.view.js"
-import render from "library/render.js"
+import ViewModel from "views/ViewModel.js"
+import render from "library/render/render.js"
 
 const loop = new Yaafloop((delta) => {
     Dev.atStartOfLoop()
 
     App.update(delta)
-    render(View)
+    render(ViewModel)
 
     Dev.atEndOfLoop()
 })
