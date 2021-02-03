@@ -57,10 +57,10 @@ function StrikingAnimation() {
 }
 
 function FlipFlopImage() {
-    if(this.flipflop === true) {
-        return this.images.threatening
-    } else {
+    if(this.flipflop != true) {
         return this.images.standard
+    } else {
+        return this.images.threatening
     }
 }
 
@@ -136,7 +136,7 @@ const classedEntities = {
             StandardReaction(state, this, () => {
                 const action = {"move": {"x": 0, "y": 0}}
 
-                if(this.flipflop == false) {
+                if(this.flipflop != true) {
                     this.flipflop = true
                 } else if(this.flipflop = true) {
                     this.flipflop = false

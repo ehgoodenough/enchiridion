@@ -1,5 +1,5 @@
+import * as view from "../view.js"
 
-// initialize utility
 function createShader(gl, type, source) {
     var shader = gl.createShader(type)
     gl.shaderSource(shader, source)
@@ -27,48 +27,68 @@ function createProgram(gl, vertexShader, fragmentShader) {
     return program
 }
 
-// canvas
-const canvas = document.createElement("canvas")
-document.getElementById("what").appendChild(canvas)
-canvas.id = "render"
-canvas.width = 1600
-canvas.height = 900
 
-// gl
-const gl = canvas.getContext("webgl2")
-if(gl === undefined) throw new Error("webgl2 is not supported :(")
+import fragmentSource from "./shaders/fragment2.glsl"
+import vertexSource from "./shaders/vertex.glsl"
 
-// program setup
-import fragment2Source from "@frog/source/webgl/shaders/fragment2.glsl"
-import vertexSource from "@frog/source/webgl/shaders/vertex.glsl"
-const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource)
-const fragment2Shader = createShader(gl, gl.FRAGMENT_SHADER, fragment2Source)
-const spriteprogram = createProgram(gl, vertexShader, fragment2Shader)
+let gl = undefined
+const things = {}
+export function start() {
+    // canvas
+    const dom = document.createElement("canvas")
+    document.getElementById("frame").appendChild(dom)
+    dom.id = "render"
+    dom.width = view.sizes.canvas.width
+    dom.height = view.sizes.canvas.height
 
-// pointers
-const positionAttributeLocation = gl.getAttribLocation(spriteprogram, "a_position")
-const texCoordAttributeLocation = gl.getAttribLocation(spriteprogram, "a_texCoord")
-const resolutionUniformLocation = gl.getUniformLocation(spriteprogram, "u_resolution")
-const imageUniformLocation = gl.getUniformLocation(spriteprogram, "u_image")
+    // gl
+    gl = dom.getContext("webgl2")
+    if(gl === undefined) throw new Error("webgl2 is not supported :(")
 
-// vertex array ??
-var vao = gl.createVertexArray()
-gl.bindVertexArray(vao)
+    // const sources = [
+    //     require("@frog/source/images/units/frog.png").default
+    // ]
+    const sources = []
+    loadAll(sources).then((images) => {
+        images.forEach((image) => {
+            processImageIntoTexture(image)
+        })
+    })
 
-// position
-const positionBuffer = gl.createBuffer()
-gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-var size = 2          // 2 components per iteration
-var type = gl.FLOAT   // the data is 32bit floats
-var normalize = false // don't normalize the data
-var stride = 0        // 0 = move forward size * sizeof(type) each iteration to get the next position
-var offset = 0        // start at the beginning of the buffer
-gl.enableVertexAttribArray(positionAttributeLocation)
-gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
+    // program setup
+    things.vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource)
+    things.fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource)
+    things.spriteprogram = createProgram(gl, things.vertexShader, things.fragmentShader)
 
-// view port
-gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+    // pointers
+    const positionAttributeLocation = gl.getAttribLocation(things.spriteprogram, "a_position")
+    things.texCoordAttributeLocation = gl.getAttribLocation(things.spriteprogram, "a_texCoord")
+    things.resolutionUniformLocation = gl.getUniformLocation(things.spriteprogram, "u_resolution")
+    things.imageUniformLocation = gl.getUniformLocation(things.spriteprogram, "u_image")
 
+    // vertex array ??
+    things.vao = gl.createVertexArray()
+    gl.bindVertexArray(things.vao)
+
+    // position
+    things.positionBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, things.positionBuffer)
+    var size = 2          // 2 components per iteration
+    var type = gl.FLOAT   // the data is 32bit floats
+    var normalize = false // don't normalize the data
+    var stride = 0        // 0 = move forward size * sizeof(type) each iteration to get the next position
+    var offset = 0        // start at the beginning of the buffer
+    gl.enableVertexAttribArray(positionAttributeLocation)
+    gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
+
+    // view port
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+}
+
+
+//////////////
+// LOADING //
+////////////
 
 const images = {}
 function loadAll(sources) {
@@ -100,13 +120,13 @@ function processImageIntoTexture(image) {
     const texCoordBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0.0,  0.0, 1.0,  0.0, 0.0,  1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  1.0]), gl.STATIC_DRAW)
-    gl.enableVertexAttribArray(texCoordAttributeLocation)
+    gl.enableVertexAttribArray(things.texCoordAttributeLocation)
     var size = 2          // 2 components per iteration
     var type = gl.FLOAT   // the data is 32bit floats
     var normalize = false // don't normalize the data
     var stride = 0        // 0 = move forward size * sizeof(type) each iteration to get the next position
     var offset = 0        // start at the beginning of the buffer
-    gl.vertexAttribPointer(texCoordAttributeLocation, size, type, normalize, stride, offset)
+    gl.vertexAttribPointer(things.texCoordAttributeLocation, size, type, normalize, stride, offset)
 
     // Create a texture.
     var texture = gl.createTexture()
@@ -136,66 +156,61 @@ function processImageIntoTexture(image) {
     image.texture = texture
 }
 
-export function start() {
-    // const sources = [
-    //     require("@frog/source/images/units/frog.png").default
-    // ]
-    const sources = []
-    return loadAll(sources).then((images) => {
-        images.forEach((image) => {
-            processImageIntoTexture(image)
-        })
-    })
-}
+/////////////////
+// PERFORMING //
+///////////////
 
-
-
-export function render(renders) {
+export function clear() {
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
+}
 
-    renders.forEach((render) => {
-        if(render.type == "sprite"
-        || render.type == undefined) {
-            gl.useProgram(spriteprogram)
-            gl.bindVertexArray(vao)
-            gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
+export function render(renderable) {
+    if(renderable.type == "sprite"
+    || renderable.type == undefined) {
 
-            // LOAD THE IMAGE?
-            if(render.image == undefined) throw new Error("Could not find render.image")
-            if(images[render.image] == undefined) {
-                load(render.image).then((image) => {
-                    processImageIntoTexture(image)
-                })
-            }
-            if(images[render.image].isLoaded != true
-            || images[render.image].isProcessedIntoTexture != true) {
-                return
-            }
-            gl.bindTexture(gl.TEXTURE_2D, images[render.image].texture)
-
-            const points = Square(render)
-            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-            gl.uniform1i(imageUniformLocation, images[render.image].index)
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
-            const primitiveType = gl.TRIANGLES
-            const offset = 0
-            const count = 6
-            gl.drawArrays(primitiveType, offset, count)
+        // LOAD THE IMAGE?
+        if(renderable.image == undefined) {
+            console.log(renderable)
+            throw new Error("Could not find renderable.image")
         }
-        if(render.type == "square") {
-            // gl.useProgram(squareprogram)
-            // gl.bindVertexArray(vao)
-            // gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
-            const points = Square(render)
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
-            gl.uniform4f(colorUniformLocation, render.color[0], render.color[1], render.color[2], render.color[3])
-            const primitiveType = gl.TRIANGLES
-            const offset = 0
-            const count = 6
-            gl.drawArrays(primitiveType, offset, count)
+
+        if(images[renderable.image] == undefined) {
+            load(renderable.image).then((image) => {
+                processImageIntoTexture(image)
+            })
         }
-    })
+        if(images[renderable.image].isLoaded != true
+        || images[renderable.image].isProcessedIntoTexture != true) {
+            return
+        }
+
+        gl.useProgram(things.spriteprogram)
+        gl.bindVertexArray(things.vao)
+        gl.uniform2f(things.resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
+        gl.bindTexture(gl.TEXTURE_2D, images[renderable.image].texture)
+
+        const points = Square(renderable)
+        gl.bindBuffer(gl.ARRAY_BUFFER, things.positionBuffer)
+        gl.uniform1i(things.imageUniformLocation, images[renderable.image].index)
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
+        const primitiveType = gl.TRIANGLES
+        const offset = 0
+        const count = 6
+        gl.drawArrays(primitiveType, offset, count)
+    }
+    // if(renderable.type == "square") {
+    //     // gl.useProgram(squareprogram)
+    //     // gl.bindVertexArray(things.vao)
+    //     // gl.uniform2f(things.resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
+    //     const points = Square(renderable)
+    //     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
+    //     gl.uniform4f(colorUniformLocation, renderable.color[0], renderable.color[1], renderable.color[2], renderable.color[3])
+    //     const primitiveType = gl.TRIANGLES
+    //     const offset = 0
+    //     const count = 6
+    //     gl.drawArrays(primitiveType, offset, count)
+    // }
 }
 
 function Square(entity) {

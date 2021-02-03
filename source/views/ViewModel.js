@@ -66,6 +66,7 @@ function Interface(state) {
 function Scene(state) {
     return {
         "key": "Scene",
+        "type": "container",
         "position": CameraPosition(state),
         "children": [
             Object.values(state.entities).map((entity) => Entity(state, entity)),
@@ -140,6 +141,7 @@ function World(state) {
                 // if(Math.abs(state.entities.player.position.y - tile.position.y) > 12) return
                 return {
                     "key": "Tile/" + tile.position.x + "x" + tile.position.y,
+                    "type": "container",
                     "position": {
                         "x": tile.position.x * sizes.tile.width,
                         "y": tile.position.y * sizes.tile.height,

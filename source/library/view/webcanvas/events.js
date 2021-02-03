@@ -1,10 +1,10 @@
-import * as index from "../view.js"
+import * as view from "../view.js"
 
 function calculateRelativePosition({x, y}, dom) {
     if(dom == undefined) return {"x": 0, "y": 0}
     const bounds = dom.getBoundingClientRect()
-    x = ((x - bounds.left) / bounds.width) * index.sizes.canvas.width
-    y = ((y - bounds.top) / bounds.height) * index.sizes.canvas.height
+    x = ((x - bounds.left) / bounds.width) * view.sizes.canvas.width
+    y = ((y - bounds.top) / bounds.height) * view.sizes.canvas.height
     return {x, y}
 }
 

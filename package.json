@@ -11,10 +11,8 @@
     "url": "https://github.com/ehgoodenough/enchiridion"
   },
   "scripts": {
-    "build": "codeglue --stage=NONE",
-    "start": "codeglue --stage=NONE --mode=SERVER --port=8080",
-    "deploy": "aws s3 sync ./builds/web s3://ehgoodenough/enchiridion/ --acl public-read",
-    "zip": "cd ./builds/web && bestzip ../../build.zip *"
+    "build": "node codeglue --stage=NONE",
+    "start": "node codeglue --stage=NONE --mode=SERVER --port=8080"
   },
   "dependencies": {
     "crypto-js": "^4.0.0",
@@ -35,6 +33,7 @@
     "@babel/plugin-transform-react-jsx": "^7.12.12",
     "@babel/preset-env": "^7.12.11",
     "bestzip": "^2.1.7",
-    "codeglue": "^1.9.4"
+    "codeglue": "^1.9.4",
+    "ts-shader-loader": "^1.0.6"
   }
 }

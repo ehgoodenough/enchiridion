@@ -2,7 +2,7 @@ import * as Objdict from "objdict"
 
 let renderables = []
 
-import * as canvas from "./webcanvas/render.js"
+import * as canvas from "./webgl/render.js"
 import * as events from "./webcanvas/events.js"
 
 export const sizes = {

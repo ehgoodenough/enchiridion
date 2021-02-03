@@ -1,4 +1,4 @@
-import * as index from "../view.js"
+import * as view from "../view.js"
 import loader from "./loader.js"
 
 let dom, context
@@ -6,8 +6,8 @@ let dom, context
 export function start() {
     dom = document.createElement("canvas")
     dom.id = "render"
-    dom.width = index.sizes.canvas.width
-    dom.height = index.sizes.canvas.height
+    dom.width = view.sizes.canvas.width
+    dom.height = view.sizes.canvas.height
     document.getElementById("frame").appendChild(dom)
 
     context = dom.getContext("2d")
@@ -36,8 +36,8 @@ export function render(renderable) {
         renderable.position.y = renderable.position.y || 0
 
         renderable.anchor = renderable.anchor || {}
-        if(renderable.anchor.x === undefined) renderable.anchor.x = index.sizes.defaultanchor.x
-        if(renderable.anchor.y === undefined) renderable.anchor.y = index.sizes.defaultanchor.y
+        if(renderable.anchor.x === undefined) renderable.anchor.x = view.sizes.defaultanchor.x
+        if(renderable.anchor.y === undefined) renderable.anchor.y = view.sizes.defaultanchor.y
 
         if(renderable.width === undefined) renderable.width = image.width
         if(renderable.height === undefined) renderable.height = image.height
