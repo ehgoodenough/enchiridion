@@ -2,7 +2,7 @@ import * as Objdict from "objdict"
 
 let renderables = []
 
-import * as canvas from "./webgl/render.js"
+import {performer, loader} from "./webgl/render.js"
 import * as events from "./webcanvas/events.js"
 
 export const sizes = {
@@ -15,8 +15,15 @@ export const sizes = {
     }
 }
 
+// IMAGE URLS TO BE IMPORTED EARLY
+export const preloadQueue = [
+    require("assets/images/lofi/slime_alpha.png"),
+    require("assets/images/lofi/slime_omega.png"),
+]
+
 export function start() {
-    canvas.start()
+    performer.start()
+    loader.start(preloadQueue)
 }
 
 export function render(ViewModel) {
@@ -24,7 +31,7 @@ export function render(ViewModel) {
         events.handleEvents(renderables)
     }
 
-    canvas.clear()
+    performer.clear()
 
     renderables = ViewModel()
     if(renderables == undefined) return
@@ -104,7 +111,7 @@ function convert(root) {
 //////////////
 
 function recurse(renderable) {
-    canvas.render(renderable)
+    performer.render(renderable)
 
     if(renderable.children != undefined) {
         Object.values(renderable.children).sort((a, b) => {

@@ -1,5 +1,12 @@
 import * as view from "../view.js"
 
+
+
+const loader = {"images": {}}
+const performer = {}
+
+export {loader, performer}
+
 function createShader(gl, type, source) {
     var shader = gl.createShader(type)
     gl.shaderSource(shader, source)
@@ -33,7 +40,7 @@ import vertexSource from "./shaders/vertex.glsl"
 
 let gl = undefined
 const things = {}
-export function start() {
+performer.start = function() {
     // canvas
     const dom = document.createElement("canvas")
     document.getElementById("frame").appendChild(dom)
@@ -44,16 +51,6 @@ export function start() {
     // gl
     gl = dom.getContext("webgl2")
     if(gl === undefined) throw new Error("webgl2 is not supported :(")
-
-    // const sources = [
-    //     require("@frog/source/images/units/frog.png").default
-    // ]
-    const sources = []
-    loadAll(sources).then((images) => {
-        images.forEach((image) => {
-            processImageIntoTexture(image)
-        })
-    })
 
     // program setup
     things.vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource)
@@ -90,23 +87,30 @@ export function start() {
 // LOADING //
 ////////////
 
-const images = {}
-function loadAll(sources) {
+loader.start = function(preloadQueue) {
+    return loader.loadAll(preloadQueue).then((images) => {
+        images.forEach((image) => {
+            performer.processImageIntoTexture(image)
+        })
+    })
+}
+
+loader.loadAll = function(sources) {
     if(sources == undefined) {
         return Promise.resolve([])
     }
     if(sources instanceof Array) {
         return Promise.all(sources.map((source) => {
-            return load(source)
+            return loader.load(source)
         }))
     }
 }
-function load(source) {
-    if(images[source] != undefined) {
-        return Promise.resolve(images[source])
+loader.load = function(source) {
+    if(loader.images[source] != undefined) {
+        return Promise.resolve(loader.images[source])
     }
     const image = new Image()
-    images[source] = image
+    loader.images[source] = image
     image.src = source
     return new Promise((resolve, reject) => {
         image.onload = function() {
@@ -116,7 +120,7 @@ function load(source) {
     })
 }
 
-function processImageIntoTexture(image) {
+performer.processImageIntoTexture = function(image) {
     const texCoordBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0.0,  0.0, 1.0,  0.0, 0.0,  1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  1.0]), gl.STATIC_DRAW)
@@ -160,12 +164,12 @@ function processImageIntoTexture(image) {
 // PERFORMING //
 ///////////////
 
-export function clear() {
+performer.clear = function() {
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
 }
 
-export function render(renderable) {
+performer.render = function(renderable) {
     if(renderable.type == "sprite"
     || renderable.type == undefined) {
 
@@ -175,24 +179,24 @@ export function render(renderable) {
             throw new Error("Could not find renderable.image")
         }
 
-        if(images[renderable.image] == undefined) {
-            load(renderable.image).then((image) => {
-                processImageIntoTexture(image)
+        if(loader.images[renderable.image] == undefined) {
+            loader.load(renderable.image).then((image) => {
+                performer.processImageIntoTexture(image)
             })
         }
-        if(images[renderable.image].isLoaded != true
-        || images[renderable.image].isProcessedIntoTexture != true) {
+        if(loader.images[renderable.image].isLoaded != true
+        || loader.images[renderable.image].isProcessedIntoTexture != true) {
             return
         }
 
         gl.useProgram(things.spriteprogram)
         gl.bindVertexArray(things.vao)
         gl.uniform2f(things.resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
-        gl.bindTexture(gl.TEXTURE_2D, images[renderable.image].texture)
+        gl.bindTexture(gl.TEXTURE_2D, loader.images[renderable.image].texture)
 
         const points = Square(renderable)
         gl.bindBuffer(gl.ARRAY_BUFFER, things.positionBuffer)
-        gl.uniform1i(things.imageUniformLocation, images[renderable.image].index)
+        gl.uniform1i(things.imageUniformLocation, loader.images[renderable.image].index)
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
         const primitiveType = gl.TRIANGLES
         const offset = 0
@@ -216,9 +220,9 @@ export function render(renderable) {
 function Square(entity) {
     let width, height
     if(entity.image != undefined
-    && images[entity.image] != undefined) {
-        width = images[entity.image].width
-        height = images[entity.image].height
+    && loader.images[entity.image] != undefined) {
+        width = loader.images[entity.image].width
+        height = loader.images[entity.image].height
         // TODO: When you move this into gldo, make sure it supports this auto-detecting width/height from the image
     }
     if(entity.width != undefined) width = entity.width
