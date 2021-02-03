@@ -30,13 +30,15 @@ import App from "models/App.js"
 import Dev from "library/Dev.js"
 
 import ViewModel from "views/ViewModel.js"
-import render from "library/render/render.js"
+import * as View from "library/view/view.js"
+
+View.start()
 
 const loop = new Yaafloop((delta) => {
     Dev.atStartOfLoop()
 
     App.update(delta)
-    render(ViewModel)
+    View.render(ViewModel)
 
     Dev.atEndOfLoop()
 })

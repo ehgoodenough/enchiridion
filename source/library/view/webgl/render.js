@@ -39,8 +39,8 @@ const gl = canvas.getContext("webgl2")
 if(gl === undefined) throw new Error("webgl2 is not supported :(")
 
 // program setup
-import fragment2Source from "@frog/source/webgl/fragment2.glsl"
-import vertexSource from "@frog/source/webgl/vertex.glsl"
+import fragment2Source from "@frog/source/webgl/shaders/fragment2.glsl"
+import vertexSource from "@frog/source/webgl/shaders/vertex.glsl"
 const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource)
 const fragment2Shader = createShader(gl, gl.FRAGMENT_SHADER, fragment2Source)
 const spriteprogram = createProgram(gl, vertexShader, fragment2Shader)

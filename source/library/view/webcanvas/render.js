@@ -1,24 +1,20 @@
-// import sizes from "data/sizes.js"
-const sizes = {
-    "canvas": {
-        "width": 10 * 16,
-        "height": 10 * 16,
-    },
-    "defaultanchor": {
-        "x": 0, "y": 0,
-    }
+import * as index from "../view.js"
+import loader from "./loader.js"
+
+let dom, context
+
+export function start() {
+    dom = document.createElement("canvas")
+    dom.id = "render"
+    dom.width = index.sizes.canvas.width
+    dom.height = index.sizes.canvas.height
+    document.getElementById("frame").appendChild(dom)
+
+    context = dom.getContext("2d")
 }
 
-const canvas = document.createElement("canvas")
-document.getElementById("frame").appendChild(canvas)
-canvas.id = "render"
-canvas.width = sizes.canvas.width
-canvas.height = sizes.canvas.height
-
-const context = canvas.getContext("2d")
-
 export function clear() {
-    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.clearRect(0, 0, dom.width, dom.height)
 }
 
 export function render(renderable) {
@@ -40,8 +36,8 @@ export function render(renderable) {
         renderable.position.y = renderable.position.y || 0
 
         renderable.anchor = renderable.anchor || {}
-        if(renderable.anchor.x === undefined) renderable.anchor.x = sizes.defaultanchor.x
-        if(renderable.anchor.y === undefined) renderable.anchor.y = sizes.defaultanchor.y
+        if(renderable.anchor.x === undefined) renderable.anchor.x = index.sizes.defaultanchor.x
+        if(renderable.anchor.y === undefined) renderable.anchor.y = index.sizes.defaultanchor.y
 
         if(renderable.width === undefined) renderable.width = image.width
         if(renderable.height === undefined) renderable.height = image.height
@@ -115,57 +111,5 @@ export function render(renderable) {
 
         context.fillStyle = renderable.color
         context.fillRect(x, y, renderable.width, renderable.height)
-    }
-}
-
-/////////////
-// EVENTS //
-///////////
-
-function calculateRelativePosition({x, y}, dom) {
-    if(dom == undefined) return {"x": 0, "y": 0}
-    const bounds = dom.getBoundingClientRect()
-    x = ((x - bounds.left) / bounds.width) * sizes.canvas.width
-    y = ((y - bounds.top) / bounds.height) * sizes.canvas.height
-    return {x, y}
-}
-
-const events = []
-
-canvas.addEventListener("mousedown", function(event) {
-    const position = calculateRelativePosition({"x": event.clientX, "y": event.clientY}, canvas)
-    events.push({"type": "touchdown", "position": position})
-})
-
-canvas.addEventListener("contextmenu", (event) => {
-    event.preventDefault()
-})
-
-import loader from "./loader.js"
-
-export function handleEvents(renderable) {
-    while(events.length > 0) {
-        const event = events.shift()
-        if(event.type == "touchdown") {
-            eventsearch(renderable, event)
-        }
-    }
-}
-
-function eventsearch(renderable, event) {
-    if(renderable.events != undefined
-    && renderable.events[event.type] != undefined
-    && renderable.events[event.type] instanceof Function
-    && renderable.bounds != undefined
-    && renderable.bounds.x1 <= event.position.x
-    && renderable.bounds.x2 >= event.position.x
-    && renderable.bounds.y1 <= event.position.y
-    && renderable.bounds.y2 >= event.position.y) {
-        return renderable.events[event.type](event)
-    }
-    if(renderable.children != undefined) {
-        Object.values(renderable.children).forEach((child) => {
-            eventsearch(child, event)
-        })
     }
 }

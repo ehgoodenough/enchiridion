@@ -3,10 +3,25 @@ import * as Objdict from "objdict"
 let renderables = []
 
 import * as canvas from "./webcanvas/render.js"
+import * as events from "./webcanvas/events.js"
 
-export default function(ViewModel) {
+export const sizes = {
+    "canvas": {
+        "width": 10 * 16,
+        "height": 10 * 16,
+    },
+    "defaultanchor": {
+        "x": 0, "y": 0,
+    }
+}
+
+export function start() {
+    canvas.start()
+}
+
+export function render(ViewModel) {
     if(renderables != undefined) {
-        canvas.handleEvents(renderables)
+        events.handleEvents(renderables)
     }
 
     canvas.clear()
