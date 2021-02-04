@@ -35,7 +35,7 @@ function createProgram(gl, vertexShader, fragmentShader) {
 }
 
 
-import fragmentSource from "./shaders/outline2.glsl"
+import fragmentSource from "./shaders/outline3.glsl"
 import vertexSource from "./shaders/vertex.glsl"
 
 let gl = undefined
@@ -66,6 +66,8 @@ performer.start = function() {
     things.locations = {}
     // things.locations["tintColor"] = gl.getUniformLocation(things.spriteprogram, "tintColor")
     things.locations["tintIntensity"] = gl.getUniformLocation(things.spriteprogram, "tintIntensity")
+    things.locations["outlineColor"] = gl.getUniformLocation(things.spriteprogram, "outlineColor")
+    things.locations["tintColor"] = gl.getUniformLocation(things.spriteprogram, "tintColor")
 
     // vertex array ??
     things.vao = gl.createVertexArray()
@@ -202,9 +204,22 @@ performer.render = function(renderable) {
         gl.bindTexture(gl.TEXTURE_2D, loader.images[renderable.image].texture)
 
         if(renderable.tint != undefined) {
+            renderable.tint.color = parseColor(renderable.tint.color)
+            if(renderable.tint.alpha == undefined) renderable.tint.alpha = 1.0
+            if(renderable.tint.intensity == undefined) renderable.tint.intensity = 1
+            gl.uniform4f(things.locations["tintColor"], ...renderable.tint.color, renderable.tint.alpha)
             gl.uniform1f(things.locations["tintIntensity"], renderable.tint.intensity)
         } else {
+            gl.uniform4f(things.locations["tintColor"], 0, 0, 0, 0)
             gl.uniform1f(things.locations["tintIntensity"], 0)
+        }
+
+        if(renderable.outline != undefined) {
+            renderable.outline.color = parseColor(renderable.outline.color)
+            if(renderable.outline.alpha == undefined) renderable.outline.alpha = 1.0
+            gl.uniform4f(things.locations["outlineColor"], ...renderable.outline.color, renderable.outline.alpha)
+        } else {
+            gl.uniform4f(things.locations["outlineColor"], 0, 0, 0, 0)
         }
 
         const points = Square(renderable)
@@ -228,6 +243,20 @@ performer.render = function(renderable) {
     //     const count = 6
     //     gl.drawArrays(primitiveType, offset, count)
     // }
+}
+
+function parseColor(color = "#000000") {
+    if(color[0] != "#"
+    || color.length != "7") {
+        throw "Not sure how to parse this..."
+    }
+    return [
+        color.substring(1, 3),
+        color.substring(3, 5),
+        color.substring(5, 7),
+    ].map((colorpart) => {
+        return parseInt(colorpart, 16) / 255
+    })
 }
 
 function Square(entity) {
