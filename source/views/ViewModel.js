@@ -102,6 +102,7 @@ function Entity(state, entity) {
                 "position": {"stack": 1},
                 "image": EntityImage(state, entity),
                 "opacity": EntityOpacity(state, entity),
+                "tint": {"intensity": 0.5},
                 // "outline": UnitOutline(stage, unit),
                 // "grayscale": UnitGrayscale(stage, unit),
                 // "rotation": entity.rotation,

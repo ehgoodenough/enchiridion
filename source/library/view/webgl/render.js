@@ -63,7 +63,9 @@ performer.start = function() {
     const positionAttributeLocation = gl.getAttribLocation(things.spriteprogram, "a_position")
     things.texCoordAttributeLocation = gl.getAttribLocation(things.spriteprogram, "a_texCoord")
     things.resolutionUniformLocation = gl.getUniformLocation(things.spriteprogram, "u_resolution")
-    things.imageUniformLocation = gl.getUniformLocation(things.spriteprogram, "u_image")
+    things.locations = {}
+    // things.locations["tintColor"] = gl.getUniformLocation(things.spriteprogram, "tintColor")
+    things.locations["tintIntensity"] = gl.getUniformLocation(things.spriteprogram, "tintIntensity")
 
     // vertex array ??
     things.vao = gl.createVertexArray()
@@ -198,6 +200,12 @@ performer.render = function(renderable) {
         gl.bindVertexArray(things.vao)
         gl.uniform2f(things.resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
         gl.bindTexture(gl.TEXTURE_2D, loader.images[renderable.image].texture)
+
+        if(renderable.tint != undefined) {
+            gl.uniform1f(things.locations["tintIntensity"], renderable.tint.intensity)
+        } else {
+            gl.uniform1f(things.locations["tintIntensity"], 0)
+        }
 
         const points = Square(renderable)
         gl.bindBuffer(gl.ARRAY_BUFFER, things.positionBuffer)
