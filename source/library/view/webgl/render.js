@@ -35,7 +35,7 @@ function createProgram(gl, vertexShader, fragmentShader) {
 }
 
 
-import fragmentSource from "./shaders/fragment2.glsl"
+import fragmentSource from "./shaders/outline2.glsl"
 import vertexSource from "./shaders/vertex.glsl"
 
 let gl = undefined
