@@ -103,7 +103,7 @@ function Entity(state, entity) {
                 "image": EntityImage(state, entity),
                 "opacity": EntityOpacity(state, entity),
                 "tint": entity.key == "player" ? {"intensity": 0.5, "color": "#0000FF"} : undefined,
-                "outline": entity.key == "player" ? {"thickness": 0.5, "color": "#00FF00"} : undefined,
+                "outline": entity.key == "player" ? {"thickness": 1, "color": "#00FF00"} : undefined,
                 // "grayscale": UnitGrayscale(stage, unit),
                 // "rotation": entity.rotation,
             },

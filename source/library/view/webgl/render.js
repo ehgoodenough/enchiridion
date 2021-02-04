@@ -35,7 +35,7 @@ function createProgram(gl, vertexShader, fragmentShader) {
 }
 
 
-import fragmentSource from "./shaders/outline3.glsl"
+import fragmentSource from "./shaders/fragment.glsl"
 import vertexSource from "./shaders/vertex.glsl"
 
 let gl = undefined
@@ -66,8 +66,10 @@ performer.start = function() {
     things.locations = {}
     // things.locations["tintColor"] = gl.getUniformLocation(things.spriteprogram, "tintColor")
     things.locations["tintIntensity"] = gl.getUniformLocation(things.spriteprogram, "tintIntensity")
-    things.locations["outlineColor"] = gl.getUniformLocation(things.spriteprogram, "outlineColor")
     things.locations["tintColor"] = gl.getUniformLocation(things.spriteprogram, "tintColor")
+    things.locations["outlineColor"] = gl.getUniformLocation(things.spriteprogram, "outlineColor")
+    things.locations["outlineThickness"] = gl.getUniformLocation(things.spriteprogram, "outlineThickness")
+    things.locations["imageSize"] = gl.getUniformLocation(things.spriteprogram, "imageSize")
 
     // vertex array ??
     things.vao = gl.createVertexArray()
@@ -205,7 +207,7 @@ performer.render = function(renderable) {
 
         if(renderable.tint != undefined) {
             renderable.tint.color = parseColor(renderable.tint.color)
-            if(renderable.tint.alpha == undefined) renderable.tint.alpha = 1.0
+            if(renderable.tint.alpha == undefined) renderable.tint.alpha = 1
             if(renderable.tint.intensity == undefined) renderable.tint.intensity = 1
             gl.uniform4f(things.locations["tintColor"], ...renderable.tint.color, renderable.tint.alpha)
             gl.uniform1f(things.locations["tintIntensity"], renderable.tint.intensity)
@@ -216,11 +218,16 @@ performer.render = function(renderable) {
 
         if(renderable.outline != undefined) {
             renderable.outline.color = parseColor(renderable.outline.color)
-            if(renderable.outline.alpha == undefined) renderable.outline.alpha = 1.0
+            if(renderable.outline.alpha == undefined) renderable.outline.alpha = 1
+            if(renderable.outline.thickness == undefined) renderable.outline.thickness = 1
             gl.uniform4f(things.locations["outlineColor"], ...renderable.outline.color, renderable.outline.alpha)
+            gl.uniform1f(things.locations["outlineThickness"], renderable.outline.thickness)
         } else {
             gl.uniform4f(things.locations["outlineColor"], 0, 0, 0, 0)
+            gl.uniform1f(things.locations["outlineThickness"], 0)
         }
+
+        gl.uniform2f(things.locations["imageSize"], loader.images[renderable.image].width, loader.images[renderable.image].height)
 
         const points = Square(renderable)
         gl.bindBuffer(gl.ARRAY_BUFFER, things.positionBuffer)
