@@ -14,9 +14,9 @@ in vec2 v_texCoord;
 out vec4 outColor;
 
 void main() {
-   // Look up a color from the texture.
    vec4 textureColor = texture(u_image, v_texCoord);
-   // outColor = textureColor;
    vec4 tintColor = vec4(1.0, 0.0, 0.0, 1.0);
-   outColor = mix(textureColor, tintColor, tintIntensity);
+   vec4 finalColor = mix(textureColor, tintColor, tintIntensity);
+   finalColor.a = textureColor.a;
+   outColor = finalColor;
 }

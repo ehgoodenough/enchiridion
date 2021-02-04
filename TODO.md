@@ -1,9 +1,9 @@
 - Primitive Shapes - Circles & Squares
 - Width / Height Agnostic
-- Alpha Transparency
+- ~~Alpha Transparency~~
 - Z-Indexing
 ...
-- Tint
+- ~~Tint~~
 - Outline
 - Rotation
 ...
@@ -34,3 +34,7 @@ NICE-TO-HAVES
 - Whiteout
 - Grayscale
 - Invert
+
+CONFIDENCE
+- Browser Compatability + Platform Compatability
+- Fallback to Canvas???
