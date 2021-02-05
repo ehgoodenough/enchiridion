@@ -1,13 +1,9 @@
 - Primitive Shapes - Circles & Squares
-...
 - loading screen
-- parameterize dom and width/height and loading assets prior to starting
-...
+- hud: hearts, score, blood flash, game over banner, dialogue, version
 - camera animation transition
 - entity attack/attacked/move animations
-...
 - culling distant world tiles
-- hud: hearts, score, blood flash, game over banner, dialogue, version
 
 PROCESSING FEATURES
 - Outlines bigger than 1px

@@ -1,6 +1,4 @@
-import * as view from "../view.js"
-
-
+import Canvas from "../index.js"
 
 const loader = {"images": {}}
 const performer = {}
@@ -45,8 +43,8 @@ performer.start = function() {
     const dom = document.createElement("canvas")
     document.getElementById("frame").appendChild(dom)
     dom.id = "render"
-    dom.width = view.sizes.canvas.width
-    dom.height = view.sizes.canvas.height
+    dom.width = Canvas.size.width
+    dom.height = Canvas.size.height
 
     // gl
     gl = dom.getContext("webgl2", {

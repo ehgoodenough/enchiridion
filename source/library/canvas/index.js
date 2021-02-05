@@ -2,41 +2,34 @@ import * as Objdict from "objdict"
 
 let renderables = []
 
-import {performer, loader} from "./webgl/render.js"
-import * as events from "./webcanvas/events.js"
+import {performer, loader} from "./gl/render.js"
+import * as events from "./events.js"
 
-export const sizes = {
-    "canvas": {
-        "width": 10 * 16,
-        "height": 10 * 16,
-    },
-    "defaultanchor": {
-        "x": 0, "y": 0,
+export default new class Canvas {
+    constructor() {
+        this.size = {"width": 0, "height": 0},
+        this.preload = []
     }
-}
+    start(settings) {
+        Object.keys(settings).forEach((key) => {
+            this[key] = settings[key]
+        })
 
-// IMAGE URLS TO BE IMPORTED EARLY
-export const preloadQueue = [
-    require("assets/images/lofi/slime_alpha.png"),
-    require("assets/images/lofi/slime_omega.png"),
-]
-
-export function start() {
-    performer.start()
-    loader.start(preloadQueue)
-}
-
-export function render(ViewModel) {
-    if(renderables != undefined) {
-        events.handleEvents(renderables)
+        performer.start()
+        loader.start(settings.preload)
     }
+    render(ViewModel) {
+        if(renderables != undefined) {
+            events.handleEvents(renderables)
+        }
 
-    performer.clear()
+        performer.clear()
 
-    renderables = ViewModel()
-    if(renderables == undefined) return
-    renderables = convert(renderables)
-    recurse(renderables)
+        renderables = ViewModel()
+        if(renderables == undefined) return
+        renderables = convert(renderables)
+        recurse(renderables)
+    }
 }
 
 ///////////////////////////////

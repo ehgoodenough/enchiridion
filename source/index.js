@@ -30,15 +30,24 @@ import App from "models/App.js"
 import Dev from "library/Dev.js"
 
 import ViewModel from "views/ViewModel.js"
-import * as View from "library/view/view.js"
+import Canvas from "library/canvas/index.js"
 
-View.start()
+Canvas.start({
+    "size": {
+        "width": 10 * 16,
+        "height": 10 * 16,
+    },
+    "preload": [
+        require("assets/images/lofi/slime_alpha.png"),
+        require("assets/images/lofi/slime_omega.png"),
+    ]
+})
 
 const loop = new Yaafloop((delta) => {
     Dev.atStartOfLoop()
 
     App.update(delta)
-    View.render(ViewModel)
+    Canvas.render(ViewModel)
 
     Dev.atEndOfLoop()
 })
