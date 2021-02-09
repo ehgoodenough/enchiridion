@@ -45,6 +45,9 @@ loader.normalizeImageSource = function(imageSource) {
     return imageSource
 }
 
+// import * as Canvas from "../index.js"
+// TODO: read this from Canvas.preload
+
 let preloaderQueue = []
 // import units from "@frog/source/data/units.js"
 // Object.values(units).forEach((unit) => {

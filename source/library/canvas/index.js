@@ -9,6 +9,8 @@ export default new class Canvas {
     constructor() {
         this.size = {"width": 0, "height": 0},
         this.preload = []
+        this.dom = document.body
+        this.defaultAnchor = {"x": 0, "y": 0}
     }
     start(settings) {
         Object.keys(settings).forEach((key) => {
@@ -17,6 +19,7 @@ export default new class Canvas {
 
         performer.start()
         loader.start(settings.preload)
+        events.start()
     }
     render(ViewModel) {
         if(renderables != undefined) {

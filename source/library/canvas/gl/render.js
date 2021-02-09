@@ -41,10 +41,13 @@ const things = {}
 performer.start = function() {
     // canvas
     const dom = document.createElement("canvas")
-    document.getElementById("frame").appendChild(dom)
-    dom.id = "render"
+    Canvas.dom.appendChild(dom)
     dom.width = Canvas.size.width
     dom.height = Canvas.size.height
+    dom.style.width = "100%"
+    dom.style.height = "100%"
+    dom.style.position = "absolute"
+    dom.style.imageRendering = "pixelated" // "-moz-crisp-edges"
 
     // gl
     gl = dom.getContext("webgl2", {
@@ -96,11 +99,13 @@ performer.start = function() {
 // LOADING //
 ////////////
 
-loader.start = function(preloadQueue) {
-    return loader.loadAll(preloadQueue).then((images) => {
+loader.start = function() {
+    return loader.loadAll(Canvas.preload || []).then((images) => {
         images.forEach((image) => {
+            if(image == undefined) return
             performer.processImageIntoTexture(image)
         })
+        loader.isPreloaded = true
     })
 }
 
@@ -110,6 +115,7 @@ loader.loadAll = function(sources) {
     }
     if(sources instanceof Array) {
         return Promise.all(sources.map((source) => {
+            if(source == undefined) return Promise.resolve()
             return loader.load(source)
         }))
     }
@@ -251,9 +257,15 @@ performer.render = function(renderable) {
 }
 
 function parseColor(color = "#000000") {
+    if(isNaN(color) == false) {
+        color = "#" + color.toString(16) // assuming this is a hex number.
+        while(color.length < 7) {
+            color += "0"
+        }
+    }
     if(color[0] != "#"
     || color.length != "7") {
-        throw "Not sure how to parse this..."
+        throw "Not sure how to parse this: " + color
     }
     return [
         color.substring(1, 3),
@@ -275,8 +287,11 @@ function Square(entity) {
     if(entity.width != undefined) width = entity.width
     if(entity.height != undefined) height = entity.height
     // TODO: consider anchor
-    const x1 = entity.position.x
-    const y1 = entity.position.y
+    entity.anchor = entity.anchor || Canvas.defaultAnchor || {}
+    entity.anchor.x = entity.anchor.x || 0
+    entity.anchor.y = entity.anchor.y || 0
+    const x1 = Math.floor(entity.position.x - (entity.anchor.x * width))
+    const y1 = Math.floor(entity.position.y - (entity.anchor.y * height))
     const x2 = x1 + width
     const y2 = y1 + height
     return [

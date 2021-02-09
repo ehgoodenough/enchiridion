@@ -40,7 +40,8 @@ Canvas.start({
     "preload": [
         require("assets/images/lofi/slime_alpha.png"),
         require("assets/images/lofi/slime_omega.png"),
-    ]
+    ],
+    "dom": document.getElementById("frame"),
 })
 
 const loop = new Yaafloop((delta) => {

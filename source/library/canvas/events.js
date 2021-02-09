@@ -10,16 +10,16 @@ function calculateRelativePosition({x, y}, dom) {
 
 const events = []
 
-const dom = document.getElementById("frame")
-
-dom.addEventListener("mousedown", function(event) {
-    const position = calculateRelativePosition({"x": event.clientX, "y": event.clientY}, dom)
-    events.push({"type": "touchdown", "position": position})
-})
-
-dom.addEventListener("contextmenu", (event) => {
-    event.preventDefault()
-})
+export function start() {
+    // Canvas.dom.addEventListener("mousedown", function(event) {
+    //     const position = calculateRelativePosition({"x": event.clientX, "y": event.clientY}, Canvas.dom)
+    //     events.push({"type": "touchdown", "position": position})
+    // })
+    //
+    // Canvas.dom.addEventListener("contextmenu", (event) => {
+    //     event.preventDefault()
+    // })
+}
 
 export function handleEvents(renderable) {
     while(events.length > 0) {

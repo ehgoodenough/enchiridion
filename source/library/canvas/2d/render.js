@@ -8,7 +8,7 @@ export function start() {
     dom.id = "render"
     dom.width = Canvas.size.width
     dom.height = Canvas.size.height
-    document.getElementById("frame").appendChild(dom)
+    Canvas.dom.appendChild(dom)
 
     context = dom.getContext("2d")
 }
@@ -35,9 +35,9 @@ export function render(renderable) {
         renderable.position.x = renderable.position.x || 0
         renderable.position.y = renderable.position.y || 0
 
-        renderable.anchor = renderable.anchor || {}
-        if(renderable.anchor.x === undefined) renderable.anchor.x = Canvas.defaultAnchor.x || 0
-        if(renderable.anchor.y === undefined) renderable.anchor.y = Canvas.defaultAnchor.y || 0
+        renderable.anchor = renderable.anchor || Canvas.defaultAnchor || {}
+        renderable.anchor.x = renderable.anchor.x || 0
+        renderable.anchor.y = renderable.anchor.y || 0
 
         if(renderable.width === undefined) renderable.width = image.width
         if(renderable.height === undefined) renderable.height = image.height
