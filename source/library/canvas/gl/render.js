@@ -76,6 +76,10 @@ function createBundle(bundle) {
     return bundle
 }
 
+////////////////////
+// INSTANTIATING //
+//////////////////
+
 let gl = undefined
 const _ = {}
 performer.start = function() {
@@ -98,12 +102,20 @@ performer.start = function() {
     _.bundles = {
         "sprite": createBundle({
             "shaders": {
-                "vertex": require("./shaders/vertex.glsl").default,
-                "fragment": require("./shaders/fragment.glsl").default,
+                "vertex": require("./shaders/sprite.vertex.glsl").default,
+                "fragment": require("./shaders/sprite.fragment.glsl").default,
             },
             "attributes": ["position", "textureCoord"],
             "uniforms": ["resolution", "tintIntensity", "tintColor", "outlineColor", "outlineThickness", "imageSize"],
-        })
+        }),
+        "rectangle": createBundle({
+            "shaders": {
+                "vertex": require("./shaders/rectangle.vertex.glsl").default,
+                "fragment": require("./shaders/rectangle.fragment.glsl").default,
+            },
+            "attributes": ["position"],
+            "uniforms": ["resolution", "color"],
+        }),
     }
 
     // vertex array ??
@@ -112,14 +124,6 @@ performer.start = function() {
 
     // position
     _.positionBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, _.positionBuffer)
-    var size = 2          // 2 components per iteration
-    var type = gl.FLOAT   // the data is 32bit floats
-    var normalize = false // don't normalize the data
-    var stride = 0        // 0 = move forward size * sizeof(type) each iteration to get the next position
-    var offset = 0        // start at the beginning of the buffer
-    gl.enableVertexAttribArray(_.bundles["sprite"].attributes["position"])
-    gl.vertexAttribPointer(_.bundles["sprite"].attributes["position"], size, type, normalize, stride, offset)
 
     // view port
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
@@ -219,6 +223,16 @@ performer.clear = function() {
 }
 
 performer.render = function(renderable) {
+    // {
+    //     "type": "sprite", // if type is left off, it assumes sprite.
+    //     "position": {"x": 0, "y": 0},
+    //     // "anchor": {"x": 0, "y": 0}, // if x or y is left of, defaulted to 0. if left off entirely, it checks the Canvas.defaultAnchor
+    //     // "width": 8,
+    //     // "height": 8, // if width or height is left off, it'll use the default px width or height of the original image.
+    //     "image": "url", // if it isn't loaded, it'll load it. if it can't find it, it'll ignore(?). if this is undefined, it'll error.
+    //     "tint": {"color": 0xFFFFFF, "intensity": 1},
+    //     "outline": {"color": "#FFFFFF", "thickness": 1}, // i don't think thickness is supported yet.
+    // }
     if(renderable.type == "sprite"
     || renderable.type == undefined) {
 
@@ -240,8 +254,11 @@ performer.render = function(renderable) {
 
         gl.useProgram(_.bundles["sprite"].program)
         gl.bindVertexArray(_.vao)
-        gl.uniform2f(_.bundles["sprite"].uniforms["resolution"], gl.canvas.width, gl.canvas.height)
+
         gl.bindTexture(gl.TEXTURE_2D, loader.images[renderable.image].texture)
+        gl.uniform2f(_.bundles["sprite"].uniforms["resolution"], gl.canvas.width, gl.canvas.height)
+        gl.uniform2f(_.bundles["sprite"].uniforms["imageSize"], loader.images[renderable.image].width, loader.images[renderable.image].height)
+        // gl.uniform1i(_.imageUniformLocation, loader.images[renderable.image].index)
 
         if(renderable.tint != undefined) {
             renderable.tint.color = parseColor(renderable.tint.color)
@@ -265,29 +282,45 @@ performer.render = function(renderable) {
             gl.uniform1f(_.bundles["sprite"].uniforms["outlineThickness"], 0)
         }
 
-        gl.uniform2f(_.bundles["sprite"].uniforms["imageSize"], loader.images[renderable.image].width, loader.images[renderable.image].height)
-
-        const points = Square(renderable)
+        const points = getRectanglePoints(renderable)
         gl.bindBuffer(gl.ARRAY_BUFFER, _.positionBuffer)
-        gl.uniform1i(_.imageUniformLocation, loader.images[renderable.image].index)
+        gl.enableVertexAttribArray(_.bundles["sprite"].attributes["position"])
+        gl.vertexAttribPointer(_.bundles["sprite"].attributes["position"], 2, gl.FLOAT, false, 0, 0)
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
-        const primitiveType = gl.TRIANGLES
-        const offset = 0
-        const count = 6
-        gl.drawArrays(primitiveType, offset, count)
+        gl.drawArrays(gl.TRIANGLES, 0, 6)
     }
-    // if(renderable.type == "square") {
-    //     // gl.useProgram(squareprogram)
-    //     // gl.bindVertexArray(_.vao)
-    //     // gl.uniform2f(_.bundles["sprite"].uniforms["resolution"], gl.canvas.width, gl.canvas.height)
-    //     const points = Square(renderable)
-    //     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
-    //     gl.uniform4f(colorUniformLocation, renderable.color[0], renderable.color[1], renderable.color[2], renderable.color[3])
-    //     const primitiveType = gl.TRIANGLES
-    //     const offset = 0
-    //     const count = 6
-    //     gl.drawArrays(primitiveType, offset, count)
+
+    // {
+    //     "type": "rectangle",
+    //     "position": {"x": 0, "y:" 0} // if left off, skips.
+    //     "color": 0xFFFFFF, // "#FFFFFF". if left off, defaults to hot pink.
+    //     "alpha": 1, // if left off, defaults to 1.
+    //     "width": 8, // if left off, skips.
+    //     "height": 8, // if left off, skips.
     // }
+    if(renderable.type == "rectangle") {
+        gl.useProgram(_.bundles["rectangle"].program)
+        gl.bindVertexArray(_.vao)
+
+        gl.uniform2f(_.bundles["rectangle"].uniforms["resolution"], gl.canvas.width, gl.canvas.height)
+
+        if(renderable.color == undefined) renderable.color = "#FF69B4"
+        renderable.color = parseColor(renderable.color)
+        if(renderable.alpha == undefined) renderable.alpha = 1
+        gl.uniform4f(_.bundles["rectangle"].attributes["color"], ...renderable.color, renderable.alpha)
+
+        if(renderable.width == undefined
+        || renderable.height == undefined) {
+            return
+        }
+
+        const points = getRectanglePoints(renderable)
+        gl.bindBuffer(gl.ARRAY_BUFFER, _.positionBuffer)
+        gl.enableVertexAttribArray(_.bundles["rectangle"].attributes["position"])
+        gl.vertexAttribPointer(_.bundles["rectangle"].attributes["position"], 2, gl.FLOAT, false, 0, 0)
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
+        gl.drawArrays(gl.TRIANGLES, 0, 6)
+    }
 }
 
 function parseColor(color = "#000000") {
@@ -310,20 +343,22 @@ function parseColor(color = "#000000") {
     })
 }
 
-function Square(entity) {
+function getRectanglePoints(entity) {
     let width, height
     if(entity.image != undefined
     && loader.images[entity.image] != undefined) {
         width = loader.images[entity.image].width
         height = loader.images[entity.image].height
-        // TODO: When you move this into gldo, make sure it supports this auto-detecting width/height from the image
     }
     if(entity.width != undefined) width = entity.width
     if(entity.height != undefined) height = entity.height
-    // TODO: consider anchor
     entity.anchor = entity.anchor || Canvas.defaultAnchor || {}
     entity.anchor.x = entity.anchor.x || 0
     entity.anchor.y = entity.anchor.y || 0
+
+    entity.position = entity.position || {}
+    entity.position.x = entity.position.x || 0
+    entity.position.y = entity.position.y || 0
     const x1 = Math.floor(entity.position.x - (entity.anchor.x * width))
     const y1 = Math.floor(entity.position.y - (entity.anchor.y * height))
     const x2 = x1 + width

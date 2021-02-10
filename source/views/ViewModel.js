@@ -107,6 +107,13 @@ function Entity(state, entity) {
                 // "grayscale": UnitGrayscale(stage, unit),
                 // "rotation": entity.rotation,
             },
+            // {
+            //     "key": "Shape",
+            //     "type": "rectangle",
+            //     "position": {"stack": 3},
+            //     "color": "#CC0000",
+            //     "width": 16, "height": 16,
+            // },
             // HealthBar(state, entity),
         ]
     }
