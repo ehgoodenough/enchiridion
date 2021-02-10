@@ -1,7 +1,7 @@
 #version 300 es
 precision highp float;
 
-in vec2 v_texCoord;
+in vec2 vertexCoord;
 uniform sampler2D u_image;
 
 out vec4 outColor;
@@ -16,12 +16,12 @@ const vec4 filterClamp = vec4(0.0, 0.0, 0.0, 0.0);
 const float samples = 50.0;
 
 void main() {
-   vec4 textureColor = texture(u_image, v_texCoord);
+   vec4 textureColor = texture(u_image, vertexCoord);
    float outlineAlpha = 0.0;
    for(float angle = 0.0; angle <= TAU; angle += TAU / samples) {
        vec2 displacedPosition;
-       displacedPosition.x = v_texCoord.x + displacement.x * cos(angle);
-       displacedPosition.y = v_texCoord.y + displacement.y * sin(angle);
+       displacedPosition.x = vertexCoord.x + displacement.x * cos(angle);
+       displacedPosition.y = vertexCoord.y + displacement.y * sin(angle);
        vec4 displacedColor = texture(u_image, displacedPosition);
        outlineAlpha = max(outlineAlpha, displacedColor.a);
    }

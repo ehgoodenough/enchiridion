@@ -1,4 +1,5 @@
 import Canvas from "../index.js"
+import * as Objdict from "objdict"
 
 const loader = {"images": {}}
 const performer = {}
@@ -32,12 +33,51 @@ function createProgram(gl, vertexShader, fragmentShader) {
     return program
 }
 
+// input
+// {
+//     "shaders": {
+//         "vertex": "GLSL SOURCE CODE",
+//         "fragment": "GLSL SOURCE CODE",
+//     },
+//     "attributes": ["ARRAY", "OF", "NAMES"],
+//     "uniforms": ["ARRAY", "OF", "NAMES"],
+// }
+// output
+// {
+//     "program": WEBGL PROGRAM,
+//     "shaders": {
+//         "vertex": WEBGL SHADER,
+//         "fragment": WEBGL SHADER,
+//     },
+//     "attributes": {
+//         "ARRAY": WEBGL LOCATION,
+//         "OF": WEBGL LOCATION,
+//         "NAMES": WEBGL LOCATION
+//     },
+//     "uniforms": {
+//         ...
+//     }
+// }
+function createBundle(bundle) {
+    bundle.shaders.vertex = createShader(gl, gl.VERTEX_SHADER, bundle.shaders.vertex)
+    bundle.shaders.fragment = createShader(gl, gl.FRAGMENT_SHADER, bundle.shaders.fragment)
+    bundle.program = createProgram(gl, bundle.shaders.vertex, bundle.shaders.fragment)
 
-import fragmentSource from "./shaders/fragment.glsl"
-import vertexSource from "./shaders/vertex.glsl"
+    bundle.attributes = bundle.attributes.map((attribute) => {
+        return {"key": attribute, "location": gl.getAttribLocation(bundle.program, attribute)}
+    })
+    bundle.uniforms = bundle.uniforms.map((uniform) => {
+        return {"key": uniform, "location": gl.getUniformLocation(bundle.program, uniform)}
+    })
+
+    bundle.attributes = Objdict.map(Objdict.convert(bundle.attributes), (attribute) => attribute.location)
+    bundle.uniforms = Objdict.map(Objdict.convert(bundle.uniforms), (uniform) => uniform.location)
+
+    return bundle
+}
 
 let gl = undefined
-const things = {}
+const _ = {}
 performer.start = function() {
     // canvas
     const dom = document.createElement("canvas")
@@ -50,42 +90,36 @@ performer.start = function() {
     dom.style.imageRendering = "pixelated" // "-moz-crisp-edges"
 
     // gl
-    gl = dom.getContext("webgl2", {
-        // "premultipliedAlpha": false
-    })
+    gl = dom.getContext("webgl2")
     if(gl === undefined) throw new Error("webgl2 is not supported :(")
 
     // program setup
-    things.vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource)
-    things.fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource)
-    things.spriteprogram = createProgram(gl, things.vertexShader, things.fragmentShader)
-
     // pointers
-    const positionAttributeLocation = gl.getAttribLocation(things.spriteprogram, "a_position")
-    things.texCoordAttributeLocation = gl.getAttribLocation(things.spriteprogram, "a_texCoord")
-    things.resolutionUniformLocation = gl.getUniformLocation(things.spriteprogram, "u_resolution")
-    things.locations = {}
-    // things.locations["tintColor"] = gl.getUniformLocation(things.spriteprogram, "tintColor")
-    things.locations["tintIntensity"] = gl.getUniformLocation(things.spriteprogram, "tintIntensity")
-    things.locations["tintColor"] = gl.getUniformLocation(things.spriteprogram, "tintColor")
-    things.locations["outlineColor"] = gl.getUniformLocation(things.spriteprogram, "outlineColor")
-    things.locations["outlineThickness"] = gl.getUniformLocation(things.spriteprogram, "outlineThickness")
-    things.locations["imageSize"] = gl.getUniformLocation(things.spriteprogram, "imageSize")
+    _.bundles = {
+        "sprite": createBundle({
+            "shaders": {
+                "vertex": require("./shaders/vertex.glsl").default,
+                "fragment": require("./shaders/fragment.glsl").default,
+            },
+            "attributes": ["position", "textureCoord"],
+            "uniforms": ["resolution", "tintIntensity", "tintColor", "outlineColor", "outlineThickness", "imageSize"],
+        })
+    }
 
     // vertex array ??
-    things.vao = gl.createVertexArray()
-    gl.bindVertexArray(things.vao)
+    _.vao = gl.createVertexArray()
+    gl.bindVertexArray(_.vao)
 
     // position
-    things.positionBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, things.positionBuffer)
+    _.positionBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, _.positionBuffer)
     var size = 2          // 2 components per iteration
     var type = gl.FLOAT   // the data is 32bit floats
     var normalize = false // don't normalize the data
     var stride = 0        // 0 = move forward size * sizeof(type) each iteration to get the next position
     var offset = 0        // start at the beginning of the buffer
-    gl.enableVertexAttribArray(positionAttributeLocation)
-    gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
+    gl.enableVertexAttribArray(_.bundles["sprite"].attributes["position"])
+    gl.vertexAttribPointer(_.bundles["sprite"].attributes["position"], size, type, normalize, stride, offset)
 
     // view port
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
@@ -139,13 +173,13 @@ performer.processImageIntoTexture = function(image) {
     const texCoordBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0.0,  0.0, 1.0,  0.0, 0.0,  1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  1.0]), gl.STATIC_DRAW)
-    gl.enableVertexAttribArray(things.texCoordAttributeLocation)
+    gl.enableVertexAttribArray(_.bundles["sprite"].attributes["textureCoord"])
     var size = 2          // 2 components per iteration
     var type = gl.FLOAT   // the data is 32bit floats
     var normalize = false // don't normalize the data
     var stride = 0        // 0 = move forward size * sizeof(type) each iteration to get the next position
     var offset = 0        // start at the beginning of the buffer
-    gl.vertexAttribPointer(things.texCoordAttributeLocation, size, type, normalize, stride, offset)
+    gl.vertexAttribPointer(_.bundles["sprite"].attributes["textureCoord"], size, type, normalize, stride, offset)
 
     // Create a texture.
     var texture = gl.createTexture()
@@ -204,38 +238,38 @@ performer.render = function(renderable) {
             return
         }
 
-        gl.useProgram(things.spriteprogram)
-        gl.bindVertexArray(things.vao)
-        gl.uniform2f(things.resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
+        gl.useProgram(_.bundles["sprite"].program)
+        gl.bindVertexArray(_.vao)
+        gl.uniform2f(_.bundles["sprite"].uniforms["resolution"], gl.canvas.width, gl.canvas.height)
         gl.bindTexture(gl.TEXTURE_2D, loader.images[renderable.image].texture)
 
         if(renderable.tint != undefined) {
             renderable.tint.color = parseColor(renderable.tint.color)
             if(renderable.tint.alpha == undefined) renderable.tint.alpha = 1
             if(renderable.tint.intensity == undefined) renderable.tint.intensity = 1
-            gl.uniform4f(things.locations["tintColor"], ...renderable.tint.color, renderable.tint.alpha)
-            gl.uniform1f(things.locations["tintIntensity"], renderable.tint.intensity)
+            gl.uniform4f(_.bundles["sprite"].uniforms["tintColor"], ...renderable.tint.color, renderable.tint.alpha)
+            gl.uniform1f(_.bundles["sprite"].uniforms["tintIntensity"], renderable.tint.intensity)
         } else {
-            gl.uniform4f(things.locations["tintColor"], 0, 0, 0, 0)
-            gl.uniform1f(things.locations["tintIntensity"], 0)
+            gl.uniform4f(_.bundles["sprite"].uniforms["tintColor"], 0, 0, 0, 0)
+            gl.uniform1f(_.bundles["sprite"].uniforms["tintIntensity"], 0)
         }
 
         if(renderable.outline != undefined) {
             renderable.outline.color = parseColor(renderable.outline.color)
             if(renderable.outline.alpha == undefined) renderable.outline.alpha = 1
             if(renderable.outline.thickness == undefined) renderable.outline.thickness = 1
-            gl.uniform4f(things.locations["outlineColor"], ...renderable.outline.color, renderable.outline.alpha)
-            gl.uniform1f(things.locations["outlineThickness"], renderable.outline.thickness)
+            gl.uniform4f(_.bundles["sprite"].uniforms["outlineColor"], ...renderable.outline.color, renderable.outline.alpha)
+            gl.uniform1f(_.bundles["sprite"].uniforms["outlineThickness"], renderable.outline.thickness)
         } else {
-            gl.uniform4f(things.locations["outlineColor"], 0, 0, 0, 0)
-            gl.uniform1f(things.locations["outlineThickness"], 0)
+            gl.uniform4f(_.bundles["sprite"].uniforms["outlineColor"], 0, 0, 0, 0)
+            gl.uniform1f(_.bundles["sprite"].uniforms["outlineThickness"], 0)
         }
 
-        gl.uniform2f(things.locations["imageSize"], loader.images[renderable.image].width, loader.images[renderable.image].height)
+        gl.uniform2f(_.bundles["sprite"].uniforms["imageSize"], loader.images[renderable.image].width, loader.images[renderable.image].height)
 
         const points = Square(renderable)
-        gl.bindBuffer(gl.ARRAY_BUFFER, things.positionBuffer)
-        gl.uniform1i(things.imageUniformLocation, loader.images[renderable.image].index)
+        gl.bindBuffer(gl.ARRAY_BUFFER, _.positionBuffer)
+        gl.uniform1i(_.imageUniformLocation, loader.images[renderable.image].index)
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
         const primitiveType = gl.TRIANGLES
         const offset = 0
@@ -244,8 +278,8 @@ performer.render = function(renderable) {
     }
     // if(renderable.type == "square") {
     //     // gl.useProgram(squareprogram)
-    //     // gl.bindVertexArray(things.vao)
-    //     // gl.uniform2f(things.resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
+    //     // gl.bindVertexArray(_.vao)
+    //     // gl.uniform2f(_.bundles["sprite"].uniforms["resolution"], gl.canvas.width, gl.canvas.height)
     //     const points = Square(renderable)
     //     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW)
     //     gl.uniform4f(colorUniformLocation, renderable.color[0], renderable.color[1], renderable.color[2], renderable.color[3])
