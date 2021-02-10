@@ -32,6 +32,8 @@ export default new class Canvas {
         if(renderables == undefined) return
         renderables = convert(renderables)
         recurse(renderables)
+        
+        window.renderables = renderables
     }
 }
 
@@ -98,7 +100,6 @@ function convert(root) {
         }
     }
 
-    window.root = root
     return root
 }
 

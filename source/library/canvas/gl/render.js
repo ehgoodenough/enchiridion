@@ -242,6 +242,11 @@ performer.render = function(renderable) {
             throw new Error("Could not find renderable.image")
         }
 
+        if(renderable.image.default != undefined) {
+            console.log(renderable)
+            throw new Error("Could not handle a non-defaulted image import")
+        }
+
         if(loader.images[renderable.image] == undefined) {
             loader.load(renderable.image).then((image) => {
                 performer.processImageIntoTexture(image)
@@ -298,7 +303,8 @@ performer.render = function(renderable) {
     //     "width": 8, // if left off, skips.
     //     "height": 8, // if left off, skips.
     // }
-    if(renderable.type == "rectangle") {
+    if(renderable.type == "rectangle"
+    || renderable.type == "circle") {
         gl.useProgram(_.bundles["rectangle"].program)
         gl.bindVertexArray(_.vao)
 
@@ -306,9 +312,17 @@ performer.render = function(renderable) {
 
         if(renderable.color == undefined) renderable.color = "#FF69B4"
         renderable.color = parseColor(renderable.color)
-        if(renderable.alpha == undefined) renderable.alpha = 1
-        gl.uniform4f(_.bundles["rectangle"].attributes["color"], ...renderable.color, renderable.alpha)
+        gl.uniform4f(_.bundles["rectangle"].uniforms["color"], ...renderable.color, 1)
 
+        if(renderable.radius != undefined) {
+            renderable.width = renderable.radius * 2
+            renderable.height = renderable.radius * 2
+            renderable.position = renderable.position || {}
+            renderable.position.x = renderable.position.x || 0
+            renderable.position.y = renderable.position.y || 0
+            renderable.position.x -= renderable.radius
+            renderable.position.y -= renderable.radius
+        }
         if(renderable.width == undefined
         || renderable.height == undefined) {
             return
